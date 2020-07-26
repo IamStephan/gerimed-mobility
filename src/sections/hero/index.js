@@ -31,9 +31,6 @@ const Hero = () => {
         className={styles['imgContainer']}
       >
         <Img
-          style={{
-            minHeight: '75vh'
-          }}
           objectPosition='left center'
           objectFit='cover'
           className={styles['img']}
@@ -55,6 +52,7 @@ const Hero = () => {
             <Typography
               variant='h1'
               color='primary'
+              className={styles['header']}
               style={{
                 fontWeight: 'bold'
               }}
@@ -64,7 +62,7 @@ const Hero = () => {
             <br />
             <Typography
               variant='h4'
-              className={styles['subhead']}
+              className={styles['subheader']}
             >
               Helping you live a normal life with exceptional quality tools and equipment.
             </Typography>
