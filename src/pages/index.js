@@ -15,6 +15,7 @@ import { MODE } from '../constants/navbar'
 
 // Sections
 import Hero from '../sections/hero'
+import Catalog from '../sections/catalog'
 
 // Styles
 import styles from './styles.module.scss'
@@ -40,7 +41,7 @@ const IndexPage = () => {
         className={styles['transDetecter']}
       />
       <Hero />
-      <br/>
+      <Catalog />
       <br/>
       <br />
       <br />

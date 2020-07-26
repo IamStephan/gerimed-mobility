@@ -13,7 +13,7 @@ import styles from './styles.module.scss'
 const Hero = () => {
   const data = useStaticQuery(graphql`
     query {
-      file(relativePath: {eq: "site/hero.png"}) {
+      file(relativePath: {eq: "site/hero-2.png"}) {
         childImageSharp {
           fluid(maxWidth: 2000) {
             ...GatsbyImageSharpFluid
@@ -38,6 +38,21 @@ const Hero = () => {
           alt='Woman sitting in a wheelchair, proudly'
           
         />
+        <div
+          className={styles['divider']}
+        >
+          <svg
+            data-name="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1200 120"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M741,116.23C291,117.43,0,27.57,0,6V120H1200V6C1200,27.93,1186.4,119.83,741,116.23Z"
+              className={styles['shapeFill']}
+            />
+          </svg>
+        </div>
       </div>
 
       <div
@@ -64,7 +79,7 @@ const Hero = () => {
               variant='h4'
               className={styles['subheader']}
             >
-              Helping you live a normal life with exceptional quality tools and equipment.
+              Your one stop medical supply shop, with exceptional products at unbeatable prices.
             </Typography>
             <br />
             <div

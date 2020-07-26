@@ -26,6 +26,27 @@ $breakpoint-2: 425;
       height: 100%;
       width: 100%;
     }
+
+    .divider {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      
+      svg {
+        position: relative;
+        display: block;
+        width: calc(100% + 1.3px);
+        height: 100px;
+        transform: rotateY(180deg);
+      }
+      
+      .shapeFill {
+        fill: #FFFFFF;
+      }
+    }
   }
 
 
@@ -40,7 +61,7 @@ $breakpoint-2: 425;
       display: flex;
       justify-content: flex-end;
       padding-top: #{$content-margin / 2}px;
-      padding-bottom: #{$content-margin}px;
+      padding-bottom: #{$content-margin * 1.5}px;
 
       .content {
         max-width: #{$max-content-width}px;
@@ -96,6 +117,14 @@ $breakpoint-2: 425;
 
 @media screen and (max-width: #{$breakpoint-2}px) {
   .hero {
+    .imgContainer {
+      .divider {
+        svg {
+          height: 50px;
+        }
+      }
+    }
+
     .heroContainer {
       .heroContent {
         padding-top: #{$padding * 2}px;
