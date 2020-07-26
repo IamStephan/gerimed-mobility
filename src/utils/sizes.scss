@@ -1,0 +1,10 @@
+$clamp-width: 1200;
+
+$padding: 8;
+$margin: 8;
+
+:export {
+  clampWidth: $clamp-width;
+  padding: $padding;
+  margin: $margin;
+}

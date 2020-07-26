@@ -1,0 +1,11 @@
+@import '../components/navbar/styles.module';
+
+.transDetecter {
+  position: absolute;
+  z-index: -9999;
+  pointer-events: none;
+  top: 0px;
+  left: 0px;
+  height: #{$navbarHeightTrans}px;
+  width: 100%;
+}

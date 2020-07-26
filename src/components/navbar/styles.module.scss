@@ -1,0 +1,118 @@
+@import '../../utils/colors';
+@import '../../utils/sizes';
+@import '../../utils/border';
+
+$navbarHeightNormal: 75;
+$navbarHeightTrans: 125;
+$linksMarginRight: 150;
+
+// Breakpoints
+$breakpoint-1: 900;
+$breakpoint-2: 750;
+
+.detect {
+  height: #{$navbarHeightTrans}px;
+  width: 100%;
+  z-index: -999;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.navbar{
+  background-color: #282828;
+  height: #{$navbarHeightNormal}px;
+  position: sticky;
+  top: #{$margin / 2}px;
+  display: flex;
+  align-items: center;
+  z-index: 999;
+  margin: #{$margin / 2}px;
+  border-radius: #{$border-radius}px;
+  transition:
+      height 250ms ease-in-out,
+      background-color 250ms ease-in-out,
+      top 250ms ease-in-out,
+      margin 250ms ease-in-out;
+
+  &.NORMAL {
+    background-color: $dark;
+  }
+
+  &.TRANS {
+    height: #{$navbarHeightTrans}px;
+    background-color: transparent;
+    margin: 0px;
+    top: 0px;
+    
+    .container {
+      .logo {
+        .img {
+          height: #{$navbarHeightTrans - ($margin * 2)}px;
+        }
+      }
+    }
+    
+  }
+
+  .container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+    position: relative;
+
+    .logo {
+      .img {
+        transition: all 250ms ease-in-out;
+        height: #{$navbarHeightNormal - ($margin * 2)}px;
+      }
+    }
+
+    .button {
+      color: $light;
+    }
+
+    .iconButton {
+      margin-left: #{$margin}px;
+    }
+
+    .logo {
+      flex: 1;
+    }
+
+    .links {
+      display: flex;
+      margin-right: #{$linksMarginRight}px;
+    }
+
+    .actions {
+      margin-right: #{$margin * 2}px;
+      display: flex;
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .navbar{
+    .container {  
+      .links {
+        margin-right: #{$margin}px;
+      }
+  
+      .actions {
+        display: flex;
+
+        *:nth-child(3) {
+          margin-left: #{$margin * 2}px;
+        }
+      }
+    }
+  }
+}
+
+:export {
+  breakpointOne: $breakpoint-1;
+  breakpointTwo: $breakpoint-2;
+}

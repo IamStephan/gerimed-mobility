@@ -1,0 +1,56 @@
+@import '../../utils/sizes';
+@import '../../utils/colors';
+
+$breakpoint-1: 730;
+
+.footer {
+  background-color: $dark;
+
+  // colors for text
+  color: rgba($light, 0.75);
+
+  .container {
+    max-width: #{$clamp-width}px;
+    margin: auto;
+
+    .address {
+      display: flex;
+      justify-content: space-between;
+
+      .section {
+        padding: #{$padding * 2}px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .meta {
+      border-top: 1px solid rgba($light, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .section {
+        padding: #{$padding * 2}px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .footer {
+    .container {
+  
+      .address {
+        justify-content: center;
+        flex-wrap: wrap;
+  
+        .section {
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}

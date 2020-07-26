@@ -1,22 +1,111 @@
 import React from "react"
-import { Link } from "gatsby"
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+// Hooks
+import { useInView } from 'react-intersection-observer'
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link> <br />
-    <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
-  </Layout>
-)
+// Material
+//import { Button } from '@material-ui/core'
+
+// Components
+import Layout from '../components/layout'
+
+// Constants
+import { PAGES } from '../constants/pages'
+import { MODE } from '../constants/navbar'
+
+// Sections
+import Hero from '../sections/hero'
+
+// Styles
+import styles from './styles.module.scss'
+
+const IndexPage = () => {
+  /**
+   * NOTE:
+   * ======
+   * Used for switching navbar style
+   */
+  const [ref, inView, entry] = useInView({
+    /* Optional options */
+    threshold: 0.45,
+  })
+
+  return (
+    <Layout
+      page={PAGES.home}
+      mode={inView ? MODE.trans : MODE.normal}
+    >
+      <div
+        ref={ref}
+        className={styles['transDetecter']}
+      />
+      <Hero />
+      <br/>
+      <br/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br/>
+    </Layout>
+  )
+}
 
 export default IndexPage

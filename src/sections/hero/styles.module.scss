@@ -1,0 +1,58 @@
+@import '../../utils/sizes';
+@import '../../utils/colors.scss';
+@import '../../components/navbar/styles.module';
+
+$max-content-width: 650;
+$cta-margin-left: 50;
+$content-margin: 125;
+
+.hero {
+  position: relative;
+
+  .imgContainer {
+    user-select: none;
+    position: absolute;
+    top: -#{$navbarHeightTrans}px;
+    height: calc(100% + #{$navbarHeightTrans}px);
+    width: 100%;
+    z-index: -99;
+
+    .img {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+
+  .heroContainer {
+    padding: #{$padding}px;
+    display: flex;
+    justify-content: center;
+
+    .heroContent {
+      max-width: #{$clamp-width}px;
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      padding-top: #{$content-margin / 2}px;
+      padding-bottom: #{$content-margin}px;
+
+      .content {
+        max-width: #{$max-content-width}px;
+
+        .subhead {
+          color: $light;
+        }
+
+        .callToAction {
+          display: flex;
+
+          button {
+            margin-right: #{$cta-margin-left}px;
+          }
+        }
+      }
+    }
+  }
+}
