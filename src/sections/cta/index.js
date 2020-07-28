@@ -25,7 +25,7 @@ const CTA = () => {
           className={styles['content']}
           variant='subtitle1'
         >
-          With high quality products and excellent service, Gerimed Mobility, is truly your one stop medical shop. Just look at our products and catalog.
+          With high quality products and excellent service, Gerimed Mobility, truly is your one stop medical supply shop. Just look at our products and catalog.
         </Typography>
         <Button
           disableElevation
