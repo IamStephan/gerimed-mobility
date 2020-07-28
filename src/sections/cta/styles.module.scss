@@ -1,11 +1,13 @@
 @import '../../utils/colors';
 @import '../../utils/sizes';
 
-$content-max-width: 500;
+$content-max-width: 600;
 
 .ctaSection {
   background-color: $dark;
   padding: #{$padding * 2}px;
+  padding-top: #{$padding * 8}px;
+  padding-bottom: #{$padding * 8}px;
 
   .ctaContainer {
     max-width: #{$clamp-width}px;
@@ -26,6 +28,7 @@ $content-max-width: 500;
       text-align: center;
       margin-bottom: #{$margin * 3}px;
       max-width: #{$content-max-width}px;
+      font-size: 1.25rem;
     }
   }
 }
