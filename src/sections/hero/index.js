@@ -24,7 +24,7 @@ const Hero = () => {
   `)
 
   return (
-    <div
+    <section
       className={styles['hero']}
     >
       <div
@@ -103,7 +103,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

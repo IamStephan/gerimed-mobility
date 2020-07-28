@@ -1,0 +1,31 @@
+@import '../../utils/colors';
+@import '../../utils/sizes';
+
+$content-max-width: 500;
+
+.ctaSection {
+  background-color: $dark;
+  padding: #{$padding * 2}px;
+
+  .ctaContainer {
+    max-width: #{$clamp-width}px;
+    padding: #{$padding}px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .title {
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: #{$margin}px;
+    }
+
+    .content {
+      color: $light;
+      text-align: center;
+      margin-bottom: #{$margin * 3}px;
+      max-width: #{$content-max-width}px;
+    }
+  }
+}

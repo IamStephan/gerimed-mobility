@@ -1,7 +1,19 @@
 /**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
+ * NOTE:
+ * =====
+ * The store component is dynamic but it does not use paramaters so it seems
+ * kind of futile to implement it here
  */
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage } = actions
 
-// You can delete this file if you're not using it
+  if (page.path.match(/^\/product/)) {
+    page.matchPath = "/product/*"
+    createPage(page)
+  }
+
+  if (page.path.match(/^\/profile/)) {
+    page.matchPath = "/profile/*"
+    createPage(page)
+  }
+}

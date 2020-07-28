@@ -95,9 +95,9 @@ const Navbar = props => {
                   <NormalButton
                     active={page === PAGES.store}
                     mode={mode}
-                    to='/store'
+                    to='/shop'
                   >
-                    Store
+                    Shop
                   </NormalButton>
                 </li>
                 <li>

@@ -1,0 +1,6 @@
+@import '../../utils/sizes';
+
+.featuredContainer {
+  padding: #{$padding * 2}px;
+  background-color: rgba(#282828, 0.025);
+}

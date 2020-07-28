@@ -16,6 +16,8 @@ import { MODE } from '../constants/navbar'
 // Sections
 import Hero from '../sections/hero'
 import Catalog from '../sections/catalog'
+import Featured from '../sections/featured'
+import CTA from '../sections/cta'
 
 // Styles
 import styles from './styles.module.scss'
@@ -42,7 +44,7 @@ const IndexPage = () => {
       />
       <Hero />
       <Catalog />
-      <br/>
+      <Featured />
       <br />
       <br />
       <br />
@@ -105,6 +107,7 @@ const IndexPage = () => {
       <br />
       <br />
       <br/>
+      <CTA />
     </Layout>
   )
 }
