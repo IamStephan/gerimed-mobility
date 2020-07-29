@@ -1,3 +1,5 @@
+@import '../../utils/colors';
+
 .layout {
   display: flex;
   min-height: 100vh;;
@@ -6,5 +8,6 @@
   .main {
     // Ensure the footer is always stuck at the bottom
     flex: 1;
+    background-color: $light;
   }
 }

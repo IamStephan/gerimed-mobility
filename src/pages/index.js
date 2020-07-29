@@ -18,6 +18,7 @@ import Hero from '../sections/hero'
 import Catalog from '../sections/catalog'
 import Featured from '../sections/featured'
 import CTA from '../sections/cta'
+import Benefit from '../sections/benefit'
 
 // Styles
 import styles from './styles.module.scss'
@@ -44,69 +45,13 @@ const IndexPage = () => {
       />
       <Hero />
       <Catalog />
+      {/* <br />
+      <br />
+      <br /> */}
       <Featured />
+      {/* <br />
       <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br/>
+      <br /> */}
       <CTA />
     </Layout>
   )

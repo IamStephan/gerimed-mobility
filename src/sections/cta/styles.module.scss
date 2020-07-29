@@ -6,8 +6,9 @@ $content-max-width: 600;
 .ctaSection {
   background-color: $dark;
   padding: #{$padding * 2}px;
-  padding-top: #{$padding * 8}px;
+  padding-top: #{$shape-divider-height + ($padding * 2)}px;
   padding-bottom: #{$padding * 8}px;
+  position: relative;
 
   .ctaContainer {
     max-width: #{$clamp-width}px;
@@ -29,6 +30,26 @@ $content-max-width: 600;
       margin-bottom: #{$margin * 3}px;
       max-width: #{$content-max-width}px;
       font-size: 1.25rem;
+    }
+  }
+
+  .bottomDivider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+
+    svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: #{$shape-divider-height}px;
+    }
+
+    .shapeFill {
+      fill: $light;
     }
   }
 }

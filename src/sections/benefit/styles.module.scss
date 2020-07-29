@@ -1,0 +1,42 @@
+@import '../../utils/sizes';
+@import '../../utils/border';
+
+.benefitSection {
+  .benefitContainer {
+    max-width: #{$clamp-width}px;
+    margin: auto;
+
+    .images {
+      position: relative;
+      height: 60vh;
+      overflow: hidden;
+
+      .itemContainer {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 100%;
+        padding: #{$padding}px;
+
+        .item {
+          background-color: pink;
+          border-radius: #{$border-radius}px;
+          height: 100%;
+          width: 100%;
+          position: relative;
+          border-radius: #{$border-radius}px;
+          overflow: hidden;
+
+          .img {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

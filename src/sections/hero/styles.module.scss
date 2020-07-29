@@ -10,8 +10,12 @@ $content-margin: 125;
 $breakpoint-1: 725;
 $breakpoint-2: 425;
 
+// Filters
+$background-brightness: 25%;
+
 .hero {
   position: relative;
+  z-index: 2;
 
   .imgContainer {
     user-select: none;
@@ -25,6 +29,7 @@ $breakpoint-2: 425;
       position: absolute;
       height: 100%;
       width: 100%;
+      filter: brightness(#{$background-brightness});
     }
 
     .divider {
@@ -34,17 +39,17 @@ $breakpoint-2: 425;
       width: 100%;
       overflow: hidden;
       line-height: 0;
+      transform: rotate(180deg);
       
       svg {
         position: relative;
         display: block;
         width: calc(100% + 1.3px);
-        height: 100px;
-        transform: rotateY(180deg);
+        height: #{$shape-divider-height}px;
       }
       
       .shapeFill {
-        fill: #FFFFFF;
+        fill: $light;
       }
     }
   }
@@ -52,6 +57,7 @@ $breakpoint-2: 425;
 
   .heroContainer {
     padding: #{$padding * 2}px;
+    padding-bottom: #{$shape-divider-height + ($padding * 2)}px;
     display: flex;
     justify-content: center;
 
