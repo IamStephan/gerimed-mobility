@@ -1,75 +1,36 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-// Gatsby
-import { useStaticQuery, graphql } from 'gatsby'
-import Img from 'gatsby-image'
-
-// React Spring
-import { useSprings, animated } from 'react-spring'
+// Material
+import { Typography, Avatar } from '@material-ui/core'
+import { LocalOfferOutlined, HelpOutline, SecurityOutlined, StarsOutlined } from '@material-ui/icons'
 
 // Styles
 import styles from './styles.module.scss'
 
-// Item Constants
-/**
- * NOTE:
- * =====
- * Make sure the images are named named in the order they appear
- */
-const ITEMS = [
-  {
-    imgRelativePath: 'gallery/benefit/benefit_1.jpg',
-    imgName: 'benefit_1.jpg',
-    alt: 'asd',
-  },
-  {
-    imgRelativePath: 'gallery/benefit/benefit_2.jpg',
-    imgName: 'benefit_2.jpg',
-    alt: 'asd',
-  },
-  {
-    imgRelativePath: 'gallery/benefit/benefit_3.jpg',
-    imgName: 'benefit_3.jpg',
-    alt: 'asd',
-  }
-]
+const BenefitItem = props => {
+  return (
+    <div className={styles['item']}>
+      {
+        props.children
+      }
+
+      <Typography
+        variant='h5'
+        className={styles['title']}
+      >
+        {props.title}
+      </Typography>
+
+      <Typography
+        className={styles['text']}
+      >
+        {props.description}
+      </Typography>
+    </div>
+  )
+}
 
 const Benefit = () => {
-  const [index, setIndex] = useState(0)
-
-  /**
-   * NOTE:
-   * =====
-   * values to take into account:
-   *  - index of the carousel
-   *  - i of the item in the list
-   *  - the length of ITEMS
-   * 
-   * Index should be used as the offset value
-   */
-  const items = useSprings(ITEMS.length, ITEMS.map((_, i) => ({
-    transform: `translateX(${(i - index) * 100}%)`
-  })))
-
-  const images = useStaticQuery(graphql`
-    query {
-      allFile(filter: {relativePath: {regex: "/gallery/benefit/*/"}}) {
-        nodes {
-          childImageSharp {
-            fluid(maxWidth: 2000) {
-              ...GatsbyImageSharpFluid
-            }
-          }
-        }
-      }
-    }
-  `)
-
-
-  function setCarouselIndex(i) {
-    setIndex(i)
-  }
-
   return (
     <section
       className={styles['benefitSection']}
@@ -78,45 +39,73 @@ const Benefit = () => {
         className={styles['benefitContainer']}
       >
         <div
-          className={styles['images']}
+          className={`${styles['explain']}`}
         >
-          {
-            items.map((props, i) => (
-              <animated.div
-                style={props}
-                className={styles['itemContainer']}
-              >
-                <div
-                  className={styles['item']}
-                >
-                  <Img
-                    className={styles['img']}
-                    alt={ITEMS[i].alt}
-                    fluid={images.allFile.nodes[i].childImageSharp.fluid}
-                  />
-                </div>
-              </animated.div>
-            ))
-          }
+          <div
+            className={styles['content']}
+          >
+            <Typography
+              variant='h3'
+              color='secondary'
+              className={styles['header']}
+            >
+              Why Choose Us?
+            </Typography>
+            <Typography
+              variant='subtitle1'
+              className={styles['subheader']}
+            >
+              Besides offer the best in its class products, we offer a wide range of benefits. Making sure our clients are always happy.
+            </Typography>
+          </div>
         </div>
 
         <div
-          className={styles['controls']}
+          className={styles['items']}
         >
-          <button
-            onClick={() => {
-              setCarouselIndex(index - 1)
-            }}
+          <BenefitItem
+            title='Exceptional Products'
+            description='At the forefront of our proirities is exceptional products. Providing you the best South Africa has to offer.'
           >
-            Prev
-          </button>
-          <button
-            onClick={() => {
-              setCarouselIndex(index + 1)
-            }}
+            <Avatar
+              className={styles['avatar']}
+            >
+              <StarsOutlined />
+            </Avatar>
+          </BenefitItem>
+
+          <BenefitItem
+            title='Professional Support'
+            description='Trained staff and eager to help with a beaming smile. We are just a phone call away from solving your problems.'
           >
-            Next
-          </button>
+            <Avatar
+              className={styles['avatar']}
+            >
+              <HelpOutline />
+            </Avatar>
+          </BenefitItem>
+
+          <BenefitItem
+            title='Unbeatable Prices'
+            description='With exceptional products and unbeatable prices, you can be assured that every cent you spend at Gerimed Mobility will be worth your money.'
+          >
+            <Avatar
+              className={styles['avatar']}
+            >
+              <LocalOfferOutlined />
+            </Avatar>
+          </BenefitItem>
+
+          <BenefitItem
+            title='Secure Payments'
+            description='Gerimed Mobility uses secure payment gateways that are PCI complaint. Meaning your payments are completly secure and safe.'
+          >
+            <Avatar
+              className={styles['avatar']}
+            >
+              <SecurityOutlined />
+            </Avatar>
+          </BenefitItem>
         </div>
       </div>
     </section>
