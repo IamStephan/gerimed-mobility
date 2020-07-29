@@ -45,13 +45,8 @@ const IndexPage = () => {
       />
       <Hero />
       <Catalog />
-      {/* <br />
-      <br />
-      <br /> */}
       <Featured />
-      {/* <br />
-      <br />
-      <br /> */}
+      <Benefit />
       <CTA />
     </Layout>
   )
