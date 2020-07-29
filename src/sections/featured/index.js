@@ -8,7 +8,7 @@ import styles from './styles.module.scss'
 
 const Featured = () => {
   return (
-    <div
+    <section
       className={styles['featuredContainer']}
     >
       <div
@@ -54,7 +54,7 @@ const Featured = () => {
           />
         </svg>
       </div>
-    </div>
+    </section>
   )
 }
 
