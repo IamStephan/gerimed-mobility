@@ -1,6 +1,6 @@
 $clamp-width: 1200;
-
 $shape-divider-height: 50;
+$section-space: 100;
 
 $padding: 8;
 $margin: 8;
@@ -8,6 +8,7 @@ $margin: 8;
 :export {
   clampWidth: $clamp-width;
   shapeDividerHeight: $shape-divider-height;
+  sectionSpace: $section-space;
   padding: $padding;
   margin: $margin;
 }
