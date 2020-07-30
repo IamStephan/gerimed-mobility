@@ -14,6 +14,7 @@ module.exports = {
       },
     },
     `gatsby-transformer-sharp`,
+    `gatsby-plugin-material-ui`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-sass`,
     {
