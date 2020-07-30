@@ -1,13 +1,59 @@
 @import '../../utils/sizes';
+@import '../../utils/border';
 @import '../../utils/colors';
 
-.featuredContainer {
+// Breakpoints
+$breakpoint-1: 1075;
+$breakpoint-2: 575;
+
+.featuredSection {
   padding: #{$padding * 2}px;
   padding-bottom: #{$shape-divider-height + ($padding * 2)}px;
   padding-top: #{$shape-divider-height + ($padding * 2)}px;
   background-color: $grey;
   position: relative;
   margin-bottom: #{$section-space / 2}px;
+
+  .featuredContainer {
+    max-width: #{$clamp-width}px;
+    margin: auto;
+    padding: #{$padding * 2}px;
+    padding-top: #{$shape-divider-height + ($padding * 2)}px;
+    padding-bottom: #{$shape-divider-height + ($padding * 2)}px;
+
+    .title {
+      font-weight: bold;
+      margin-bottom: #{$margin * 3}px;
+    }
+
+    .showcase {
+      display: flex;
+      justify-content: space-evenly;
+      overflow: auto;
+
+      .product {
+        display: flex;
+        max-width: 300px;
+        padding-left: #{$padding * 2}px;
+        padding-right: #{$padding * 2}px;
+
+        .imgContainer {
+          display: flex;
+          justify-content: center;
+
+          .img {
+            height: 150px;
+            width: 150px;
+          }
+        }
+        
+
+        .action {
+          margin-left: auto;
+        }
+      }
+    }
+  }
 
   .topDivider {
     position: absolute;
@@ -48,6 +94,52 @@
 
     .shapeFill {
       fill: $light;
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .featuredSection {
+    .featuredContainer {
+      .title {
+        font-weight: bold;
+        margin-bottom: #{$margin * 3}px;
+      }
+  
+      .showcase {
+        justify-content: flex-start;
+
+        &::-webkit-scrollbar {
+          width: 11px;
+        }
+        & {
+          scrollbar-width: thin;
+          scrollbar-color: $secondary $grey;
+        }
+        &::-webkit-scrollbar-track {
+          background: $grey;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: $secondary ;
+          border-radius: 6px;
+          border: 3px solid $grey;
+        }
+
+        .product {
+          flex-basis: 300px;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-2}px) {
+  .featuredSection {
+    .featuredContainer {
+      .title {
+        text-align: center;
+      }
     }
   }
 }

@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer'
 
 // Components
 import Layout from '../components/layout'
+import SEO from '../components/seo'
 
 // Constants
 import { PAGES } from '../constants/pages'
@@ -38,6 +39,10 @@ const IndexPage = () => {
       page={PAGES.home}
       mode={inView ? MODE.trans : MODE.normal}
     >
+      <SEO
+        title='Home'
+        description='Gerimed Mobility Home'
+      />
       <div
         ref={ref}
         className={styles['transDetecter']}
