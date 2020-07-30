@@ -19,6 +19,7 @@ import Catalog from '../sections/catalog'
 import Featured from '../sections/featured'
 import CTA from '../sections/cta'
 import Benefit from '../sections/benefit'
+import Testimonials from '../sections/testimonials'
 
 // Styles
 import styles from './styles.module.scss'
@@ -47,6 +48,7 @@ const IndexPage = () => {
       <Catalog />
       <Featured />
       <Benefit />
+      <Testimonials />
       <CTA />
     </Layout>
   )

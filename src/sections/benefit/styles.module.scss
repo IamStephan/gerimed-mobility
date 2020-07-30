@@ -6,6 +6,8 @@ $breakpoint-1: 990;
 $breakpoint-2: 500;
 
 .benefitSection {
+  margin-bottom: #{$section-space}px;
+  
   .benefitContainer {
     max-width: #{$clamp-width}px;
     margin: auto;
