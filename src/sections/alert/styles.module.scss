@@ -1,0 +1,11 @@
+@import '../../utils/sizes';
+
+.alertSection {
+  margin-bottom: #{$section-space / 4}px;
+
+  .alertContainer {
+    max-width: #{$clamp-width}px;
+    padding: #{$padding* 2}px;
+    margin: auto;
+  }
+}

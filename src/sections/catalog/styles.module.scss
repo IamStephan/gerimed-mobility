@@ -1,49 +1,95 @@
 @import '../../utils/sizes';
+@import '../../utils/colors';
 @import '../../utils/border';
 
 $margin-spacing: $margin * 4;
-$grid-row-height: 275;
+$item-height: 275;
+
+// Breakpoints
+$breakpoint-1: 850;
+$breakpoint-2: 550;
 
 .catalogContainer {
   max-width: #{$clamp-width}px;
   margin: auto;
-
-  .title {
-    text-align: center;
-    margin-top: #{$margin-spacing}px;
-    margin-bottom: #{$margin-spacing}px;
-    font-weight: bold;
-  }
+  margin-bottom: #{$section-space / 2}px;
 
   .catalogContent {
     padding: #{$padding * 2}px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, #{$grid-row-height}px);
-    grid-gap: #{$padding * 2}px;
+    display: flex;
+    flex-wrap: wrap;
 
     .catalogItem {
+      flex: 1;
       background-color: pink;
+      height: #{$item-height}px;
       border-radius: #{$border-radius}px;
       overflow: hidden;
       position: relative;
+      cursor: pointer;
+      margin: #{$margin}px;
+
+
+      &:nth-child(1), &:nth-child(2) {
+        min-width: calc(50% - #{$margin * 2}px);
+      }
+
+      .content {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        padding: #{$padding * 2}px;
+
+        .title {
+          font-weight: bold;
+        }
+
+        .total {
+          color: $light
+        }
+      }
+
+      &:hover {
+        .img {
+          transform: scale(1.1);
+        }
+      }
 
       .img {
+        transition: transform 250ms ease-in-out;
         position: absolute;
         width: 100%;
         height: 100%;
         filter: brightness(50%);
       }
+    }
+  }
+}
 
-      &:nth-child(1) {}
-      &:nth-child(2) {}
-      &:nth-child(3) {
-        grid-row: span 2;
-      }
-      &:nth-child(4) {
-        grid-column: span 2;
-      }
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .catalogContainer {
+    .catalogContent {
+      .catalogItem {
+        min-width: calc(50% - #{$margin * 2}px);
 
+        &:nth-child(1), &:nth-child(2) {
+          min-width: calc(50% - #{$margin * 2}px);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-2}px) {
+  .catalogContainer {
+    .catalogContent {
+      .catalogItem {
+        min-width: calc(100% - #{$margin * 2}px);
+
+        &:nth-child(1), &:nth-child(2) {
+          min-width: calc(100% - #{$margin * 2}px);
+        }
+      }
     }
   }
 }

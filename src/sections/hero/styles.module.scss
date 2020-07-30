@@ -16,6 +16,7 @@ $background-brightness: 27.5%;
 .hero {
   position: relative;
   z-index: 2;
+  margin-bottom: #{$section-space / 4}px;
 
   .imgContainer {
     user-select: none;

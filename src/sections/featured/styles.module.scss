@@ -7,6 +7,7 @@
   padding-top: #{$shape-divider-height + ($padding * 2)}px;
   background-color: $grey;
   position: relative;
+  margin-bottom: #{$section-space / 2}px;
 
   .topDivider {
     position: absolute;

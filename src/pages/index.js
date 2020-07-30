@@ -3,9 +3,6 @@ import React from "react"
 // Hooks
 import { useInView } from 'react-intersection-observer'
 
-// Material
-//import { Button } from '@material-ui/core'
-
 // Components
 import Layout from '../components/layout'
 
@@ -15,6 +12,7 @@ import { MODE } from '../constants/navbar'
 
 // Sections
 import Hero from '../sections/hero'
+import AlertSec from '../sections/alert'
 import Catalog from '../sections/catalog'
 import Featured from '../sections/featured'
 import CTA from '../sections/cta'
@@ -45,6 +43,7 @@ const IndexPage = () => {
         className={styles['transDetecter']}
       />
       <Hero />
+      <AlertSec />
       <Catalog />
       <Featured />
       <Benefit />

@@ -16,6 +16,24 @@ const GridItem = props => {
       className={styles['catalogItem']}
     >
       {props.children}
+
+      <div
+        className={styles['content']}
+      >
+        <Typography
+          className={styles['title']}
+          variant='h4'
+          color='primary'
+        >
+          {props.title}
+        </Typography>
+
+        <Typography
+          className={styles['total']}
+        >
+          • {props.total} products
+        </Typography>
+      </div>
     </div>
   )
 }
@@ -61,38 +79,53 @@ const Catalog = () => {
     <section
       className={styles['catalogContainer']}
     >
-      <Typography
-        variant='h2'
-        className={styles['title']}
-      >
-        Our Catalog
-      </Typography>
-
       <div
         className={styles['catalogContent']}
       >
-        <GridItem>
+        <GridItem
+          title='Mobility'
+          total='84'
+        >
           <Img
             fluid={images.masks.childImageSharp.fluid}
             className={styles['img']}
           />
         </GridItem>
 
-        <GridItem>
+        <GridItem
+          title='Appliances'
+          total='685'
+        >
           <Img
             fluid={images.mobility.childImageSharp.fluid}
             className={styles['img']}
           />
         </GridItem>
 
-        <GridItem>
+        <GridItem
+          title='Commodes'
+          total='50'
+        >
           <Img
             fluid={images.mobility.childImageSharp.fluid}
             className={styles['img']}
           />
         </GridItem>
 
-        <GridItem>
+        <GridItem
+          title='Grabrails'
+          total='65'
+        >
+          <Img
+            fluid={images.icu.childImageSharp.fluid}
+            className={styles['img']}
+          />
+        </GridItem>
+
+        <GridItem
+          title='Seating'
+          total='865'
+        >
           <Img
             fluid={images.icu.childImageSharp.fluid}
             className={styles['img']}
