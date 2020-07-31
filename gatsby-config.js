@@ -18,6 +18,12 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-sass`,
     {
+      resolve: 'gatsby-plugin-load-script',
+      options: {
+        src: 'https://checkout.flutterwave.com/v3.js',
+      }
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Gerimed Mobility`,
