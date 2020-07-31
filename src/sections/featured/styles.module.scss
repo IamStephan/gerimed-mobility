@@ -57,7 +57,7 @@ $breakpoint-2: 575;
 
   .topDivider {
     position: absolute;
-    top: 0;
+    top: -1px;
     left: 0;
     width: 100%;
     overflow: hidden;
@@ -78,7 +78,7 @@ $breakpoint-2: 575;
 
   .bottomDivider {
     position: absolute;
-    bottom: 0;
+    bottom: -1px;
     left: 0;
     width: 100%;
     overflow: hidden;
