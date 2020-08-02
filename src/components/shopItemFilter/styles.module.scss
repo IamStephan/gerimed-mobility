@@ -1,0 +1,11 @@
+@import '../../utils/sizes';
+@import '../../utils/colors';
+
+// Local
+@import '../navbar/styles.module';
+
+.filter {
+  position: sticky;
+  padding: #{$padding}px;
+  top: #{$navbarHeightNormal + $margin * 2}px;
+}

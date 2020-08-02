@@ -9,7 +9,8 @@ import SEO from '../components/seo'
 
 // Constants
 import { PAGES } from '../constants/pages'
-import { MODE } from '../constants/navbar'
+import { MODE as NAVMODE } from '../constants/navbar'
+import { MODE as FOOTERMODE } from '../constants/footer'
 
 // Sections
 import Hero from '../sections/hero'
@@ -37,7 +38,8 @@ const IndexPage = () => {
   return (
     <Layout
       page={PAGES.home}
-      mode={inView ? MODE.trans : MODE.normal}
+      navMode={inView ? NAVMODE.trans : NAVMODE.normal}
+      footerMode={FOOTERMODE.normal}
     >
       <SEO
         title='Home'

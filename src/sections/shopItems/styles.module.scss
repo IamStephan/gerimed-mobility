@@ -1,0 +1,10 @@
+@import '../../utils/sizes';
+
+.shopItemsSection {
+
+  .shopItemsContainer {
+    padding: #{$padding * 2}px;
+    max-width: #{$clamp-width}px;
+    margin: auto;
+  }
+}
