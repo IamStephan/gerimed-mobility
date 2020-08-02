@@ -1,6 +1,6 @@
 const PAGES = {
   home: 'HOME',
-  store: 'STORE',
+  shop: 'SHOP',
   about: 'ABOUT',
   contact: 'CONTACT',
   checkout: 'CHECKOUT',
