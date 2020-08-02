@@ -1,0 +1,94 @@
+@import '../../utils/sizes';
+@import '../../utils/border';
+@import '../../utils/colors';
+
+// Components
+@import '../../components/navbar/styles.module';
+
+.mapSection {
+  position: relative;
+
+  // This seems inconsistant but it is more aesthetic
+  margin-bottom: #{($section-space / 4) - ($padding * 2)}px;
+
+  .bottomDivider {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+
+    svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: #{$shape-divider-height}px;
+    }
+
+    .shapeFill {
+      fill: $light;
+    }
+  }
+  .mapContainer {
+    position: relative;
+    margin-top: -#{$navbarHeightNormal + $margin}px;
+    // Normalize the content
+    padding-top: #{$navbarHeightNormal + $margin}px;
+    padding-bottom: #{$shape-divider-height}px;
+
+    .map {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 150px;
+      padding-bottom: 150px;
+
+      .info {
+        background-color: $dark;
+        padding: #{$padding * 2}px;
+        border-radius: #{$border-radius}px;
+        margin-bottom: #{$margin * 2}px;
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          bottom: 0px;
+          left: 50%;
+          width: 10px;
+          height: 10px;
+          background-color: $dark;
+          transform: translate(-50%, 50%) rotate(45deg);
+
+        }
+
+        .title {
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .text {
+          color: $light;
+          text-align: center;
+        }
+      }
+
+      .icon {
+        width: 50px;
+        height: 50px;
+        color: $dark;
+      }
+    }
+  }
+}

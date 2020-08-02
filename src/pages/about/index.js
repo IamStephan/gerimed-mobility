@@ -8,8 +8,10 @@ import { PAGES } from '../../constants/pages'
 import { MODE as NAVMODE} from '../../constants/navbar'
 import { MODE as FOOTERMODE} from '../../constants/footer'
 
-// SVGS
-import Logo from '../../svg/logo_green.svg'
+// Sections
+import AboutSection from '../../sections/about'
+import PsuedoMap from '../../sections/pseudoMap'
+import ShopGallery from '../../sections/shopGallery'
 
 // Styles
 import styles from './styles.module.scss'
@@ -21,7 +23,9 @@ const About = () => {
       navMode={NAVMODE.normal}
       footerMode={FOOTERMODE.curve}
     >
-      <Logo />
+      <PsuedoMap />
+      <AboutSection />
+      <ShopGallery />
     </Layout>
   )
 }

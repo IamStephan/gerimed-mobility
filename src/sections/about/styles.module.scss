@@ -1,0 +1,45 @@
+@import '../../utils/sizes';
+@import '../../utils/colors';
+
+$breakpoint-1: 625;
+
+.aboutSection {
+  margin-bottom: #{$section-space}px;
+
+  .aboutContainer {
+    max-width: #{$clamp-width}px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: #{$padding * 2}px;
+
+    .logo {
+      margin-bottom: #{$margin * 4}px;
+      margin-top: #{$margin * 4}px;
+    }
+
+    .title {
+      font-weight: bold;
+      color: $dark;
+      margin-bottom: #{$margin * 4}px;
+    }
+
+    .content {
+      max-width: 750px;
+      color: rgba($dark, 0.85);
+
+      text-align: center;
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .aboutSection {
+    .aboutContainer {
+      .title {
+        text-align: center;
+      }
+    }
+  }
+}
