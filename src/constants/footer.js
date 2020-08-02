@@ -1,6 +1,6 @@
 const MODE = {
   normal: 'NORMAL',
-  trans: 'TRANS',
+  curve: 'CURVE'
 }
 
 export {
