@@ -8,6 +8,11 @@ $breakpoint-1: 730;
 
   // colors for text
   color: rgba($light, 0.75);
+  position: relative;
+
+  &.CURVE {
+    padding-top: #{$section-space}px;
+  }
 
   .container {
     max-width: #{$clamp-width}px;
@@ -35,6 +40,26 @@ $breakpoint-1: 730;
       .section {
         padding: #{$padding * 2}px;
       }
+    }
+  }
+
+  .topDivider {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+
+    svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: #{$shape-divider-height}px;
+    }
+
+    .shapeFill {
+      fill: $light;
     }
   }
 }

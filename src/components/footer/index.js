@@ -1,7 +1,11 @@
 import React from 'react'
+import t from 'prop-types'
 
 // Material
 import { Button, Typography } from '@material-ui/core'
+
+// Constants
+import { MODE } from '../../constants/footer'
 
 // Styles
 import styles from './styles.module.scss'
@@ -24,11 +28,34 @@ const Text = props => (
   </Typography>
 )
 
-const Footer = () => {
+const Footer = props => {
+  const {
+    footerMode
+  } = props
+
   return (
     <footer
-      className={styles['footer']}
+      className={`${styles['footer']} ${styles[footerMode]}`}
     >
+      {
+        footerMode === MODE.curve ? (
+          <div
+            className={styles['topDivider']}
+          >
+            <svg
+              data-name="Layer 1" 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 1200 120" 
+              preserveAspectRatio="none"
+            >
+                <path
+                  d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z"
+                  class={styles['shapeFill']}/>
+            </svg>
+          </div>
+        ) : null
+      }
+
       <div
         className={styles['container']}
       >
@@ -153,6 +180,14 @@ const Footer = () => {
       </div>
     </footer>
   )
+}
+
+Footer.propTypes = {
+  footerMode: t.oneOf([...Object.values(MODE)])
+}
+
+Footer.default = {
+  footerMode: MODE.normal
 }
 
 export default Footer
