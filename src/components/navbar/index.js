@@ -24,17 +24,19 @@ import SIZES from '../../utils/sizes.scss'
 
 const NormalButton = props => {
   const {
-    mode,
+    navMode,
     active
   } = props
+
+  const shouldBePrimary = (navMode === MODE.trans || active)
   
-  const buttonStyle = mode === MODE.trans ? '' : styles['button']
+  const buttonStyle = shouldBePrimary ? '' : styles['button']
 
   return (
     <Button
       disableElevation
       component={Link}
-      color={(mode === MODE.trans || active) ? 'primary' : 'inherit'}
+      color={shouldBePrimary ? 'primary' : 'inherit'}
       className={buttonStyle}
       style={{
         marginLeft: Number(SIZES.margin) * 4
@@ -62,7 +64,7 @@ const Navbar = props => {
 
   const {
     page,
-    mode
+    navMode
   } = props
 
   const breakpointTwo = useMedia(`(max-width: ${Number(styles.breakpointTwo)}px)`)
@@ -70,7 +72,7 @@ const Navbar = props => {
   return (
     <>
       <nav
-        className={`${styles['navbar']} ${styles[mode]}`}
+        className={`${styles['navbar']} ${styles[navMode]}`}
       >
         <div
           className={styles['container']}
@@ -78,13 +80,17 @@ const Navbar = props => {
           <div
             className={styles['logo']}
           >
-            <Img
-              className={styles['img']}
-              objectFit='contain'
-              objectPosition='left center'
-              fluid={data.file.childImageSharp.fluid}
-              alt='Gerimed Mobility, Aiding you, to live a better live'
-            />
+            <Link
+              to='/'
+            >
+              <Img
+                className={styles['img']}
+                objectFit='contain'
+                objectPosition='left center'
+                fluid={data.file.childImageSharp.fluid}
+                alt='Gerimed Mobility, Aiding you, to live a better live'
+              />
+            </Link>
           </div>
           {
             !breakpointTwo ? (
@@ -93,8 +99,8 @@ const Navbar = props => {
               >
                 <li>
                   <NormalButton
-                    active={page === PAGES.store}
-                    mode={mode}
+                    active={page === PAGES.shop}
+                    navMode={navMode}
                     to='/shop'
                   >
                     Shop
@@ -103,7 +109,7 @@ const Navbar = props => {
                 <li>
                   <NormalButton
                     active={page === PAGES.about}
-                    mode={mode}
+                    navMode={navMode}
                     to='/about'
                   >
                     About Us
@@ -112,7 +118,7 @@ const Navbar = props => {
                 <li>
                   <NormalButton
                     active={page === PAGES.contact}
-                    mode={mode}
+                    navMode={navMode}
                     to='/contact'
                   >
                     Contact
@@ -121,7 +127,7 @@ const Navbar = props => {
                 <li>
                   <NormalButton
                     active={page === PAGES.policy}
-                    mode={mode}
+                    navMode={navMode}
                     to='/policy'
                   >
                     Policies
@@ -177,11 +183,11 @@ const Navbar = props => {
 }
 
 Navbar.propTypes = {
-  mode: t.oneOf([...Object.values(MODE)])
+  navMode: t.oneOf([...Object.values(MODE)])
 }
 
 Navbar.default = {
-  mode: MODE.normal
+  navMode: MODE.normal
 }
 
 export default Navbar
