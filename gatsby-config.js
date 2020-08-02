@@ -18,6 +18,14 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-sass`,
     {
+      resolve: 'gatsby-plugin-react-svg',
+      options: {
+        rule: {
+          include: /svg/
+        }
+      }
+    },
+    {
       resolve: 'gatsby-plugin-load-script',
       options: {
         src: 'https://checkout.flutterwave.com/v3.js',
