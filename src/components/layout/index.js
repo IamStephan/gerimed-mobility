@@ -12,12 +12,17 @@ import styles from './styles.module.scss'
 const Layout = props => {
   const {
     page,
-    mode
+    navMode,
+    footerMode
   } = props
 
   const NavProps = {
     page,
-    mode
+    navMode
+  }
+
+  const FooterProps = {
+    footerMode
   }
 
   return (
@@ -35,7 +40,9 @@ const Layout = props => {
           { props.children }
         </main>
 
-        <Footer />
+        <Footer
+          {...FooterProps}
+        />
       </div>
 
     </Provider>
