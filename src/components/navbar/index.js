@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import t from 'prop-types'
 
 // Hooks
@@ -8,8 +8,11 @@ import { useMedia } from 'react-use'
 import { Link, useStaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image/withIEPolyfill'
 
+// SVGs
+import Logo from '../../svg/logo_green.svg'
+
 // Material
-import { Button, IconButton } from '@material-ui/core'
+import { Button, IconButton, ButtonGroup } from '@material-ui/core'
 import { ShoppingCartOutlined, AccountCircleOutlined, Menu } from '@material-ui/icons'
 
 // Styles
@@ -66,6 +69,8 @@ const Navbar = props => {
     page,
     navMode
   } = props
+
+  const [ isModalVisible, setIsMobileVisible ] = useState(false)
 
   const breakpointTwo = useMedia(`(max-width: ${Number(styles.breakpointTwo)}px)`)
 
@@ -167,6 +172,7 @@ const Navbar = props => {
                     className={styles['iconButton']}
                     disableElevation
                     color='primary'
+                    onClick={() => setIsMobileVisible(true)}
                   >
                     <Menu />
                   </IconButton>
@@ -175,6 +181,74 @@ const Navbar = props => {
             }
           </ol>
         </div>
+        
+        {
+          breakpointTwo ? (
+            <div
+              className={`${styles['modalNav']} ${styles[isModalVisible ? 'open' : 'close']}`}
+            >
+              <div
+                className={styles['dimmer']}
+                onClick={() => setIsMobileVisible(false)}
+              />
+
+              <div
+                className={styles['menu']}
+              >
+                <Link
+                  to='/'
+                >
+                  <Logo
+                    className={styles['logo']}
+                  />
+                </Link>
+                
+
+                <ButtonGroup
+                  orientation='vertical'
+                  color='secondary'
+                  className={styles['linkGroup']}
+                >
+                  <Button
+                    component={Link}
+                    disableElevation
+                    to='/shop'
+                    variant={page === PAGES.shop ? 'contained' : 'outlined'}
+                  >
+                    Shop
+                  </Button>
+
+                  <Button
+                    component={Link}
+                    disableElevation
+                    to='/about'
+                    variant={page === PAGES.about ? 'contained' : 'outlined'}
+                  >
+                    About
+                  </Button>
+
+                  <Button
+                    component={Link}
+                    disableElevation
+                    to='/contact'
+                    variant={page === PAGES.contact ? 'contained' : 'outlined'}
+                  >
+                    Contact
+                  </Button>
+
+                  <Button
+                    component={Link}
+                    disableElevation
+                    to='/policy'
+                    variant={page === PAGES.policy ? 'contained' : 'outlined'}
+                  >
+                    Policy
+                  </Button>
+                </ButtonGroup>
+              </div>
+            </div>
+          ) : null
+        }
 
       </nav>
     </>
