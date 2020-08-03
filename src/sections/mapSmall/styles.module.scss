@@ -1,0 +1,61 @@
+@import '../../utils/sizes';
+@import '../../utils/colors';
+
+.mapSmallSection {
+  position: relative;
+
+  .mapContainer {
+    height: #{$shape-divider-height * 5}px;
+    position: relative;
+
+    .map {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .topDivider {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+
+    svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: #{$shape-divider-height}px;
+      transform: rotateY(180deg);
+    }
+
+    .shapeFill {
+      fill: $light;
+    }
+  }
+
+  .bottomDivider {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+
+    svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: #{$shape-divider-height}px;
+    }
+
+    .shapeFill {
+      fill: $light;
+    }
+  }
+}
