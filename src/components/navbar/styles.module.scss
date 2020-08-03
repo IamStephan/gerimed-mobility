@@ -138,6 +138,10 @@ $breakpoint-2: 750;
       color: $light;
     }
 
+    .normalButton {
+      margin-left: #{$margin * 4}px;
+    }
+
     .iconButton {
       margin-left: #{$margin}px;
     }

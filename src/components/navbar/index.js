@@ -40,10 +40,7 @@ const NormalButton = props => {
       disableElevation
       component={Link}
       color={shouldBePrimary ? 'primary' : 'inherit'}
-      className={buttonStyle}
-      style={{
-        marginLeft: Number(SIZES.margin) * 4
-      }}
+      className={`${styles['normalButton']} ${buttonStyle}`}
       {...props}
     >
       {props.children}
