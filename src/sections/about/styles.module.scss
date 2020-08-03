@@ -21,14 +21,11 @@ $breakpoint-1: 625;
 
     .title {
       font-weight: bold;
-      color: $dark;
       margin-bottom: #{$margin * 4}px;
     }
 
     .content {
       max-width: 750px;
-      color: rgba($dark, 0.85);
-
       text-align: center;
     }
   }
