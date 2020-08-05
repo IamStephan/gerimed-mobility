@@ -1,9 +1,18 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/browser-apis/
- */
+import React from 'react'
 
-// You can delete this file if you're not using it
+// Components
+import Provider from './src/components/provider'
+
+// Styles
 import 'sanitize.css'
 import './src/utils/reset.scss'
+
+function wrapRootElement ({ element, props }) {
+  // props provide same data to Layout as Page element will get
+  // including location, data, etc - you don't need to pass it
+  return <Provider {...props}>{element}</Provider>
+}
+
+export {
+  wrapRootElement
+}

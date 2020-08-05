@@ -1,0 +1,46 @@
+@import '../../utils/colors';
+@import '../../utils/sizes';
+
+$register-width: 450;
+
+.registerSection {
+  background-color: $light;
+  width: #{$register-width}px;
+
+  .registerContainer {
+    padding: #{$padding * 2}px;
+
+    .logoContainer {
+      padding-left: #{$padding * 5}px;
+      padding-right: #{$padding * 5}px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: #{$margin * 2}px;
+    }
+
+    .titleContainer {
+      padding: #{$padding * 1.5}px #{$padding * 5}px;
+
+      .title {
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+
+      .input {
+        padding: #{$padding * 1.5}px #{$padding * 5}px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    .alternate {
+      padding: #{$padding * 1.5}px #{$padding * 5}px;
+    }
+  }
+}

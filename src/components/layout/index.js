@@ -2,7 +2,7 @@ import React from 'react'
 import t from 'prop-types'
 
 // Components
-import Provider from '../provider'
+//import Provider from '../provider'
 import Navbar from '../navbar'
 import Footer from '../footer'
 
@@ -26,7 +26,7 @@ const Layout = props => {
   }
 
   return (
-    <Provider>
+    <>
       <div
         className={styles['layout']}
       >
@@ -45,7 +45,7 @@ const Layout = props => {
         />
       </div>
 
-    </Provider>
+    </>
   )
 }
 
