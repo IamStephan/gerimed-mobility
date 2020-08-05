@@ -22,8 +22,6 @@ import styles from './styles.module.scss'
 import { PAGES } from '../../constants/pages'
 import { MODE } from '../../constants/navbar'
 
-// Style Utilities
-import SIZES from '../../utils/sizes.scss'
 
 const NormalButton = props => {
   const {
@@ -187,6 +185,7 @@ const Navbar = props => {
               <div
                 className={styles['dimmer']}
                 onClick={() => setIsMobileVisible(false)}
+                role='closeMenu'
               />
 
               <div

@@ -13,9 +13,6 @@ import AboutSection from '../../sections/about'
 import PsuedoMap from '../../sections/pseudoMap'
 import ShopGallery from '../../sections/shopGallery'
 
-// Styles
-import styles from './styles.module.scss'
-
 const About = () => {
   return (
     <Layout

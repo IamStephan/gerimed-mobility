@@ -8,7 +8,6 @@ import Logo from '../../svg/logo_green.svg'
 
 // Hooks
 import { useLocalStorage } from 'react-use'
-import { useSnackbar } from 'notistack'
 import { useForm } from 'react-hook-form'
 
 // Schema
@@ -16,7 +15,7 @@ import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
 
 // Gatsby
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 
 // Material
 import { TextField, Button, Divider, Typography } from '@material-ui/core'
@@ -45,6 +44,11 @@ const registerShema = yup.object().shape({
   confirmPassword: yup.string().oneOf([ yup.ref('password'), null ], ' Passwords do not match').required('')
 })
 
+/**
+ * NOTE:
+ * =====
+ * for now just use alert to show the errors
+ */
 const RegisterSection = () => {
   // The form and its validation
   const { register, handleSubmit, errors } = useForm({
@@ -57,9 +61,6 @@ const RegisterSection = () => {
   // Used to store the jwt token
   const [_, setToken] = useLocalStorage(KEYS.jwt)
 
-  // Notifications
-  const { enqueueSnackbar } = useSnackbar()
-
   function _handleSubmit(data) {
     setSubmitting(true)
     axios.post('http://161.35.149.214/auth/local/register', {
@@ -70,21 +71,27 @@ const RegisterSection = () => {
       lastName: data.lastName
     }).then((v) => {
       setToken(v.data.jwt)
-
       setSubmitting(false)
+
+      // Navigate to the profile page
+      navigate('/profile')
     }).catch((e) => {
-      if(e.response?.data?.message[0]?.messages[0]?.id === RESPONSE_ERRORS.taken) {
-        enqueueSnackbar('User already exists', {
-          variant: 'error',
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'right'
-          }
-        })
-      } else {
-        alert('error')
+      // Maybe to something more effecient here
+      const error = e.response?.data?.message[0]?.messages[0]?.id
+
+      // alert on know errors
+      switch(error) {
+        case RESPONSE_ERRORS.taken: {
+          alert('User already has an account')
+          break
+        }
+        default: {
+          alert('An unknown error occured')
+          console.log(e.response)
+          break
+        }
       }
-      console.log(e.response)
+
       setSubmitting(false)
     })
   }
