@@ -4,22 +4,20 @@
 // AuthShowcase Styles
 @import '../authShowcase/styles.module';
 
-$register-width: 450;
+$login-width: 450;
 
-.registerSection {
-  flex-basis: #{$register-width}px;
+.loginSection {
+  flex-basis: #{$login-width}px;
   background-color: $light;
   display: flex;
   justify-content: center;
 
-  .registerContainer {
+  .loginContainer {
     padding: #{$padding * 2}px;
     flex: 1;
     max-width: 400px;
 
     .logoContainer {
-      padding-left: #{$padding * 5}px;
-      padding-right: #{$padding * 5}px;
       display: flex;
       justify-content: center;
       margin-bottom: #{$margin * 2}px;
@@ -53,7 +51,7 @@ $register-width: 450;
 }
 
 @media screen and (max-width: #{$breakpoint-1}px) {
-  .registerSection {
+  .loginSection {
     flex: 1;
   }
 }

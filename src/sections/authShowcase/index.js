@@ -36,7 +36,7 @@ const AuthShowcase = props => {
         }
       }
 
-      login: file(relativePath: {eq: "gallery/showcase/register.png"}) {
+      login: file(relativePath: {eq: "gallery/showcase/login.jpg"}) {
         childImageSharp {
           fluid(maxWidth: 2000) {
             ...GatsbyImageSharpFluid
@@ -77,7 +77,7 @@ const AuthShowcase = props => {
               className={styles['img']}
               objectPosition='center center'
               objectFit='cover'
-              fluid={images.register.childImageSharp.fluid}
+              fluid={images[props.page].childImageSharp.fluid}
               alt='Gerimed Mobility'
             />
           </div>

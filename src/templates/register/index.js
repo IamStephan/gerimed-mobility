@@ -14,7 +14,7 @@ const Register = () => {
       className={styles['register']}
     >
       <RegisterSection />
-      <AuthShowcase />
+      <AuthShowcase page='register' />
     </div>
   )
 }

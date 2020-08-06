@@ -3,6 +3,8 @@ module.exports = {
     title: `Gerimed Moility`,
     description: `Your one stop medical supply shop`,
     author: `Avvent Studio`,
+    server: 'localhost',
+    port: '1337'
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

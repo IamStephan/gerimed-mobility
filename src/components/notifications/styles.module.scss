@@ -1,0 +1,27 @@
+@import '../../utils/sizes';
+
+.notificationSection {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  padding: #{$padding * 2}px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+
+  .alert {
+    margin-bottom: #{$margin * 2}px;
+
+    &.open {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+
+    &.closed {
+      transform: translateX(100%);
+      opacity: 0;
+      display: none;
+    }
+  }
+}

@@ -146,6 +146,8 @@ const Navbar = props => {
                 className={styles['iconButton']}
                 isableElevation
                 color='primary'
+                component={Link}
+                to='/profile'
               >
                 <AccountCircleOutlined />
               </IconButton>
@@ -185,7 +187,7 @@ const Navbar = props => {
               <div
                 className={styles['dimmer']}
                 onClick={() => setIsMobileVisible(false)}
-                role='closeMenu'
+                role='closeMenulogin'
               />
 
               <div

@@ -7,6 +7,7 @@ const PAGES = {
   policy: 'POLICY',
   account: 'ACCOUNT',
   product: 'PRODUCT',
+  profile: 'PROFILE'
 }
 
 export {

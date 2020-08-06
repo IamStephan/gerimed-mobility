@@ -1,15 +1,21 @@
 import React from "react"
 
+// Hooks
+import { useLocalStorage } from 'react-use'
+
+// Constants
+import { KEYS } from '../../constants/localStorage'
+
 // Gatsby
 import { navigate } from "gatsby"
 
-const PrivateRoute = ({ component: Component, location, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...rest }) => {
 
-  // Do a auth check to login client
-  // Temp redirect
-  if (true) {
-    // !Should be login NOT signup!
-    navigate("/profile/signup")
+  const [value] = useLocalStorage(KEYS.jwt)
+
+  // Ckeck The validity of the token in an auth service
+  if (!value) {
+    navigate("/profile/login")
     return null
   }
 

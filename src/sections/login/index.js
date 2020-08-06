@@ -24,24 +24,15 @@ import { TextField, Button, Divider, Typography } from '@material-ui/core'
 import axios from 'axios'
 
 // Constants
-import { RESPONSE_ERRORS } from '../../constants/strapi'
 import { KEYS } from '../../constants/localStorage'
 
 // Styles
 import styles from './styles.module.scss'
 
 // Schema Definition
-const registerShema = yup.object().shape({
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().email().required(),
-  password: yup.string()
-    .min(8, 'Password must be at least 8 characters long')
-    .matches(/(?=.*\d)/g, 'Password must contain at least one number')
-    .matches(/(?=.*[A-Z])/g, 'Password must contain at least one uppercase letter')
-    .matches(/(?=.*[a-z])/g, 'Password must contain at least one lowercase letter')
-    .required(),
-  confirmPassword: yup.string().oneOf([ yup.ref('password'), null ], ' Passwords do not match').required('')
+const loginShema = yup.object().shape({
+  identifier: yup.string().email().required(),
+  password: yup.string().required()
 })
 
 /**
@@ -49,7 +40,7 @@ const registerShema = yup.object().shape({
  * =====
  * for now just use alert to show the errors
  */
-const RegisterSection = () => {
+const LoginSection = () => {
   // Meta info
   const { site } = useStaticQuery(
     graphql`
@@ -66,7 +57,7 @@ const RegisterSection = () => {
 
   // The form and its validation
   const { register, handleSubmit, errors } = useForm({
-    resolver: yupResolver(registerShema)
+    resolver: yupResolver(loginShema)
   })
 
   // Shows user is submitting the form
@@ -80,12 +71,11 @@ const RegisterSection = () => {
 
   function _handleSubmit(data) {
     setSubmitting(true)
-    axios.post(`http://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/local/register`, {
-      username: `${data.firstName.toLowerCase()}-${data.lastName.toLowerCase()}-${data.email.toLowerCase()}`,
-      email: data.email,
-      password: data.password,
-      'first_name': data.firstName,
-      'last_name': data.lastName
+    setNotis([])
+
+    axios.post(`http://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/local`, {
+      identifier: data.identifier,
+      password: data.password
     }).then((v) => {
       setToken(v.data.jwt)
       setSubmitting(false)
@@ -124,10 +114,10 @@ const RegisterSection = () => {
         removeNoti={_removeNoti}
       />
       <section
-        className={styles['registerSection']}
+        className={styles['loginSection']}
       >
         <div
-          className={styles['registerContainer']}
+          className={styles['loginContainer']}
         >
           <div
             className={styles['logoContainer']}
@@ -147,7 +137,7 @@ const RegisterSection = () => {
               color='secondary'
               className={styles['title']}
             >
-              Register
+              Login
             </Typography>
           </div>
 
@@ -161,43 +151,13 @@ const RegisterSection = () => {
             >
               <TextField
                 inputRef={register}
-                label='First Name'
-                name='firstName'
-                variant='outlined'
-                color='secondary'
-                error={errors.firstName}
-                helperText={errors.firstName?.message}
-                required
-              />
-            </div>
-
-            <div
-              className={styles['input']}
-            >
-              <TextField
-                inputRef={register}
-                label='Last Name'
-                name='lastName'
-                variant='outlined'
-                color='secondary'
-                error={errors.lastName}
-                helperText={errors.lastName?.message}
-                required
-              />
-            </div>
-
-            <div
-              className={styles['input']}
-            >
-              <TextField
-                inputRef={register}
-                type='email'
+                type='emial'
                 label='Email'
-                name='email'
+                name='identifier'
                 variant='outlined'
                 color='secondary'
-                error={errors.email}
-                helperText={errors.email?.message}
+                error={errors.identifier}
+                helperText={errors.identifier?.identifier}
                 required
               />
             </div>
@@ -221,22 +181,6 @@ const RegisterSection = () => {
             <div
               className={styles['input']}
             >
-              <TextField
-                inputRef={register}
-                type='password'
-                label='Confirm Password'
-                name='confirmPassword'
-                variant='outlined'
-                color='secondary'
-                error={errors.confirmPassword}
-                helperText={errors.confirmPassword?.message}
-                required
-              />
-            </div>
-
-            <div
-              className={styles['input']}
-            >
               <Button
                 disableElevation
                 type='submit'
@@ -244,7 +188,7 @@ const RegisterSection = () => {
                 color='secondary'
                 disabled={submitting}
               >
-                Register
+                Login
               </Button>
             </div>
           </form>
@@ -260,13 +204,26 @@ const RegisterSection = () => {
               variant='outlined'
               color='secondary'
               component={Link}
-              to='/profile/login'
+              to='/profile/register'
               fullWidth
             >
-              Login
+              Create a new account
             </Button>
           </div>
-          
+
+          <div
+            className={styles['alternate']}
+          >
+            <Button
+              variant='text'
+              color='secondary'
+              component={Link}
+              to='/profile/register'
+              fullWidth
+            >
+              Forgot Password
+            </Button>
+          </div>
         </div>
       </section>
     </>
@@ -281,4 +238,4 @@ const RegisterSection = () => {
  * meant for reuse in othe pages
  */
 
-export default RegisterSection
+export default LoginSection
