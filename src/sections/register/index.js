@@ -93,22 +93,32 @@ const RegisterSection = () => {
       // Navigate to the profile page
       navigate('/profile')
     }).catch((e) => {
-      // Maybe to something more effecient here
-      const errors = e.response?.data?.message[0]?.messages
+      // Client error to server
+      if(e.response) {
+        const errors = e.response?.data?.message[0]?.messages
 
-      const listOfErrors = []
-      // alert on know errors
-      for(let i = 0; i < errors?.length; i++) {
-        listOfErrors.push({
-          id: errors[i].id,
+        const listOfErrors = []
+        
+        for(let i = 0; i < errors?.length; i++) {
+          listOfErrors.push({
+            id: errors[i].id,
+            title: 'Error',
+            type: 'error',
+            message: errors[i].message
+          })
+        }
+
+        setNotis(listOfErrors)
+      } else {
+        // unhandled Errors
+        setNotis([{
+          id: Math.random(),
           title: 'Error',
           type: 'error',
-          message: errors[i].message
-        })
+          message: e.message
+        }])
       }
-
-      setNotis(listOfErrors)
-
+      
       setSubmitting(false)
     })
   }
