@@ -24,7 +24,6 @@ import { TextField, Button, Divider, Typography } from '@material-ui/core'
 import axios from 'axios'
 
 // Constants
-import { RESPONSE_ERRORS } from '../../constants/strapi'
 import { KEYS } from '../../constants/localStorage'
 
 // Styles

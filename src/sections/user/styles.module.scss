@@ -1,0 +1,26 @@
+@import '../../utils/sizes';
+@import '../../utils/colors';
+
+// Navbar Styles
+@import '../../components/navbar/styles.module';
+
+.userSection {
+  .userContainer {
+    max-width: #{$clamp-width}px;
+    margin: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .tabHeader {
+      position: sticky;
+      top: #{$navbarHeightNormal + $margin}px;
+      border-right: 1px solid rgba($dark, 0.25);
+    }
+
+    .tabPanel {
+      padding: #{$padding * 2}px;
+      flex: 1;
+    }
+  }
+}

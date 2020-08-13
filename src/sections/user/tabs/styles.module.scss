@@ -1,0 +1,15 @@
+@import '../../../utils/colors';
+@import '../../../utils/sizes';
+
+.tab {
+  padding-left: #{$padding * 2}px;
+  padding-right: #{$padding * 2}px;
+  
+  .title {
+    font-weight: bold;
+  }
+
+  .content {
+    margin-top: #{$margin * 2}px;
+  }
+}

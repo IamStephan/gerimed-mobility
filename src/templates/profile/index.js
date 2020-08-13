@@ -1,5 +1,8 @@
 import React from 'react'
 
+// Hooks
+import { useInView } from 'react-intersection-observer'
+
 // Components
 import Layout from '../../components/layout'
 
@@ -9,15 +12,35 @@ import { MODE as NAVMODE} from '../../constants/navbar'
 import { MODE as FOOTERMODE} from '../../constants/footer'
 
 // Sections
+import User from '../../sections/user'
+import Showcase from '../../sections/userShowcase'
+
+// Styles
+import styles from './styles.module.scss'
 
 const ProfileTemplate = () => {
+  /**
+   * NOTE:
+   * ======
+   * Used for switching navbar style
+   */
+  const [ref, inView] = useInView({
+    /* Optional options */
+    threshold: 0.45,
+  })
+
   return (
     <Layout
       page={PAGES.profile}
-      navMode={NAVMODE.normal}
+      navMode={inView ? NAVMODE.trans : NAVMODE.normal}
       footerMode={FOOTERMODE.curve}
     >
-      asd
+      <div
+        ref={ref}
+        className={styles['transDetecter']}
+      />
+      <Showcase />
+      <User />
     </Layout>
   )
 }

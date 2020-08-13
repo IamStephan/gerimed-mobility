@@ -72,7 +72,7 @@ const Hero = () => {
                 fontWeight: 'bold'
               }}
             >
-              Aiding you, to live a better life.
+              Aiding you, to live a better life
             </Typography>
             <br />
             <Typography
