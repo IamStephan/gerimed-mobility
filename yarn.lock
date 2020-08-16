@@ -12742,11 +12742,6 @@ serialize-javascript@^3.1.0:
   dependencies:
     randombytes "^2.1.0"
 
-serialize-query-params@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/serialize-query-params/-/serialize-query-params-1.2.1.tgz#b849d0c004fb6958eabae114e24eb55aa8a50429"
-  integrity sha512-dycN0Cx4cXXIc3E3IaejBHlFWRRO0m/CzIkS41MhjQLwuvRobY1LHgdzPAfUj9sFeSnCmlMQM7iwVdyuhz2PIQ==
-
 serve-index@^1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/serve-index/-/serve-index-1.9.1.tgz#d3768d69b1e7d82e5ce050fff5b453bea12a9239"
@@ -14506,13 +14501,6 @@ urql@^1.9.8:
   dependencies:
     "@urql/core" "^1.12.0"
     wonka "^4.0.14"
-
-use-query-params@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/use-query-params/-/use-query-params-1.1.6.tgz#3e36cb45f22c4eea90c6cdc604e115af2fe4a950"
-  integrity sha512-zd58jSb0Yb6Io+hg47gXH0z1Zh8gp2CDRCw4ZzwlPBnODBO1CegX2c38Tca+RtZbjJsTtzWA+098uxDtLMEpYA==
-  dependencies:
-    serialize-query-params "^1.2.1"
 
 use@^3.1.0:
   version "3.1.1"

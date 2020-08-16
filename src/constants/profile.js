@@ -3,6 +3,14 @@ const MODES = {
   show: 'SHOW'
 }
 
+const LOGIN_MODE = {
+  loginMode: 'login_mode',
+  normal: 'NORMAL',
+  password: 'PASSWORD',
+  email: 'EMAIL'
+}
+
 export {
-  MODES
+  MODES,
+  LOGIN_MODE
 }

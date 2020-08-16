@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 // Template
-import TabTemplate from '../tabTemplate'
+import TabTemplate from '../../components/tabTemplate'
 
 // Gatbsy
 import { useStaticQuery, graphql } from 'gatsby'

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 // Material
-import { Chip } from '@material-ui/core';
-import { EventOutlined } from '@material-ui/icons'
+import { Alert, AlertTitle, Pagination } from '@material-ui/lab'
+import { Chip, Button } from '@material-ui/core';
+import { EventOutlined, InfoOutlined } from '@material-ui/icons'
 
 // Template
-import TabTemplate from '../tabTemplate'
+import TabTemplate from '../../components/tabTemplate'
 
 // Styles
 import styles from './styles.module.scss';
@@ -54,28 +55,85 @@ const TimelineItem = props => {
 }
 
 const Timeline = props => {
+  const {
+    handleChange,
+    page,
+    count
+  } = props
+
   return (
     <div
       className={styles['timeline']}
     >
-      {props.children}
+      <div
+        className={styles['content']}
+      >
+        {props.children}
+      </div>
+      
+      <div
+        className={styles['pagination']}
+      >
+        <Pagination
+          page={page}
+          count={count}
+          onChange={handleChange}
+          color='secondary'
+          variant='outlined'  
+        />
+      </div>
     </div>
   )
 }
 
 const PurchasesTab = () => {
+  const [page, setPage] = useState(1)
+
+  function _handleChange(e, value) {
+    setPage(value)
+  }
+
   return (
     <TabTemplate
       title='Purchase History'
     >
-      <Timeline>
-        <TimelineItem
-          date={Date.now()}
-        />
-        <TimelineItem
-          date={Date.now()}
-        />
-      </Timeline>
+      {
+        false ? (
+          <Timeline
+            handleChange={_handleChange}
+            page={page}
+            count={10}
+          >
+            <TimelineItem
+              date={Date.now()}
+            />
+            <TimelineItem
+              date={Date.now()}
+            />
+          </Timeline>
+        ) : (
+          <Alert
+            variant='outlined'
+            severity='success'
+            icon={<InfoOutlined />}
+            action={
+              <Button
+                color='inherit'
+              >
+                Shop
+              </Button>
+            }
+          >
+            <AlertTitle
+              className={styles['alertTitle']}
+            >
+              No History
+            </AlertTitle>
+            You do not have a purchase history yet. Take a look at our shop
+          </Alert>
+        )
+      }
+      
     </TabTemplate>
   )
 }

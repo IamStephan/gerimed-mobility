@@ -1,0 +1,35 @@
+@import '../../../../utils/sizes';
+@import '../../../../utils/colors';
+
+$left-width: 200;
+
+.row {
+  display: flex;
+  padding-top: #{$padding * 2}px;
+  padding-bottom: #{$padding * 2}px;
+  align-items: center;
+
+  .left {
+    width: #{$left-width}px;
+
+    .caption {
+      font-weight: bold;
+    }
+  }
+
+  .right {
+    flex: 1;
+
+    .OButton {
+      color: $danger;
+    }
+    .CButton {
+      background-color: $danger;
+      color: $light;
+    }
+  }
+}
+
+.actions {
+  padding-top: #{$padding * 2}px;
+}

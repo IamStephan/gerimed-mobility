@@ -15,7 +15,7 @@ import { MODES } from '../../constants/profile'
 import { PROFILE_ACTIONS } from '../../constants/state'
 
 // State
-import { dispatch, useGlobalStore } from '../../state/profile'
+import { dispatch } from '../../state/profile'
 
 // Gatsby
 import { navigate } from "gatsby"
