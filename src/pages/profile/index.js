@@ -21,7 +21,7 @@ const Profile = () => {
         path='/'
       />
       <Register path='/register' />
-      <Login path='/login' />
+      <Login path='/login/*' />
     </Router>
   )
 }

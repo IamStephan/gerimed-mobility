@@ -5,6 +5,8 @@ import NotificationCenter from '../../components/notifications'
 
 // Components
 import LoginMode from './components/login'
+import EmailMode from './components/email'
+import PasswordMode from './components/password'
 
 // Query Params
 import { useLocation } from '@reach/router'
@@ -14,7 +16,7 @@ import { parse } from 'query-string'
 import { useStaticQuery, graphql } from 'gatsby'
 
 // Constants
-import { LOGIN_MODE } from '../../constants/profile'
+import { LOGIN_PATHS } from '../../constants/profile'
 
 // Styles
 import styles from './styles.module.scss'
@@ -30,6 +32,7 @@ const LoginSection = () => {
       query {
         site {
           siteMetadata {
+            protocol
             server
             port
           }
@@ -45,9 +48,9 @@ const LoginSection = () => {
     setNotis(notis.filter(v => v.id !== id))
   }
 
-  function LoginMode() {
-    switch(queries[LOGIN_MODE.loginMode]) {
-      case LOGIN_MODE.normal: {
+  function LoginModeComponents() {
+    switch(location.pathname) {
+      case LOGIN_PATHS.normal: {
         return (
           <LoginMode
             site={site}
@@ -56,12 +59,22 @@ const LoginSection = () => {
         )
       }
 
-      case LOGIN_MODE.email: {
-        return null
+      case LOGIN_PATHS.email: {
+        return (
+          <EmailMode
+            site={site}
+            setNotis={setNotis}
+          />
+        )
       }
 
-      case LOGIN_MODE.password: {
-        return null
+      case LOGIN_PATHS.password: {
+        return (
+          <PasswordMode
+            site={site}
+            setNotis={setNotis}
+          />
+        )
       }
 
       default: {
@@ -84,7 +97,7 @@ const LoginSection = () => {
       <section
         className={styles['loginSection']}
       >
-        hjb
+        <LoginModeComponents />
       </section>
     </>
 

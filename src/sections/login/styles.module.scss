@@ -1,5 +1,4 @@
 @import '../../utils/colors';
-@import '../../utils/sizes';
 
 // AuthShowcase Styles
 @import '../authShowcase/styles.module';
@@ -11,43 +10,6 @@ $login-width: 450;
   background-color: $light;
   display: flex;
   justify-content: center;
-
-  .loginContainer {
-    padding: #{$padding * 2}px;
-    flex: 1;
-    max-width: 400px;
-
-    .logoContainer {
-      display: flex;
-      justify-content: center;
-      margin-bottom: #{$margin * 2}px;
-    }
-
-    .titleContainer {
-      padding: #{$padding * 1.5}px #{$padding * 5}px;
-
-      .title {
-        font-weight: bold;
-        text-align: center;
-      }
-    }
-
-    .form {
-      display: flex;
-      flex-direction: column;
-
-      .input {
-        padding: #{$padding * 1.5}px;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
-    }
-
-    .alternate {
-      padding: #{$padding * 1.5}px;
-    }
-  }
 }
 
 @media screen and (max-width: #{$breakpoint-1}px) {

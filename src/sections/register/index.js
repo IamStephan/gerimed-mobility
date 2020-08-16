@@ -55,6 +55,7 @@ const RegisterSection = () => {
       query {
         site {
           siteMetadata {
+            protocol
             server
             port
           }
@@ -79,7 +80,7 @@ const RegisterSection = () => {
 
   function _handleSubmit(data) {
     setSubmitting(true)
-    axios.post(`http://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/local/register`, {
+    axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/local/register`, {
       username: `${data.firstName.toLowerCase()}-${data.lastName.toLowerCase()}-${data.email.toLowerCase()}`,
       email: data.email,
       password: data.password,

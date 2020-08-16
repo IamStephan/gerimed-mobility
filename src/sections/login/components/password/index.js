@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // SVGs
 import Logo from '../../../../svg/logo_green.svg'
@@ -7,6 +7,12 @@ import Logo from '../../../../svg/logo_green.svg'
 import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
 
+// Router
+import { useLocation } from '@reach/router'
+
+// Query String
+import { parse } from 'query-string'
+
 // Gatsby
 import { Link, navigate } from 'gatsby'
 
@@ -14,25 +20,26 @@ import { Link, navigate } from 'gatsby'
 import { TextField, Button, Divider, Typography } from '@material-ui/core'
 
 // Hooks
-import { useLocalStorage } from 'react-use'
 import { useForm } from 'react-hook-form'
 
 // API
 import axios from 'axios'
 
-// Constants
-import { KEYS } from '../../../../constants/localStorage'
-
 // Styles
 import styles from './styles.module.scss'
 
 // Schema Definition
-const loginShema = yup.object().shape({
-  identifier: yup.string().email().required(),
-  password: yup.string().required()
+const passwordSchema = yup.object().shape({
+  password: yup.string()
+    .min(8, 'Password must be at least 8 characters long')
+    .matches(/(?=.*\d)/g, 'Password must contain at least one number')
+    .matches(/(?=.*[A-Z])/g, 'Password must contain at least one uppercase letter')
+    .matches(/(?=.*[a-z])/g, 'Password must contain at least one lowercase letter')
+    .required(),
+  confirmPassword: yup.string().oneOf([ yup.ref('password'), null ], ' Passwords do not match').required('')
 })
 
-const LoginMode = props => {
+const PasswordMode = props => {
   const {
     site,
     setNotis,
@@ -40,27 +47,35 @@ const LoginMode = props => {
 
   // The form and its validation
   const { register, handleSubmit, errors } = useForm({
-    resolver: yupResolver(loginShema)
+    resolver: yupResolver(passwordSchema)
   })
 
   // Shows user is submitting the form
   const [submitting, setSubmitting] = useState(false)
 
-  // Used to store the jwt token
-  const [_, setToken] = useLocalStorage(KEYS.jwt)
+  const location = useLocation()
+
+  // Redirect if there is no code query param
+  useEffect(() => {
+    if(!location.search) {
+      //navigate('/profile/login')
+    }
+  }, [])
 
   function _handleSubmit(data) {
     setSubmitting(true)
     setNotis([])
 
-    axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/local`, {
-      identifier: data.identifier,
-      password: data.password
-    }).then((v) => {
-      setToken(v.data.jwt)
+    // Get the code from the url
+    const parsedData = parse(location.search)
 
-      // Navigate to the profile page
-      navigate('/profile')
+    axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/reset-password`, {
+      code: parsedData.code, // code contained in the reset link of step 3.
+      password: data.password,
+      passwordConfirmation: data.confirmPassword,
+    }).then(() => {
+      // Notification to check mail
+      navigate('/profile/login')
     }).catch((e) => {
       // Client error to server
       if(e.response) {
@@ -94,7 +109,7 @@ const LoginMode = props => {
 
   return (
     <div
-      className={styles['loginContainer']}
+      className={styles['passwordContainer']}
     >
       <div
         className={styles['logoContainer']}
@@ -114,7 +129,7 @@ const LoginMode = props => {
           color='secondary'
           className={styles['title']}
         >
-          Login
+          New Password
         </Typography>
       </div>
 
@@ -128,13 +143,13 @@ const LoginMode = props => {
         >
           <TextField
             inputRef={register}
-            type='email'
-            label='Email'
-            name='identifier'
+            type='password'
+            label='New Password'
+            name='password'
             variant='outlined'
             color='secondary'
-            error={errors.identifier}
-            helperText={errors.identifier?.message}
+            error={errors.password}
+            helperText={errors.password?.message}
             required
           />
         </div>
@@ -145,12 +160,12 @@ const LoginMode = props => {
           <TextField
             inputRef={register}
             type='password'
-            label='Password'
-            name='password'
+            label='Confirm Password'
+            name='confirmPassword'
             variant='outlined'
             color='secondary'
-            error={errors.password}
-            helperText={errors.password?.message}
+            error={errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
             required
           />
         </div>
@@ -165,7 +180,7 @@ const LoginMode = props => {
             color='secondary'
             disabled={submitting}
           >
-            Login
+            Reset Password
           </Button>
         </div>
       </form>
@@ -181,28 +196,14 @@ const LoginMode = props => {
           variant='outlined'
           color='secondary'
           component={Link}
-          to='/profile/register'
+          to='/profile/login'
           fullWidth
         >
-          Create a new account
-        </Button>
-      </div>
-
-      <div
-        className={styles['alternate']}
-      >
-        <Button
-          variant='text'
-          color='secondary'
-          component={Link}
-          to={`/profile/login/email`}
-          fullWidth
-        >
-          Forgot Password
+          Login
         </Button>
       </div>
     </div>
   )
 }
 
-export default LoginMode
+export default PasswordMode

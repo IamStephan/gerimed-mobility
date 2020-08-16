@@ -8,31 +8,26 @@ import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
 
 // Gatsby
-import { Link, navigate } from 'gatsby'
+import { Link } from 'gatsby'
 
 // Material
 import { TextField, Button, Divider, Typography } from '@material-ui/core'
 
 // Hooks
-import { useLocalStorage } from 'react-use'
 import { useForm } from 'react-hook-form'
 
 // API
 import axios from 'axios'
 
-// Constants
-import { KEYS } from '../../../../constants/localStorage'
-
 // Styles
 import styles from './styles.module.scss'
 
 // Schema Definition
-const loginShema = yup.object().shape({
-  identifier: yup.string().email().required(),
-  password: yup.string().required()
+const emailSchema = yup.object().shape({
+  email: yup.string().email('Please provide a valid email.').required('Email is required.')
 })
 
-const LoginMode = props => {
+const EmailMode = props => {
   const {
     site,
     setNotis,
@@ -40,27 +35,28 @@ const LoginMode = props => {
 
   // The form and its validation
   const { register, handleSubmit, errors } = useForm({
-    resolver: yupResolver(loginShema)
+    resolver: yupResolver(emailSchema)
   })
 
   // Shows user is submitting the form
   const [submitting, setSubmitting] = useState(false)
 
-  // Used to store the jwt token
-  const [_, setToken] = useLocalStorage(KEYS.jwt)
-
   function _handleSubmit(data) {
     setSubmitting(true)
     setNotis([])
 
-    axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/local`, {
-      identifier: data.identifier,
-      password: data.password
-    }).then((v) => {
-      setToken(v.data.jwt)
-
-      // Navigate to the profile page
-      navigate('/profile')
+    axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/forgot-password`, {
+      email: data.email
+    }).then(() => {
+      // Notification to check mail
+      
+      setNotis([{
+        id: Math.random(),
+        title: 'Success',
+        type: 'success',
+        message: 'Please check your email for the reset link.'
+      }])
+      setSubmitting(false)
     }).catch((e) => {
       // Client error to server
       if(e.response) {
@@ -94,7 +90,7 @@ const LoginMode = props => {
 
   return (
     <div
-      className={styles['loginContainer']}
+      className={styles['emailContainer']}
     >
       <div
         className={styles['logoContainer']}
@@ -114,7 +110,7 @@ const LoginMode = props => {
           color='secondary'
           className={styles['title']}
         >
-          Login
+          Password Reset
         </Typography>
       </div>
 
@@ -130,27 +126,11 @@ const LoginMode = props => {
             inputRef={register}
             type='email'
             label='Email'
-            name='identifier'
+            name='email'
             variant='outlined'
             color='secondary'
-            error={errors.identifier}
-            helperText={errors.identifier?.message}
-            required
-          />
-        </div>
-
-        <div
-          className={styles['input']}
-        >
-          <TextField
-            inputRef={register}
-            type='password'
-            label='Password'
-            name='password'
-            variant='outlined'
-            color='secondary'
-            error={errors.password}
-            helperText={errors.password?.message}
+            error={errors.email}
+            helperText={errors.email?.message}
             required
           />
         </div>
@@ -165,44 +145,12 @@ const LoginMode = props => {
             color='secondary'
             disabled={submitting}
           >
-            Login
+            Send Request
           </Button>
         </div>
       </form>
-
-      <br />
-      <Divider />
-      <br />
-      
-      <div
-        className={styles['alternate']}
-      >
-        <Button
-          variant='outlined'
-          color='secondary'
-          component={Link}
-          to='/profile/register'
-          fullWidth
-        >
-          Create a new account
-        </Button>
-      </div>
-
-      <div
-        className={styles['alternate']}
-      >
-        <Button
-          variant='text'
-          color='secondary'
-          component={Link}
-          to={`/profile/login/email`}
-          fullWidth
-        >
-          Forgot Password
-        </Button>
-      </div>
     </div>
   )
 }
 
-export default LoginMode
+export default EmailMode

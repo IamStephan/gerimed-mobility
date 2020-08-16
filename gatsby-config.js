@@ -3,6 +3,7 @@ module.exports = {
     title: `Gerimed Moility`,
     description: `Your one stop medical supply shop`,
     author: `Avvent Studio`,
+    protocol: 'http',
     server: 'localhost',
     port: '1337'
   },

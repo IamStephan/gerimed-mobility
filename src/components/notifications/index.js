@@ -40,7 +40,7 @@ const Notifications = props => {
           >
             <Alert
               className={`${styles['alert']}`}
-              severity='error'
+              severity={item.type}
               action={
                 <Button
                   color='inherit'
