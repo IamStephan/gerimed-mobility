@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 
 // Components
 import NotificationCenter from '../../components/notifications'
@@ -10,7 +10,6 @@ import PasswordMode from './components/password'
 
 // Query Params
 import { useLocation } from '@reach/router'
-import { parse } from 'query-string'
 
 // Gatsby
 import { useStaticQuery, graphql } from 'gatsby'
@@ -23,8 +22,6 @@ import styles from './styles.module.scss'
 
 const LoginSection = () => {
   const location = useLocation()
-
-  const queries = parse(location.search)
 
   // Meta info
   const { site } = useStaticQuery(
@@ -41,14 +38,23 @@ const LoginSection = () => {
     `
   )
 
-  // Errors
+  // Notifications
   const [notis, setNotis] = useState([])
 
   function _removeNoti(id) {
     setNotis(notis.filter(v => v.id !== id))
   }
 
-  function LoginModeComponents() {
+  /**
+   * NOTE:
+   * =====
+   * When this is just a normal function and an update occurs
+   * the entire tree gets rerendered and the child components loose
+   * their state.
+   * 
+   * This makes sure the the tree is only rerendered when the path changes.
+   */
+  const LoginModeComponents = useCallback(() => {
     switch(location.pathname) {
       case LOGIN_PATHS.normal: {
         return (
@@ -86,7 +92,7 @@ const LoginSection = () => {
         )
       }
     }
-  }
+  }, [location.pathname])
 
   return (
     <>

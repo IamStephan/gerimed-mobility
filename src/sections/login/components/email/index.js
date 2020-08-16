@@ -39,24 +39,23 @@ const EmailMode = props => {
   })
 
   // Shows user is submitting the form
-  const [submitting, setSubmitting] = useState(false)
+  const [submittingMail, setSubmittingMail] = useState(false)
 
   function _handleSubmit(data) {
-    setSubmitting(true)
+    setSubmittingMail(true)
     setNotis([])
 
     axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/forgot-password`, {
       email: data.email
     }).then(() => {
       // Notification to check mail
-      
       setNotis([{
         id: Math.random(),
         title: 'Success',
         type: 'success',
         message: 'Please check your email for the reset link.'
       }])
-      setSubmitting(false)
+      setSubmittingMail(false)
     }).catch((e) => {
       // Client error to server
       if(e.response) {
@@ -84,8 +83,10 @@ const EmailMode = props => {
         }])
       }
       
-      setSubmitting(false)
+      setSubmittingMail(false)
     })
+
+    return true
   }
 
   return (
@@ -143,7 +144,7 @@ const EmailMode = props => {
             type='submit'
             variant='contained'
             color='secondary'
-            disabled={submitting}
+            disabled={submittingMail}
           >
             Send Request
           </Button>

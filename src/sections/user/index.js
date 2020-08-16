@@ -1,16 +1,27 @@
 import React, { useState } from 'react'
 
+// Gatsby
+import { useStaticQuery, graphql } from 'gatsby'
+
 // Material
 import { Tab } from '@material-ui/core'
 import { TabList, TabPanel, TabContext } from '@material-ui/lab'
-import { InfoOutlined ,AccountCircleOutlined, LocalShippingOutlined, SettingsOutlined, AccountBalanceWalletOutlined } from '@material-ui/icons'
+import { 
+  InfoOutlined,
+  LocalShippingOutlined,
+  SettingsOutlined,
+  AccountBalanceWalletOutlined
+ } from '@material-ui/icons'
 
+// Components
+import Notifications from '../../components/notifications'
 
 // Tabs
 import Info from './tabs/info'
 import Shipping from './tabs/shipping'
 import Settings from './tabs/settings'
 import Purchases from './tabs/purchases'
+
 
 // Constants
 import { TABS } from '../../constants/user'
@@ -24,7 +35,27 @@ import styles from './styles.module.scss'
  *       They are very long components and can be converted
  */
 const User = () => {
+  // Meta info
+  const { site } = useStaticQuery(
+    graphql`
+      query {
+        site {
+          siteMetadata {
+            protocol
+            server
+            port
+          }
+        }
+      }
+    `
+  )
+  
   const [tab, setTab] = useState(TABS.info)
+  const [notis, setNotis] = useState([])
+
+  function _removeNoti(id) {
+    setNotis(notis.filter(v => v.id !== id))
+  }
 
   function _handleChange(e, value) {
     setTab(value)
@@ -34,6 +65,11 @@ const User = () => {
     <section
       className={styles['userSection']}
     >
+      <Notifications
+        notifications={notis}
+        removeNoti={_removeNoti}
+      />
+
       <div
         className={styles['userContainer']}
       >
@@ -85,7 +121,10 @@ const User = () => {
             value={TABS.settings}
             className={styles['tabPanel']}
           >
-            <Settings />
+            <Settings
+              site={site}
+              setNotis={setNotis}
+            />
           </TabPanel>
           <TabPanel
             value={TABS.purchase}
