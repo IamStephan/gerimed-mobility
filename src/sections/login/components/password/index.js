@@ -21,9 +21,10 @@ import { TextField, Button, Divider, Typography } from '@material-ui/core'
 
 // Hooks
 import { useForm } from 'react-hook-form'
+import { useSnackbar } from 'notistack'
 
 // API
-import axios from 'axios'
+import { ResetPassword } from '../../../../api/auth'
 
 // Styles
 import styles from './styles.module.scss'
@@ -42,8 +43,9 @@ const passwordSchema = yup.object().shape({
 const PasswordMode = props => {
   const {
     site,
-    setNotis,
   } = props
+
+  const { enqueueSnackbar } = useSnackbar()
 
   // The form and its validation
   const { register, handleSubmit, errors } = useForm({
@@ -55,56 +57,41 @@ const PasswordMode = props => {
 
   const location = useLocation()
 
-  // Redirect if there is no code query param
   useEffect(() => {
     if(!location.search) {
-      //navigate('/profile/login')
+      enqueueSnackbar('No reset code found, please check your email', {
+        variant: 'warning'
+      })
     }
   }, [])
 
-  function _handleSubmit(data) {
+  async function _handleSubmit(data) {
     setSubmitting(true)
-    setNotis([])
 
     // Get the code from the url
     const parsedData = parse(location.search)
 
-    axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/reset-password`, {
-      code: parsedData.code, // code contained in the reset link of step 3.
+    const results = await ResetPassword({
+      protocol: site.siteMetadata.protocol,
+      server: site.siteMetadata.server,
+      port: site.siteMetadata.port
+    }, {
+      code: parsedData.code,
       password: data.password,
-      passwordConfirmation: data.confirmPassword,
-    }).then(() => {
-      // Notification to check mail
-      navigate('/profile/login')
-    }).catch((e) => {
-      // Client error to server
-      if(e.response) {
-        const errors = e.response?.data?.message[0]?.messages
-
-        const listOfErrors = []
-        
-        for(let i = 0; i < errors?.length; i++) {
-          listOfErrors.push({
-            id: errors[i].id,
-            title: 'Error',
-            type: 'error',
-            message: errors[i].message
-          })
-        }
-
-        setNotis(listOfErrors)
-      } else {
-        // unhandled Errors
-        setNotis([{
-          id: Math.random(),
-          title: 'Error',
-          type: 'error',
-          message: e.message
-        }])
-      }
-      
-      setSubmitting(false)
+      confirmPassword: data.confirmPassword,
     })
+
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
+
+    if(results.type === 'success') {
+      navigate('/profile/login')
+    }
+
+    setSubmitting(false)
   }
 
   return (

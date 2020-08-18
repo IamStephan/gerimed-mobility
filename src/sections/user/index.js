@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 // Gatsby
 import { useStaticQuery, graphql } from 'gatsby'
 
+// Hooks
+import { useMedia } from 'react-use'
+
 // Material
 import { Tab } from '@material-ui/core'
 import { TabList, TabPanel, TabContext } from '@material-ui/lab'
@@ -24,7 +27,7 @@ import Purchases from './tabs/purchases'
 
 
 // Constants
-import { TABS } from '../../constants/user'
+import { USER_TABS } from '../../constants/profile'
 
 // Styles
 import styles from './styles.module.scss'
@@ -50,8 +53,11 @@ const User = () => {
     `
   )
   
-  const [tab, setTab] = useState(TABS.info)
+  const [tab, setTab] = useState(USER_TABS.info)
   const [notis, setNotis] = useState([])
+
+  // Using a fixed value since initial loads dont work with dynamic values
+  const verticalTabs = useMedia('(max-width: 700px)')
 
   function _removeNoti(id) {
     setNotis(notis.filter(v => v.id !== id))
@@ -78,47 +84,47 @@ const User = () => {
         >
           <TabList
             className={styles['tabHeader']}
-            orientation='vertical'
-            variant='scrollable'
+            orientation={verticalTabs ? 'horizontal' : 'vertical'}
+            variant='fullWidth'
             onChange={_handleChange}
             textColor='secondary'
           >
             <Tab
               icon={<InfoOutlined />}
-              label='Account'
-              value={TABS.info}
+              label={verticalTabs ? '' : 'Account'}
+              value={USER_TABS.info}
             />
             <Tab
               icon={<LocalShippingOutlined />}
-              label='Shipping'
-              value={TABS.shipping}
+              label={verticalTabs ? '' : 'Shipping'}
+              value={USER_TABS.shipping}
             />
             <Tab
               icon={<SettingsOutlined />}
-              label='Settings'
-              value={TABS.settings}
+              label={verticalTabs ? '' : 'Settings'}
+              value={USER_TABS.settings}
             />
             <Tab
               icon={<AccountBalanceWalletOutlined />}
-              label='Purchases'
-              value={TABS.purchase}
+              label={verticalTabs ? '' : 'Purchases'}
+              value={USER_TABS.purchase}
             />
           </TabList>
 
           <TabPanel
-            value={TABS.info}
+            value={USER_TABS.info}
             className={styles['tabPanel']}
           >
             <Info />
           </TabPanel>
           <TabPanel
-            value={TABS.shipping}
+            value={USER_TABS.shipping}
             className={styles['tabPanel']}
           >
             <Shipping />
           </TabPanel>
           <TabPanel
-            value={TABS.settings}
+            value={USER_TABS.settings}
             className={styles['tabPanel']}
           >
             <Settings
@@ -127,7 +133,7 @@ const User = () => {
             />
           </TabPanel>
           <TabPanel
-            value={TABS.purchase}
+            value={USER_TABS.purchase}
             className={styles['tabPanel']}
           >
             <Purchases />

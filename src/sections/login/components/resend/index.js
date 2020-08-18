@@ -18,7 +18,7 @@ import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 
 // API
-import { RequestPasswordReset } from '../../../../api/auth'
+import { ResendConfirmation } from '../../../../api/auth'
 
 // Styles
 import styles from './styles.module.scss'
@@ -46,7 +46,7 @@ const EmailMode = props => {
   async function _handleSubmit(data) {
     setSubmitting(true)
 
-    const results = await RequestPasswordReset({
+    const results = await ResendConfirmation({
       protocol: site.siteMetadata.protocol,
       server: site.siteMetadata.server,
       port: site.siteMetadata.port
@@ -69,7 +69,7 @@ const EmailMode = props => {
 
   return (
     <div
-      className={styles['emailContainer']}
+      className={styles['resendContainer']}
     >
       <div
         className={styles['logoContainer']}
@@ -89,7 +89,7 @@ const EmailMode = props => {
           color='secondary'
           className={styles['title']}
         >
-          Password Reset
+          Resend Verification
         </Typography>
       </div>
 

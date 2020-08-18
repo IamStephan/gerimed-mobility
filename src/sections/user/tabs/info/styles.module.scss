@@ -2,6 +2,8 @@
 
 $left-width: 200;
 
+$breakpoint-1: 700;
+
 .row {
   display: flex;
   padding-top: #{$padding * 2}px;
@@ -23,4 +25,28 @@ $left-width: 200;
 
 .actions {
   padding-top: #{$padding * 2}px;
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .row {
+    flex-direction: column;
+    align-items: center;
+  
+    .left {
+      flex: 1;
+      text-align: center;
+      .caption {
+        font-weight: bold;
+      }
+    }
+  
+    .right {
+      flex: 1;
+      text-align: center;
+    }
+  }
+  
+  .actions {
+    padding-top: #{$padding * 2}px;
+  }
 }

@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 
-// Components
-import NotificationCenter from '../../components/notifications'
 
 // SVGs
 import Logo from '../../svg/logo_green.svg'
 
 // Hooks
-import { useLocalStorage } from 'react-use'
 import { useForm } from 'react-hook-form'
 
 // Schema
@@ -15,13 +12,16 @@ import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
 
 // Gatsby
-import { Link, navigate, useStaticQuery, graphql } from 'gatsby'
+import { Link, useStaticQuery, graphql } from 'gatsby'
 
 // Material
 import { TextField, Button, Divider, Typography } from '@material-ui/core'
 
 // API
-import axios from 'axios'
+import { Register } from '../../api/auth'
+
+// Notifications
+import { useSnackbar } from 'notistack'
 
 // Constants
 import { KEYS } from '../../constants/localStorage'
@@ -64,75 +64,47 @@ const RegisterSection = () => {
     `
   )
 
+  const { enqueueSnackbar } = useSnackbar()
+
   // The form and its validation
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors, reset } = useForm({
     resolver: yupResolver(registerShema)
   })
 
   // Shows user is submitting the form
   const [submitting, setSubmitting] = useState(false)
 
-  // Errors
-  const [notis, setNotis] = useState([])
 
-  // Used to store the jwt token
-  const [_, setToken] = useLocalStorage(KEYS.jwt)
-
-  function _handleSubmit(data) {
+  async function _handleSubmit(data) {
     setSubmitting(true)
-    axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/local/register`, {
-      username: `${data.firstName.toLowerCase()}-${data.lastName.toLowerCase()}-${data.email.toLowerCase()}`,
+
+    const results = await Register({
+      protocol: site.siteMetadata.protocol,
+      server: site.siteMetadata.server,
+      port: site.siteMetadata.port
+    }, {
+      firstName: data.firstName,
+      lastName: data.lastName,
       email: data.email,
-      password: data.password,
-      'first_name': data.firstName,
-      'last_name': data.lastName
-    }).then((v) => {
-      setToken(v.data.jwt)
-      setSubmitting(false)
-
-      // Navigate to the profile page
-      navigate('/profile')
-    }).catch((e) => {
-      // Client error to server
-      if(e.response) {
-        const errors = e.response?.data?.message[0]?.messages
-
-        const listOfErrors = []
-        
-        for(let i = 0; i < errors?.length; i++) {
-          listOfErrors.push({
-            id: errors[i].id,
-            title: 'Error',
-            type: 'error',
-            message: errors[i].message
-          })
-        }
-
-        setNotis(listOfErrors)
-      } else {
-        // unhandled Errors
-        setNotis([{
-          id: Math.random(),
-          title: 'Error',
-          type: 'error',
-          message: e.message
-        }])
-      }
-      
-      setSubmitting(false)
+      password: data.password
     })
-  }
 
-  function _removeNoti(id) {
-    setNotis(notis.filter(v => v.id !== id))
+    // Results only return a success or an error so show them all
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
+
+    if(results.type === 'success') {
+      reset()
+    }
+
+    setSubmitting(false)
   }
 
   return (
     <>
-      <NotificationCenter
-        notifications={notis}
-        removeNoti={_removeNoti}
-      />
       <section
         className={styles['registerSection']}
       >

@@ -6,7 +6,7 @@ import { Typography, Button, Switch } from '@material-ui/core'
 // Gatsby
 import { navigate } from 'gatsby'
 
-// Hookes
+// Hooks
 import { useLocalStorage } from 'react-use'
 
 // Constants
@@ -31,9 +31,7 @@ const Settings = props => {
   } = props
 
   const [submitting, setSubmitting] = useState(false) 
-
   const [v, s, removeToken] = useLocalStorage(KEYS.jwt)
-
   const [info] = useGlobalState('info')
 
   /**

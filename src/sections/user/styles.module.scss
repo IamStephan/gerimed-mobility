@@ -4,6 +4,8 @@
 // Navbar Styles
 @import '../../components/navbar/styles.module';
 
+$breakpoint-1: 700;
+
 .userSection {
   .userContainer {
     max-width: #{$clamp-width}px;
@@ -14,13 +16,33 @@
 
     .tabHeader {
       position: sticky;
-      top: #{$navbarHeightNormal + $margin}px;
+      top: #{$navbarHeightNormal}px;
       border-right: 1px solid rgba($dark, 0.25);
+      background-color: $light;
+      z-index: 999;
     }
 
     .tabPanel {
       padding: #{$padding * 2}px;
       flex: 1;
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .userSection {
+    .userContainer {
+      flex-direction: column;
+
+      .tabHeader {
+        border-right: none;
+        border-bottom: 1px solid rgba($dark, 0.25);
+        width: 100%;
+      }
+
+      .tabPanel {
+        width: 100%;
+      }
     }
   }
 }

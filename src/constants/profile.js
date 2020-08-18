@@ -6,10 +6,20 @@ const MODES = {
 const LOGIN_PATHS = {
   normal: '/profile/login',
   password: '/profile/login/password_reset',
-  email: '/profile/login/email'
+  email: '/profile/login/email',
+  resend: '/profile/login/resend'
 }
+
+const USER_TABS = {
+  info: 'INFO',
+  shipping: 'SHIPPING',
+  settings: 'SETTINGS',
+  purchase: 'PURCHASE'
+}
+
 
 export {
   MODES,
-  LOGIN_PATHS
+  LOGIN_PATHS,
+  USER_TABS
 }

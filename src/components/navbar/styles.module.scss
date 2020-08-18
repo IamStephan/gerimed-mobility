@@ -28,7 +28,7 @@ $breakpoint-2: 750;
   top: #{$margin / 2}px;
   display: flex;
   align-items: center;
-  z-index: 999;
+  z-index: 999999;
   margin: #{$margin / 2}px;
   border-radius: #{$border-radius}px;
   transition:

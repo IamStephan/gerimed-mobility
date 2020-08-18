@@ -7,6 +7,7 @@ import NotificationCenter from '../../components/notifications'
 import LoginMode from './components/login'
 import EmailMode from './components/email'
 import PasswordMode from './components/password'
+import Resend from './components/resend'
 
 // Query Params
 import { useLocation } from '@reach/router'
@@ -68,6 +69,15 @@ const LoginSection = () => {
       case LOGIN_PATHS.email: {
         return (
           <EmailMode
+            site={site}
+            setNotis={setNotis}
+          />
+        )
+      }
+
+      case LOGIN_PATHS.resend: {
+        return (
+          <Resend
             site={site}
             setNotis={setNotis}
           />

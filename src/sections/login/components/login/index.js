@@ -11,14 +11,18 @@ import * as yup from 'yup'
 import { Link, navigate } from 'gatsby'
 
 // Material
-import { TextField, Button, Divider, Typography } from '@material-ui/core'
+import { TextField, Button, Divider, Typography, ButtonGroup } from '@material-ui/core'
 
 // Hooks
 import { useLocalStorage } from 'react-use'
 import { useForm } from 'react-hook-form'
+import { useSnackbar } from 'notistack'
 
 // API
-import axios from 'axios'
+import { Login } from '../../../../api/auth'
+
+// Notifications
+
 
 // Constants
 import { KEYS } from '../../../../constants/localStorage'
@@ -35,8 +39,9 @@ const loginShema = yup.object().shape({
 const LoginMode = props => {
   const {
     site,
-    setNotis,
   } = props
+
+  const { enqueueSnackbar } = useSnackbar()
 
   // The form and its validation
   const { register, handleSubmit, errors } = useForm({
@@ -49,47 +54,35 @@ const LoginMode = props => {
   // Used to store the jwt token
   const [_, setToken] = useLocalStorage(KEYS.jwt)
 
-  function _handleSubmit(data) {
+  async function _handleSubmit(data) {
     setSubmitting(true)
-    setNotis([])
 
-    axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/local`, {
+    const results = await Login({
+      protocol: site.siteMetadata.protocol,
+      server: site.siteMetadata.server,
+      port: site.siteMetadata.port
+    }, {
       identifier: data.identifier,
       password: data.password
-    }).then((v) => {
-      setToken(v.data.jwt)
-
-      // Navigate to the profile page
-      navigate('/profile')
-    }).catch((e) => {
-      // Client error to server
-      if(e.response) {
-        const errors = e.response?.data?.message[0]?.messages
-
-        const listOfErrors = []
-        
-        for(let i = 0; i < errors?.length; i++) {
-          listOfErrors.push({
-            id: errors[i].id,
-            title: 'Error',
-            type: 'error',
-            message: errors[i].message
-          })
-        }
-
-        setNotis(listOfErrors)
-      } else {
-        // unhandled Errors
-        setNotis([{
-          id: Math.random(),
-          title: 'Error',
-          type: 'error',
-          message: e.message
-        }])
-      }
-      
-      setSubmitting(false)
     })
+
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
+
+    if(results.type === 'success') {
+      const { data: { jwt } } = results.data
+      
+      // Set jwt token
+      setToken(jwt)
+
+      // redirect
+      navigate('/profile')
+    }
+
+    setSubmitting(false)
   }
 
   return (
@@ -191,15 +184,27 @@ const LoginMode = props => {
       <div
         className={styles['alternate']}
       >
-        <Button
-          variant='text'
-          color='secondary'
-          component={Link}
-          to={`/profile/login/email`}
+        <ButtonGroup
+          orientation='vertical'
           fullWidth
+          variant='text'
         >
-          Forgot Password
-        </Button>
+          <Button
+            color='secondary'
+            component={Link}
+            to={`/profile/login/email`}
+          >
+            Forgot Password
+          </Button>
+          <Button
+            color='secondary'
+            component={Link}
+            to={`/profile/login/resend`}
+          >
+            Resend Confirmation
+          </Button>
+        </ButtonGroup>
+        
       </div>
     </div>
   )

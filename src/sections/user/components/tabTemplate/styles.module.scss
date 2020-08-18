@@ -1,6 +1,9 @@
 @import '../../../../utils/colors';
 @import '../../../../utils/sizes';
 
+// Parent vars
+@import '../../styles.module';
+
 .tab {
   padding-left: #{$padding * 2}px;
   padding-right: #{$padding * 2}px;
@@ -11,5 +14,13 @@
 
   .content {
     margin-top: #{$margin * 2}px;
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .tab {
+    .title {
+      text-align: center;
+    }
   }
 }

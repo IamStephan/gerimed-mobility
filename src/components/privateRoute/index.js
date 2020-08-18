@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react"
 
 // Hooks
 import { useLocalStorage } from 'react-use'
+import { useSnackbar } from 'notistack'
 
 // Gatsby
 import { useStaticQuery, graphql } from 'gatsby'
 
 // API
-import axios from 'axios'
+import { GetUser } from '../../api/user'
 
 // Constants
 import { KEYS } from '../../constants/localStorage'
@@ -27,6 +28,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       query {
         site {
           siteMetadata {
+            protocol
             server
             port
           }
@@ -35,21 +37,32 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     `
   )
 
+  const { enqueueSnackbar } = useSnackbar()
   const [mode, setMode] = useState(MODES.loading)
+  const [token] = useLocalStorage(KEYS.jwt)
 
-  const [value] = useLocalStorage(KEYS.jwt)
+  async function init(token) {
+    const results = await GetUser({
+      protocol: site.siteMetadata.protocol,
+      server: site.siteMetadata.server,
+      port: site.siteMetadata.port
+    }, {
+      token
+    })
 
-  function getUserInfo(token) {
-    axios.get(`http://${site.siteMetadata.server}:${site.siteMetadata.port}/users/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((res) => {
-      const { data } = res
-      // Extract needed info
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
+
+    if(results.type === 'success') {
+      const { data } = results
+
       const user = {
         auth: {
-          token
+          token,
+          id: data.id
         },
         info: {
           firstName: data['first_name'],
@@ -74,15 +87,14 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       })
 
       setMode(MODES.show)
-    }).catch(e => {
-      console.log(e)
+    } else {
       navigate("/profile/login")
-    })
+    }
   }
 
   useEffect(() => {
-    if(value) {
-      getUserInfo(value)
+    if(token) {
+      init(token)
     } else {
       navigate("/profile/login")
     }
