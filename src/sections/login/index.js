@@ -1,7 +1,4 @@
-import React, { useState, useCallback } from 'react'
-
-// Components
-import NotificationCenter from '../../components/notifications'
+import React, { useCallback } from 'react'
 
 // Components
 import LoginMode from './components/login'
@@ -39,13 +36,6 @@ const LoginSection = () => {
     `
   )
 
-  // Notifications
-  const [notis, setNotis] = useState([])
-
-  function _removeNoti(id) {
-    setNotis(notis.filter(v => v.id !== id))
-  }
-
   /**
    * NOTE:
    * =====
@@ -61,7 +51,6 @@ const LoginSection = () => {
         return (
           <LoginMode
             site={site}
-            setNotis={setNotis}
           />
         )
       }
@@ -70,7 +59,6 @@ const LoginSection = () => {
         return (
           <EmailMode
             site={site}
-            setNotis={setNotis}
           />
         )
       }
@@ -79,7 +67,6 @@ const LoginSection = () => {
         return (
           <Resend
             site={site}
-            setNotis={setNotis}
           />
         )
       }
@@ -88,7 +75,6 @@ const LoginSection = () => {
         return (
           <PasswordMode
             site={site}
-            setNotis={setNotis}
           />
         )
       }
@@ -97,7 +83,6 @@ const LoginSection = () => {
         return (
           <LoginMode
             site={site}
-            setNotis={setNotis}
           />
         )
       }
@@ -106,10 +91,6 @@ const LoginSection = () => {
 
   return (
     <>
-      <NotificationCenter
-        notifications={notis}
-        removeNoti={_removeNoti}
-      />
       <section
         className={styles['loginSection']}
       >

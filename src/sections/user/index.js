@@ -16,15 +16,12 @@ import {
   AccountBalanceWalletOutlined
  } from '@material-ui/icons'
 
-// Components
-import Notifications from '../../components/notifications'
 
 // Tabs
 import Info from './tabs/info'
 import Shipping from './tabs/shipping'
 import Settings from './tabs/settings'
 import Purchases from './tabs/purchases'
-
 
 // Constants
 import { USER_TABS } from '../../constants/profile'
@@ -71,11 +68,6 @@ const User = () => {
     <section
       className={styles['userSection']}
     >
-      <Notifications
-        notifications={notis}
-        removeNoti={_removeNoti}
-      />
-
       <div
         className={styles['userContainer']}
       >

@@ -66,7 +66,12 @@ async function Login({
       type: 'success',
       data,
       // Not needed since the client will be redirected
-      notis: []
+      notis: [
+        {
+          id: Math.random(),
+          message: 'Login successful'
+        }
+      ]
     }
   } catch(e) {
     return {
@@ -127,7 +132,12 @@ async function ResetPassword({
       type: 'success',
       data,
       // Not needed since the client will be redirected
-      notis: []
+      notis: [
+        {
+          id: Math.random(),
+          message: 'Password reset, you can now login'
+        }
+      ]
     }
   } catch(e) {
     return {

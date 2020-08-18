@@ -16,7 +16,7 @@ $breakpoint-1: 700;
 
     .tabHeader {
       position: sticky;
-      top: #{$navbarHeightNormal}px;
+      top: #{$navbarHeightNormal + $margin}px;
       border-right: 1px solid rgba($dark, 0.25);
       background-color: $light;
       z-index: 999;

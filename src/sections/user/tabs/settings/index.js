@@ -26,8 +26,7 @@ import styles from './styles.module.scss'
 
 const Settings = props => {
   const {
-    site,
-    setNotis,
+    site
   } = props
 
   const [submitting, setSubmitting] = useState(false) 
@@ -46,48 +45,48 @@ const Settings = props => {
   }
 
   function resetPass() {
-    setSubmitting(true)
+    // setSubmitting(true)
 
-    axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/forgot-password`, {
-      email: info.email
-    }).then(() => {
-      setNotis([{
-        id: Math.random(),
-        title: 'Success',
-        type: 'success',
-        message: 'Please check your email for the reset link.'
-      }])
+    // axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/forgot-password`, {
+    //   email: info.email
+    // }).then(() => {
+    //   setNotis([{
+    //     id: Math.random(),
+    //     title: 'Success',
+    //     type: 'success',
+    //     message: 'Please check your email for the reset link.'
+    //   }])
 
-      setSubmitting(false)
-    }).catch((e) => {
-      // Client error to server
-      if(e.response) {
-        const errors = e.response?.data?.message[0]?.messages
+    //   setSubmitting(false)
+    // }).catch((e) => {
+    //   // Client error to server
+    //   if(e.response) {
+    //     const errors = e.response?.data?.message[0]?.messages
 
-        const listOfErrors = []
+    //     const listOfErrors = []
         
-        for(let i = 0; i < errors?.length; i++) {
-          listOfErrors.push({
-            id: errors[i].id,
-            title: 'Error',
-            type: 'error',
-            message: errors[i].message
-          })
-        }
+    //     for(let i = 0; i < errors?.length; i++) {
+    //       listOfErrors.push({
+    //         id: errors[i].id,
+    //         title: 'Error',
+    //         type: 'error',
+    //         message: errors[i].message
+    //       })
+    //     }
 
-        setNotis(listOfErrors)
-      } else {
-        // unhandled Errors
-        setNotis([{
-          id: Math.random(),
-          title: 'Error',
-          type: 'error',
-          message: e.message
-        }])
-      }
+    //     setNotis(listOfErrors)
+    //   } else {
+    //     // unhandled Errors
+    //     setNotis([{
+    //       id: Math.random(),
+    //       title: 'Error',
+    //       type: 'error',
+    //       message: e.message
+    //     }])
+    //   }
       
-      setSubmitting(false)
-    })
+    //   setSubmitting(false)
+    // })
   }
 
   return (

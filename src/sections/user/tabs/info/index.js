@@ -14,9 +14,10 @@ import { dispatch, useGlobalState } from '../../../../state/profile'
 
 // Hooks
 import { useForm } from 'react-hook-form'
+import { useSnackbar } from 'notistack'
 
 // API
-import axios from 'axios'
+import { UpdateUser } from '../../../../api/user'
 
 // Schema
 import { yupResolver } from '@hookform/resolvers'
@@ -37,8 +38,8 @@ const infoSchema = yup.object().shape({
 
 /**
  * TODO: validate more field more rigid
+ *       ! DO THIS ON THE SERVER !
  */
-
 const Info = () => {
   // Meta info
   const { site } = useStaticQuery(
@@ -46,6 +47,7 @@ const Info = () => {
       query {
         site {
           siteMetadata {
+            protocol
             server
             port
           }
@@ -53,6 +55,8 @@ const Info = () => {
       }
     `
   )
+
+  const { enqueueSnackbar } = useSnackbar()
 
   const [info] = useGlobalState('info')
   const [auth] = useGlobalState('auth')
@@ -71,48 +75,58 @@ const Info = () => {
     }
   })
 
-  function _handleSubmit(data) {
+  async function _handleSubmit(info) {
+    const {
+      firstName,
+      lastName,
+      phone
+    } = info
+
+    const { token } = auth
+
     setSubmitting(true)
 
-    // Data construction
-    const dataToSubmit = {
-      'first_name': data.firstName,
-      'last_name': data.lastName,
-      'phone': data.phone
+    const submitData = {
+      'first_name': firstName,
+      'last_name': lastName,
+      'phone': phone
     }
-    
-    axios.put(`http://${site.siteMetadata.server}:${site.siteMetadata.port}/users/me`, { ...dataToSubmit }, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      }
-    }).then (res => {
-      // v always returns the current user values
-      const { data } = res
 
-      const reData = {
+
+    const results = await UpdateUser({
+      protocol: site.siteMetadata.protocol,
+      server: site.siteMetadata.server,
+      port: site.siteMetadata.port
+    }, { token }, {
+      dataToSubmit: submitData
+    })
+
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
+
+    if(results.type === 'success') {
+      const { data } = results
+
+      const newData = {
         firstName: data['first_name'],
         lastName: data['last_name'],
-        phone: data['phone']
+        phone: data['phone'],
       }
 
-      // Success update state
+      reset(newData)
+
       dispatch({
         type: PROFILE_ACTIONS.updateInfo,
-        ...reData
+        ...newData
       })
 
-      // Update the form defaults!
-      reset(reData)
-      
       setEditMode(false)
-      setSubmitting(false)
-    }).catch(e => {
-      alert('Could Not Update')
-      console.log(e.response)
+    }
 
-      setEditMode(false)
-      setSubmitting(false)
-    })
+    setSubmitting(false)
   }
 
   function OpenEditMode() {

@@ -3,6 +3,7 @@ import axios from 'axios'
 // Error Handling
 import { SanitizeErrors } from '../sanitizers'
 
+
 async function GetUser({
   server,
   protocol,
@@ -31,6 +32,39 @@ async function GetUser({
   }
 }
 
+async function UpdateUser({
+  server,
+  protocol,
+  port
+}, { token }, { dataToSubmit }) {
+  try {
+    const { data } = await axios.put(`${protocol}://${server}:${port}/users/me`, {
+      ...dataToSubmit
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    
+    return {
+      type: 'success',
+      data,
+      notis: [
+        {
+          id: Math.random(),
+          message: 'Your account has been updated.'
+        }
+      ]
+    }
+
+  } catch(e) {
+    return {
+      type: 'error',
+      notis: SanitizeErrors(e)
+    }
+  }
+}
+
 async function GetPurchaseHistory({
   server,
   protocol,
@@ -42,41 +76,8 @@ async function GetPurchaseHistory({
 
 }
 
-async function UpdateUserInfo({
-  server,
-  protocol,
-  port
-}, {
-  firstName,
-  lastName,
-  phone
-}) {
-
-}
-
-async function UpdateUserShipping({
-  server,
-  protocol,
-  port
-}, {
-  steet,
-  suburb,
-  postCode,
-  province
-}) {
-
-}
-
-async function UpdateUserSettings({
-  server,
-  protocol,
-  port
-}, {
-  newsletter
-}) {
-
-}
-
 export {
-  GetUser
+  GetUser,
+  UpdateUser,
+  GetPurchaseHistory
 }

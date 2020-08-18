@@ -14,9 +14,10 @@ import { dispatch, useGlobalState } from '../../../../state/profile'
 
 // Hooks
 import { useForm } from 'react-hook-form'
+import { useSnackbar } from 'notistack'
 
 // API
-import axios from 'axios'
+import { UpdateUser } from '../../../../api/user'
 
 // Schema
 import { yupResolver } from '@hookform/resolvers'
@@ -54,6 +55,7 @@ const Shipping = () => {
       query {
         site {
           siteMetadata {
+            protocol
             server
             port
           }
@@ -61,6 +63,8 @@ const Shipping = () => {
       }
     `
   )
+
+  const { enqueueSnackbar } = useSnackbar()
 
   const [shipping] = useGlobalState('shipping')
   const [auth] = useGlobalState('auth')
@@ -82,53 +86,64 @@ const Shipping = () => {
     }
   })
 
-  function _handleSubmit(data) {
+  async function _handleSubmit(data) {
+    const {
+      street,
+      suburb,
+      postCode,
+      province,
+      country
+    } = data
+
+    const { token } = auth
+
     setSubmitting(true)
 
-    // Data construction
-    const dataToSubmit = {
+    const submitData = {
       'address': {
-        'street': data.street,
-        'suburb': data.suburb,
-        'post_code': data.postCode,
-        'province': data.province,
-        'country': data.country,
+        'street': street,
+        'suburb': suburb,
+        'post_code': postCode,
+        'province': province,
+        'country': country
       }
     }
-    
-    axios.put(`http://${site.siteMetadata.server}:${site.siteMetadata.port}/users/me`, { ...dataToSubmit }, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      }
-    }).then (res => {
-      // v always returns the current user values
-      const { data } = res
 
-      const reData = {
-        street: data.address?.street,
-        suburb: data.address?.suburb,
-        postCode: data.address?.['post_code'],
-        province: data.address?.province,
-        country: data.address?.country,
+    const results = await UpdateUser({
+      protocol: site.siteMetadata.protocol,
+      server: site.siteMetadata.server,
+      port: site.siteMetadata.port
+    }, { token }, {
+      dataToSubmit: submitData
+    })
+
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
+
+    if(results.type === 'success') {
+      const { data } = results
+
+      const newData = {
+        street: data.address.street,
+        suburb: data.address.suburb,
+        postCode: data.address['post_code'],
+        province: data.address.province,
+        country: data.address.country
       }
+      reset(newData)
 
       dispatch({
         type: PROFILE_ACTIONS.updateShipping,
-        ...reData
+        ...newData
       })
 
-      // Update the form defaults!
-      reset(reData)
-
       setEditMode(false)
-      setSubmitting(false)
-    }).catch(e => {
-      alert('Could Not Update')
-      console.log(e.response)
+    }
 
-      setEditMode(false)
-      setSubmitting(false)
-    })
+    setSubmitting(false)
   }
 
   function OpenEditMode() {
