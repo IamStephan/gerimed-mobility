@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 // Hooks
-import { useLocalStorage, useTimeoutFn } from 'react-use'
+import { useLocalStorage } from 'react-use'
 import { useSnackbar } from 'notistack'
 
 // Gatsby
@@ -24,7 +24,7 @@ import { dispatch } from '../../state/profile'
 // Gatsby
 import { navigate } from "gatsby"
 
-const STALE_LOAD_TIMEOUT = 2000
+const STALE_LOAD_TIMEOUT = 1500
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   // Meta info
@@ -46,11 +46,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const [mode, setMode] = useState(MODES.loading)
   const [token] = useLocalStorage(KEYS.jwt)
 
-  const [checkForStaleLoad, cancelStaleLoadCheck] = useTimeoutFn(staleLoading, STALE_LOAD_TIMEOUT)
-
-  function staleLoading() {
-    setMode(MODES.staleLoad)
-  }
 
   async function init(token) {
     const results = await GetUser({
@@ -68,7 +63,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     })
 
     if(results.type === 'success') {
-      cancelStaleLoadCheck()
       const { data } = results
 
       const user = {
@@ -107,11 +101,29 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   useEffect(() => {
     if(token) {
       init(token)
-      checkForStaleLoad()
     } else {
       navigate("/profile/login")
     }
   }, [])
+
+  useEffect(() => {
+    let timeOutFunc
+
+    if(mode === MODES.loading) {
+      timeOutFunc = setTimeout(() => {
+        setMode(MODES.staleLoad)
+      }, STALE_LOAD_TIMEOUT)
+    }
+
+    // If the mode changes
+    return () => {
+      if(timeOutFunc) {
+        clearTimeout(timeOutFunc)
+        timeOutFunc = null
+      }
+      
+    }
+  }, [mode])
 
   switch(mode) {
     case MODES.loading: {
