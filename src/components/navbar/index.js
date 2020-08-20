@@ -15,10 +15,14 @@ import Drawer from '../drawer'
 import { Button, IconButton } from '@material-ui/core'
 import { ShoppingCartOutlined, AccountCircleOutlined, Menu } from '@material-ui/icons'
 
+// State
+import { dispatch } from '../../state/navbar'
+
 // Constants
 import { PAGES } from '../../constants/pages'
 import { MODE } from '../../constants/navbar'
 import { KEYS } from '../../constants/localStorage'
+import { NAV_BAR_ACTIONS } from '../../constants/state'
 
 // Styles
 import styles from './styles.module.scss'
@@ -41,21 +45,28 @@ const DummyScrollDetector = props => {
     navMode
   } = props
 
+  /**
+   * NOTE:
+   * =====
+   * Handles navbar peeking and modifies it
+   */
   const {
     direction,
     relativeDistance
   } = useScrollData()
 
+  
   useEffect(() => {
     // For scrolling Down
-    console.log(direction)
-
     if(
       (direction.y === 'down' && !peekHide) &&
       (relativeDistance.y > PEEK_HIDE_TRIGGER_DISTANCE) &&
       (navMode === MODE.normal)
     ) {
       setPeekHide(true)
+      dispatch({
+        type: NAV_BAR_ACTIONS.hideNavbarpeek
+      })
     }
 
     // For scrolling up
@@ -65,6 +76,17 @@ const DummyScrollDetector = props => {
       (navMode === MODE.normal)
     ) {
       setPeekHide(false)
+      dispatch({
+        type: NAV_BAR_ACTIONS.peekNavbar
+      })
+    }
+
+    // Safety Check
+    if(peekHide && MODE.normal !== navMode) {
+      setPeekHide(false)
+      dispatch({
+        type: NAV_BAR_ACTIONS.peekNavbar
+      })
     }
 
   }, [relativeDistance])

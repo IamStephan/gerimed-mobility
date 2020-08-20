@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 // Gatsby
 import { useStaticQuery, graphql } from 'gatsby'
 
+// State
+import { useGlobalState } from '../../state/navbar'
+
 // Hooks
 import { useMedia } from 'react-use'
 
@@ -51,6 +54,7 @@ const User = () => {
   )
   
   const [tab, setTab] = useState(USER_TABS.info)
+  const [peeking] = useGlobalState('navbarPeek')
 
   // Using a fixed value since initial loads dont work with dynamic values
   const verticalTabs = useMedia('(max-width: 700px)')
@@ -70,7 +74,7 @@ const User = () => {
           value={tab}
         >
           <TabList
-            className={styles['tabHeader']}
+            className={`${styles['tabHeader']} ${!peeking ? styles['pushHeader'] : ''}`}
             orientation={verticalTabs ? 'horizontal' : 'vertical'}
             variant='fullWidth'
             onChange={_handleChange}
