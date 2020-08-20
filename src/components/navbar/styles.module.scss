@@ -31,7 +31,7 @@ $breakpoint-2: 750;
   transform: translateY(0%);
   display: flex;
   align-items: center;
-  z-index: 998;
+  z-index: 9999;
   border-radius: 0px;
   will-change: height, background-color, transform;
   transition:
