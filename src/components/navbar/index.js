@@ -1,27 +1,76 @@
-import React, { useState } from 'react'
-import t from 'prop-types'
+import React, { useState, useEffect } from 'react'
 
 // Hooks
-import { useMedia } from 'react-use'
+import { useMedia, useLocalStorage } from 'react-use'
+import { useScrollData } from 'scroll-data-hook'
 
 // Gatsby
 import { Link, useStaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image/withIEPolyfill'
 
-// SVGs
-import Logo from '../../svg/logo_green.svg'
+// Components
+import Drawer from '../drawer'
 
 // Material
-import { Button, IconButton, ButtonGroup } from '@material-ui/core'
+import { Button, IconButton } from '@material-ui/core'
 import { ShoppingCartOutlined, AccountCircleOutlined, Menu } from '@material-ui/icons'
-
-// Styles
-import styles from './styles.module.scss'
 
 // Constants
 import { PAGES } from '../../constants/pages'
 import { MODE } from '../../constants/navbar'
+import { KEYS } from '../../constants/localStorage'
 
+// Styles
+import styles from './styles.module.scss'
+
+const PEEK_HIDE_TRIGGER_DISTANCE = 250
+
+/**
+ * NOTE:
+ * =====
+ * Use this to prevent the entire nav tree from
+ * rerendering on every frame
+ * 
+ * (Should test if this is realy the case)
+ */
+
+const DummyScrollDetector = props => {
+  const {
+    setPeekHide,
+    peekHide,
+    navMode
+  } = props
+
+  const {
+    direction,
+    relativeDistance
+  } = useScrollData()
+
+  useEffect(() => {
+    // For scrolling Down
+    console.log(direction)
+
+    if(
+      (direction.y === 'down' && !peekHide) &&
+      (relativeDistance.y > PEEK_HIDE_TRIGGER_DISTANCE) &&
+      (navMode === MODE.normal)
+    ) {
+      setPeekHide(true)
+    }
+
+    // For scrolling up
+    if(
+      (direction.y === 'up' && peekHide) &&
+      (relativeDistance.y > PEEK_HIDE_TRIGGER_DISTANCE) &&
+      (navMode === MODE.normal)
+    ) {
+      setPeekHide(false)
+    }
+
+  }, [relativeDistance])
+
+  return null
+}
 
 const NormalButton = props => {
   const {
@@ -53,6 +102,12 @@ const NormalButton = props => {
  *  - move the icons to the drawer on mobile deviecs
  */
 
+ /**
+  * Declaring this here since the component
+  * will not have the value on initial load
+  */
+const BREAKPOINT_TWO = 750
+
 const Navbar = props => {
   const data = useStaticQuery(graphql`
     query {
@@ -71,14 +126,22 @@ const Navbar = props => {
     navMode
   } = props
 
-  const [ isModalVisible, setIsMobileVisible ] = useState(false)
+  const [token] = useLocalStorage(KEYS.jwt)
 
-  const breakpointTwo = useMedia(`(max-width: ${Number(styles.breakpointTwo)}px)`)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [peekHide, setPeekHide] = useState(false)
+
+  const breakpointTwo = useMedia(`(max-width: ${BREAKPOINT_TWO}px)`)
 
   return (
     <>
+      <DummyScrollDetector
+        setPeekHide={setPeekHide}
+        peekHide={peekHide}
+        navMode={navMode}
+      />
       <nav
-        className={`${styles['navbar']} ${styles[navMode]}`}
+        className={`${styles['navbar']} ${styles[navMode]} ${peekHide ? styles['peek'] : null}`}
       >
         <div
           className={styles['container']}
@@ -98,170 +161,111 @@ const Navbar = props => {
               />
             </Link>
           </div>
+
           {
+            // Actual links
+            // Desktop
             !breakpointTwo ? (
+              <>
+                <ol
+                  className={styles['links']}
+                >
+                  <li>
+                    <NormalButton
+                      active={page === PAGES.shop}
+                      navMode={navMode}
+                      to='/shop'
+                    >
+                      Shop
+                    </NormalButton>
+                  </li>
+                  <li>
+                    <NormalButton
+                      active={page === PAGES.about}
+                      navMode={navMode}
+                      to='/about'
+                    >
+                      About Us
+                    </NormalButton>
+                  </li>
+                  <li>
+                    <NormalButton
+                      active={page === PAGES.contact}
+                      navMode={navMode}
+                      to='/contact'
+                    >
+                      Contact
+                    </NormalButton>
+                  </li>
+                  <li>
+                    <NormalButton
+                      active={page === PAGES.policy}
+                      navMode={navMode}
+                      to='/policy'
+                    >
+                      Policies
+                    </NormalButton>
+                  </li>
+                </ol>
+
+                <ol
+                  className={styles['actions']}
+                >
+                  <li>
+                    <IconButton
+                      className={styles['iconButton']}
+                      isableElevation
+                      color='primary'
+                      component={Link}
+                      to='/profile'
+                    >
+                      <AccountCircleOutlined />
+                    </IconButton>
+                  </li>
+                  <li>
+                    <IconButton
+                      className={styles['iconButton']}
+                      disableElevation
+                      color='primary'
+                    >
+                      <ShoppingCartOutlined />
+                    </IconButton>
+                  </li>
+                </ol>
+              </>
+            ) : (
               <ol
-                className={styles['links']}
+                className={styles['actions']}
               >
-                <li>
-                  <NormalButton
-                    active={page === PAGES.shop}
-                    navMode={navMode}
-                    to='/shop'
-                  >
-                    Shop
-                  </NormalButton>
-                </li>
-                <li>
-                  <NormalButton
-                    active={page === PAGES.about}
-                    navMode={navMode}
-                    to='/about'
-                  >
-                    About Us
-                  </NormalButton>
-                </li>
-                <li>
-                  <NormalButton
-                    active={page === PAGES.contact}
-                    navMode={navMode}
-                    to='/contact'
-                  >
-                    Contact
-                  </NormalButton>
-                </li>
-                <li>
-                  <NormalButton
-                    active={page === PAGES.policy}
-                    navMode={navMode}
-                    to='/policy'
-                  >
-                    Policies
-                  </NormalButton>
-                </li>
-              </ol>
-
-            ) : null
-          }
-          
-          <ol
-            className={styles['actions']}
-          >
-            <li>
-              <IconButton
-                className={styles['iconButton']}
-                isableElevation
-                color='primary'
-                component={Link}
-                to='/profile'
-              >
-                <AccountCircleOutlined />
-              </IconButton>
-            </li>
-            <li>
-              <IconButton
-                className={styles['iconButton']}
-                disableElevation
-                color='primary'
-              >
-                <ShoppingCartOutlined />
-              </IconButton>
-            </li>
-
-            {
-              breakpointTwo ? (
                 <li>
                   <IconButton
                     className={styles['iconButton']}
                     disableElevation
                     color='primary'
-                    onClick={() => setIsMobileVisible(true)}
+                    onClick={() => setIsDrawerOpen(true)}
                   >
                     <Menu />
                   </IconButton>
-              </li>
-              ) : null
-            }
-          </ol>
+                </li>
+              </ol>
+            )
+          }
         </div>
-        
-        {
-          breakpointTwo ? (
-            <div
-              className={`${styles['modalNav']} ${styles[isModalVisible ? 'open' : 'close']}`}
-            >
-              <div
-                className={styles['dimmer']}
-                onClick={() => setIsMobileVisible(false)}
-                role='closeMenulogin'
-              />
-
-              <div
-                className={styles['menu']}
-              >
-                <Link
-                  to='/'
-                >
-                  <Logo
-                    className={styles['logo']}
-                  />
-                </Link>
-                
-
-                <ButtonGroup
-                  orientation='vertical'
-                  color='secondary'
-                  className={styles['linkGroup']}
-                >
-                  <Button
-                    component={Link}
-                    disableElevation
-                    to='/shop'
-                    variant={page === PAGES.shop ? 'contained' : 'outlined'}
-                  >
-                    Shop
-                  </Button>
-
-                  <Button
-                    component={Link}
-                    disableElevation
-                    to='/about'
-                    variant={page === PAGES.about ? 'contained' : 'outlined'}
-                  >
-                    About
-                  </Button>
-
-                  <Button
-                    component={Link}
-                    disableElevation
-                    to='/contact'
-                    variant={page === PAGES.contact ? 'contained' : 'outlined'}
-                  >
-                    Contact
-                  </Button>
-
-                  <Button
-                    component={Link}
-                    disableElevation
-                    to='/policy'
-                    variant={page === PAGES.policy ? 'contained' : 'outlined'}
-                  >
-                    Policy
-                  </Button>
-                </ButtonGroup>
-              </div>
-            </div>
-          ) : null
-        }
-
       </nav>
+      
+      {
+        breakpointTwo ? (
+          <Drawer
+            open={isDrawerOpen}
+            setOpen={setIsDrawerOpen}
+            page={page}
+            token={token}
+          />
+        ) : null
+      }
     </>
 
   )
-}
-
-Navbar.propTypes = {
-  navMode: t.oneOf([...Object.values(MODE)])
 }
 
 Navbar.default = {
