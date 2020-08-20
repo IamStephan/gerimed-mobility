@@ -71,8 +71,8 @@ $breakpoint-2: 750;
 
     .logo {
       .img {
-        transition: height #{$animDur}ms ease-in-out;
         will-change: height;
+        transition: height #{$animDur}ms ease-in-out;
         height: #{$navbarHeightNormal - ($margin * 2)}px;
       }
     }
