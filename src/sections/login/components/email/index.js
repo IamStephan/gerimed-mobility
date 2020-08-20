@@ -11,7 +11,7 @@ import * as yup from 'yup'
 import { Link } from 'gatsby'
 
 // Material
-import { TextField, Button, Typography } from '@material-ui/core'
+import { TextField, Button, Typography, LinearProgress } from '@material-ui/core'
 
 // Hooks
 import { useForm } from 'react-hook-form'
@@ -71,6 +71,18 @@ const EmailMode = props => {
     <div
       className={styles['emailContainer']}
     >
+      {
+        submitting ? (
+          <div>
+            <LinearProgress
+              color='secondary'
+            />
+
+            <br/>
+          </div>
+        ): null
+      }
+
       <div
         className={styles['logoContainer']}
       >
@@ -108,6 +120,7 @@ const EmailMode = props => {
             name='email'
             variant='outlined'
             color='secondary'
+            disabled={submitting}
             error={errors.email}
             helperText={errors.email?.message}
             required

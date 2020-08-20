@@ -8,6 +8,7 @@
   .main {
     // Ensure the footer is always stuck at the bottom
     flex: 1;
+    position: relative;
     background-color: $light;
   }
 }

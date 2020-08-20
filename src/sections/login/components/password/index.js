@@ -17,7 +17,7 @@ import { parse } from 'query-string'
 import { Link, navigate } from 'gatsby'
 
 // Material
-import { TextField, Button, Divider, Typography } from '@material-ui/core'
+import { TextField, Button, Divider, Typography, LinearProgress } from '@material-ui/core'
 
 // Hooks
 import { useForm } from 'react-hook-form'
@@ -98,6 +98,16 @@ const PasswordMode = props => {
     <div
       className={styles['passwordContainer']}
     >
+      {
+        submitting ? (
+          <div>
+            <LinearProgress
+              color='secondary'
+            />
+            <br />
+          </div>
+        ) : null
+      }
       <div
         className={styles['logoContainer']}
       >
@@ -135,6 +145,7 @@ const PasswordMode = props => {
             name='password'
             variant='outlined'
             color='secondary'
+            disabled={submitting}
             error={errors.password}
             helperText={errors.password?.message}
             required
@@ -151,6 +162,7 @@ const PasswordMode = props => {
             name='confirmPassword'
             variant='outlined'
             color='secondary'
+            disabled={submitting}
             error={errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
             required
@@ -184,6 +196,7 @@ const PasswordMode = props => {
           color='secondary'
           component={Link}
           to='/profile/login'
+          disabled={submitting}
           fullWidth
         >
           Login

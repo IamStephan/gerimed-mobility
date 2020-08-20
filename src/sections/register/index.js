@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-
 // SVGs
 import Logo from '../../svg/logo_green.svg'
 
@@ -15,7 +14,7 @@ import * as yup from 'yup'
 import { Link, useStaticQuery, graphql } from 'gatsby'
 
 // Material
-import { TextField, Button, Divider, Typography } from '@material-ui/core'
+import { TextField, Button, Divider, Typography, LinearProgress } from '@material-ui/core'
 
 // API
 import { Register } from '../../api/auth'
@@ -108,9 +107,21 @@ const RegisterSection = () => {
       <section
         className={styles['registerSection']}
       >
+        
         <div
           className={styles['registerContainer']}
         >
+          {
+            submitting ? (
+              <div>
+                <LinearProgress
+                  color='secondary'
+                />
+                <br />
+              </div>
+            ) : null
+          }
+
           <div
             className={styles['logoContainer']}
           >
@@ -147,6 +158,7 @@ const RegisterSection = () => {
                 name='firstName'
                 variant='outlined'
                 color='secondary'
+                disabled={submitting}
                 error={errors.firstName}
                 helperText={errors.firstName?.message}
                 required
@@ -162,6 +174,7 @@ const RegisterSection = () => {
                 name='lastName'
                 variant='outlined'
                 color='secondary'
+                disabled={submitting}
                 error={errors.lastName}
                 helperText={errors.lastName?.message}
                 required
@@ -178,6 +191,7 @@ const RegisterSection = () => {
                 name='email'
                 variant='outlined'
                 color='secondary'
+                disabled={submitting}
                 error={errors.email}
                 helperText={errors.email?.message}
                 required
@@ -194,6 +208,7 @@ const RegisterSection = () => {
                 name='password'
                 variant='outlined'
                 color='secondary'
+                disabled={submitting}
                 error={errors.password}
                 helperText={errors.password?.message}
                 required
@@ -210,6 +225,7 @@ const RegisterSection = () => {
                 name='confirmPassword'
                 variant='outlined'
                 color='secondary'
+                disabled={submitting}
                 error={errors.confirmPassword}
                 helperText={errors.confirmPassword?.message}
                 required
@@ -244,6 +260,7 @@ const RegisterSection = () => {
               component={Link}
               to='/profile/login'
               fullWidth
+              disabled={submitting}
             >
               Login
             </Button>

@@ -7,6 +7,9 @@ import { useSnackbar } from 'notistack'
 // Gatsby
 import { useStaticQuery, graphql } from 'gatsby'
 
+// Pages
+import Loader from '../../pages/loader'
+
 // API
 import { GetUser } from '../../api/user'
 
@@ -102,7 +105,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
   switch(mode) {
     case MODES.loading: {
-      return null
+      return <Loader />
     }
 
     case MODES.show: {

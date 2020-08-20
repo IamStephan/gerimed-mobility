@@ -11,7 +11,7 @@ import * as yup from 'yup'
 import { Link, navigate } from 'gatsby'
 
 // Material
-import { TextField, Button, Divider, Typography, ButtonGroup } from '@material-ui/core'
+import { TextField, Button, Divider, Typography, ButtonGroup, LinearProgress } from '@material-ui/core'
 
 // Hooks
 import { useLocalStorage } from 'react-use'
@@ -89,6 +89,17 @@ const LoginMode = props => {
     <div
       className={styles['loginContainer']}
     >
+      {
+        submitting ? (
+          <div>
+            <LinearProgress
+              color='secondary'
+            />
+            <br />
+          </div>
+        ) : null
+      }
+
       <div
         className={styles['logoContainer']}
       >
@@ -126,6 +137,7 @@ const LoginMode = props => {
             name='identifier'
             variant='outlined'
             color='secondary'
+            disabled={submitting}
             error={errors.identifier}
             helperText={errors.identifier?.message}
             required
@@ -141,7 +153,7 @@ const LoginMode = props => {
             label='Password'
             name='password'
             variant='outlined'
-            color='secondary'
+            color='secondary'disabled={submitting}
             error={errors.password}
             helperText={errors.password?.message}
             required
@@ -174,6 +186,7 @@ const LoginMode = props => {
           variant='outlined'
           color='secondary'
           component={Link}
+          disabled={submitting}
           to='/profile/register'
           fullWidth
         >
@@ -188,6 +201,7 @@ const LoginMode = props => {
           orientation='vertical'
           fullWidth
           variant='text'
+          disabled={submitting}
         >
           <Button
             color='secondary'
