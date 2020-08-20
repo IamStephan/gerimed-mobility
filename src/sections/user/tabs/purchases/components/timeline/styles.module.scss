@@ -8,11 +8,11 @@ $item-width: 225;
 $item-height: $item-width / $aspect-ratio;
 $chip-height: 32;
 
+$item-total-height: ($chip-height + ($margin * 2)) + ($item-height + ($padding * 4));
+
 .timeline {
   //border: 1px red solid;
   position: relative;
-  height: #{($chip-height + ($padding * 2)) + ($item-height + ($padding * 4))}px;
-  overflow-x: hidden;
 
   .viewport {
     //border: 1px pink solid;
@@ -20,7 +20,7 @@ $chip-height: 32;
     position: absolute;
     top: 0px;
     left: 0px;
-    height: auto;
+    height: #{$item-total-height}px;
 
     .container {
       //border: 1px blue solid;
@@ -34,9 +34,24 @@ $chip-height: 32;
         position: relative;
 
         .dateView {
-          padding-bottom: #{$padding * 2}px;
+          margin-bottom: #{$margin}px;;
+        }
+
+        .chipView {
+          padding-top: #{$padding * 2}px;
           display: flex;
-          justify-content: center;
+          justify-content: flex-start;
+          align-items: flex-start;
+          position: absolute;
+          width: calc(100% - #{$margin * 2}px);
+          bottom: #{$margin}px;
+          left: #{$margin}px;
+          display: flex;
+          flex-direction: column;
+
+          .customChip {
+            margin-top: #{$margin}px;
+          }
         }
 
         .preview {
@@ -58,15 +73,10 @@ $chip-height: 32;
           }
         }
       }
-
-      .loadAction {
-        display: flex;
-        align-items: center;
-
-        .button {
-          border: 1px solid $secondary;
-        }
-      }
     }
+  }
+
+  .pagination {
+    padding-top: #{$item-total-height + $margin}px;
   }
 }

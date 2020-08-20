@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react'
 
 // Material
-import { Chip, IconButton } from '@material-ui/core'
-import { EventOutlined, NavigateNext, NavigateBefore } from '@material-ui/icons'
+import { Chip } from '@material-ui/core'
+import { EventOutlined, CloudDownloadOutlined } from '@material-ui/icons'
+import { Pagination } from '@material-ui/lab'
+
+// Gatsby
+import { Link } from 'gatsby'
 
 // Components
 import AspectView from '../../../../../../components/aspectView'
@@ -35,6 +39,7 @@ const BASE_ITEM_WIDTH = 225
 const TimelineItem = props => {
   const {
     previewImage,
+    pdfURL,
     date,
     site: {
       siteMetadata: {
@@ -50,19 +55,18 @@ const TimelineItem = props => {
       className={styles['timelineItem']}
     >
       <div
+        className={styles['dateView']}
+      >
+        <Chip
+          icon={<EventOutlined />}
+          label={formatDate(date)}
+          variant='outlined'
+          color='secondary'
+        />
+      </div>
+      <div
         className={styles['preview']}
       >
-        <div
-          className={styles['dateView']}
-        >
-          <Chip
-            icon={<EventOutlined />}
-            label={formatDate(date)}
-            variant='default'
-            color='secondary'
-          />
-        </div>
-
         <AspectView
           className={styles['previewItem']}
           ratio={A4_ASPECT_RATIO}
@@ -72,9 +76,27 @@ const TimelineItem = props => {
         >
           <img
             className={styles['img']}
-            src={`${protocol}://${server}:${port}${previewImage}`}
+            // Only render the first page (The PDF will contain the rest)
+            src={`${protocol}://${server}:${port}${previewImage[0].formats.small.url}`}
           />
         </AspectView>
+
+        <div
+          className={styles['chipView']}
+        >
+          <Chip
+            icon={<CloudDownloadOutlined />}
+            label='Download PDF'
+            className={styles['customChip']}
+            variant='default'
+            color='secondary'
+            clickable
+            component={Link}
+            target='_blank'
+            download
+            to={`${protocol}://${server}:${port}${pdfURL}`}
+          />
+        </div>
       </div>
     </div>
   )
@@ -88,8 +110,7 @@ const TimelineItem = props => {
  */
 const Timeline = props => {
   const {
-    loadOlder,
-    loadNewer,
+    handlePageChange,
     totalPages,
     currentPage,
     invoices,
@@ -99,7 +120,7 @@ const Timeline = props => {
   const [EmblaCarouselReact, embla] = useEmblaCarousel({
     slidesToScroll: 1,
     containScroll: 'keepSnaps',
-    align: 'center'
+    align: 'start'
   })
 
   useEffect(() => {
@@ -120,24 +141,6 @@ const Timeline = props => {
           className={styles['container']}
         >
           {
-            currentPage <= 1 ? null : (
-              <div
-                className={styles['loadAction']}
-              >
-                <IconButton
-                  color='secondary'
-                  className={styles['button']}
-                  onClick={loadNewer}
-                >
-                  <NavigateBefore
-                    fontSize='36px'
-                  />
-                </IconButton>
-              </div>
-            )
-          }
-
-          {
             invoices ? (
               invoices.map((item) => (
                 <TimelineItem
@@ -145,32 +148,27 @@ const Timeline = props => {
                   id={item.id}
                   date={item['updated_at']}
                   site={site}
-                  previewImage={item.preview[0].formats.small.url}
+                  previewImage={item.preview}
+                  pdfURL={item.pdf.url}
                 />
               ))
             ) : null
           }
-
-          {
-            currentPage >= totalPages ? null : (
-              <div
-                className={styles['loadAction']}
-              >
-                <IconButton
-                  color='secondary'
-                  className={styles['button']}
-                  onClick={loadOlder}
-                >
-                  <NavigateNext
-                    fontSize='36px'
-                  />
-                </IconButton>
-              </div>
-            )
-          }
-
         </div>
       </EmblaCarouselReact>
+      <div
+        className={styles['pagination']}
+      >
+        <Pagination
+          color='secondary'
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+
+          siblingCount={1}
+          boundaryCount={1}
+        />
+      </div>
     </div>
   )
 }

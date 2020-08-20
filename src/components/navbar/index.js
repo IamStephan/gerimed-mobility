@@ -46,6 +46,12 @@ const NormalButton = props => {
   )
 }
 
+/**
+ * TODO:
+ *  - convert css animation to js (flip toolkit?)
+ *  - Create a seperate component for the mobile drawer
+ *  - move the icons to the drawer on mobile deviecs
+ */
 
 const Navbar = props => {
   const data = useStaticQuery(graphql`

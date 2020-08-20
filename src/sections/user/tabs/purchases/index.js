@@ -108,36 +108,16 @@ const PurchasesTab = props => {
     }
   }
 
-  async function loadOlder() {
-    // Check if it can increase
-    if(currentPage >= totalPages) return
+  async function handlePageChange(e, page) {
+    // Prevent unnecessary api calls
+    if(currentPage === page) return
 
     setCurrentView(INVOICE_VIEW_STATE.loading)
 
-    // Increase current page
-    const newCurrentPage = currentPage + 1
+    const newCurrentPage = page
 
     // Load new set of invoices and wait
     await loadInvoices((newCurrentPage - 1) * OFFSET_AMOUNT)
-
-    setCurrentPage(newCurrentPage)
-  }
-
-  /**
-   * LOL
-   */
-  async function loadNewer() {
-    // Check if it can decrease
-    if(currentPage <= 1) return
-
-    setCurrentView(INVOICE_VIEW_STATE.loading)
-
-    // Increase current page
-    const newCurrentPage = currentPage - 1
-
-    // Load new set of invoices and wait
-    await loadInvoices((newCurrentPage - 1) * OFFSET_AMOUNT)
-
     setCurrentPage(newCurrentPage)
   }
 
@@ -210,9 +190,7 @@ const PurchasesTab = props => {
             totalPages={totalPages}
             currentPage={currentPage}
 
-            loadOlder={loadOlder}
-            loadNewer={loadNewer}
-
+            handlePageChange={handlePageChange}
             site={site}
           />
         )
