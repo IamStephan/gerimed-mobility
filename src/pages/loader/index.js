@@ -1,26 +1,22 @@
 import React from 'react'
 
-// Components
-import Layout from '../../components/layout'
+// Material
+import { CircularProgress } from '@material-ui/core'
 
-// Constants
-import { PAGES } from '../../constants/pages'
-import { MODE as NAVMODE } from '../../constants/navbar'
-import { MODE as FOOTERMODE } from '../../constants/footer'
+// Styles
+import styles from './styles.module.scss'
 
-// Sections
-import FullPageLoader from '../../sections/fullPageLoader'
-
-const Loader = () => {
+const FullPageLoader = () => {
   return (
-    <Layout
-      page={PAGES.loader}
-      navMode={NAVMODE.normal}
-      footerMode={FOOTERMODE.curve}
+    <section
+      className={styles['fullPageLoader']}
     >
-      <FullPageLoader />
-    </Layout>
+      <CircularProgress
+        color='secondary'
+        size='3rem'
+      />
+    </section>
   )
 }
 
-export default Loader
+export default FullPageLoader

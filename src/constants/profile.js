@@ -1,5 +1,6 @@
 const MODES = {
   loading: 'LOADING',
+  staleLoad: 'STALE_LOAD',
   show: 'SHOW'
 }
 
