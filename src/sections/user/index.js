@@ -51,14 +51,9 @@ const User = () => {
   )
   
   const [tab, setTab] = useState(USER_TABS.info)
-  const [notis, setNotis] = useState([])
 
   // Using a fixed value since initial loads dont work with dynamic values
   const verticalTabs = useMedia('(max-width: 700px)')
-
-  function _removeNoti(id) {
-    setNotis(notis.filter(v => v.id !== id))
-  }
 
   function _handleChange(e, value) {
     setTab(value)
@@ -107,13 +102,17 @@ const User = () => {
             value={USER_TABS.info}
             className={styles['tabPanel']}
           >
-            <Info />
+            <Info
+              site={site}
+            />
           </TabPanel>
           <TabPanel
             value={USER_TABS.shipping}
             className={styles['tabPanel']}
           >
-            <Shipping />
+            <Shipping
+              site={site}
+            />
           </TabPanel>
           <TabPanel
             value={USER_TABS.settings}
@@ -121,14 +120,15 @@ const User = () => {
           >
             <Settings
               site={site}
-              setNotis={setNotis}
             />
           </TabPanel>
           <TabPanel
             value={USER_TABS.purchase}
             className={styles['tabPanel']}
           >
-            <Purchases />
+            <Purchases
+              site={site}
+            />
           </TabPanel>
         </TabContext>
       </div>

@@ -3,9 +3,6 @@ import React, { useState } from 'react'
 // Template
 import TabTemplate from '../../components/tabTemplate'
 
-// Gatbsy
-import { useStaticQuery, graphql } from 'gatsby'
-
 // Constants
 import { PROFILE_ACTIONS } from '../../../../constants/state'
 
@@ -40,21 +37,10 @@ const infoSchema = yup.object().shape({
  * TODO: validate more field more rigid
  *       ! DO THIS ON THE SERVER !
  */
-const Info = () => {
-  // Meta info
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            protocol
-            server
-            port
-          }
-        }
-      }
-    `
-  )
+const Info = props => {
+  const {
+    site
+  } = props
 
   const { enqueueSnackbar } = useSnackbar()
 

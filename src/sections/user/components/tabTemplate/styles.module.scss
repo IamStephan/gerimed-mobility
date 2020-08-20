@@ -7,6 +7,7 @@
 .tab {
   padding-left: #{$padding * 2}px;
   padding-right: #{$padding * 2}px;
+  position: relative;
   
   .title {
     font-weight: bold;
@@ -14,6 +15,7 @@
 
   .content {
     margin-top: #{$margin * 2}px;
+    position: relative;
   }
 }
 

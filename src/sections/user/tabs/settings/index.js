@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 
 // Material
-import { Typography, Button, Switch } from '@material-ui/core'
+import { Typography, Button } from '@material-ui/core'
 
 // Gatsby
 import { navigate } from 'gatsby'
 
 // Hooks
 import { useLocalStorage } from 'react-use'
+import { useSnackbar } from 'notistack'
 
 // Constants
 import { KEYS } from '../../../../constants/localStorage'
@@ -16,7 +17,7 @@ import { KEYS } from '../../../../constants/localStorage'
 import { useGlobalState } from '../../../../state/profile'
 
 // API
-import axios from 'axios'
+import { RequestPasswordReset } from '../../../../api/auth'
 
 // Template
 import TabTemplate from '../../components/tabTemplate'
@@ -33,6 +34,8 @@ const Settings = props => {
   const [v, s, removeToken] = useLocalStorage(KEYS.jwt)
   const [info] = useGlobalState('info')
 
+  const { enqueueSnackbar } = useSnackbar()
+
   /**
    * NOTE:
    * =====
@@ -44,49 +47,24 @@ const Settings = props => {
     navigate('/')
   }
 
-  function resetPass() {
-    // setSubmitting(true)
+  async function resetPass() {
+    setSubmitting(true)
 
-    // axios.post(`${site.siteMetadata.protocol}://${site.siteMetadata.server}:${site.siteMetadata.port}/auth/forgot-password`, {
-    //   email: info.email
-    // }).then(() => {
-    //   setNotis([{
-    //     id: Math.random(),
-    //     title: 'Success',
-    //     type: 'success',
-    //     message: 'Please check your email for the reset link.'
-    //   }])
+    const results = await RequestPasswordReset({
+      protocol: site.siteMetadata.protocol,
+      server: site.siteMetadata.server,
+      port: site.siteMetadata.port
+    }, {
+      email: info.email
+    })
 
-    //   setSubmitting(false)
-    // }).catch((e) => {
-    //   // Client error to server
-    //   if(e.response) {
-    //     const errors = e.response?.data?.message[0]?.messages
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
 
-    //     const listOfErrors = []
-        
-    //     for(let i = 0; i < errors?.length; i++) {
-    //       listOfErrors.push({
-    //         id: errors[i].id,
-    //         title: 'Error',
-    //         type: 'error',
-    //         message: errors[i].message
-    //       })
-    //     }
-
-    //     setNotis(listOfErrors)
-    //   } else {
-    //     // unhandled Errors
-    //     setNotis([{
-    //       id: Math.random(),
-    //       title: 'Error',
-    //       type: 'error',
-    //       message: e.message
-    //     }])
-    //   }
-      
-    //   setSubmitting(false)
-    // })
+    setSubmitting(false)
   }
 
   return (
@@ -96,30 +74,6 @@ const Settings = props => {
       <div
         className={styles['settings']}
       >
-         <div
-          className={styles['row']}
-        >
-          <div
-            className={styles['left']}
-          >
-            <Typography
-              className={styles['caption']}
-            >
-              Newsletter
-            </Typography>
-          </div>
-
-          <div
-            className={styles['right']}
-          >
-            <Switch
-              disabled
-              checked={true}
-              color='secondary'
-            />
-          </div>
-        </div>
-
         <div
           className={styles['row']}
         >

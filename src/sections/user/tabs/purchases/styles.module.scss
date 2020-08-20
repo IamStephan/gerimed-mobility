@@ -1,40 +1,12 @@
-@import '../../../../utils/sizes';
-@import '../../../../utils/colors';
-
-.timeline {
-  display: flex;
-  flex-direction: column;
-  
-  .timelineItem {
-    //background-color: red;
-    margin-bottom: #{$margin * 2}px;
-    display: flex;
-
-    .visual {
-      display: flex;
-      flex-direction: column;
-      align-self: stretch;
-      padding-right: #{$padding * 2}px;
-      align-items: center;
-
-      .line {
-        flex: 1;
-        width: 3px;
-        background-color: rgba($secondary, 0.5);
-        border-radius: 0px 0px 5px 5px;
-      }
-
-      .dot {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 3px solid $secondary;
-      }
-    }
-  }
-}
 
 .alertTitle {
   font-weight: bolder;
 }
 
+.loading {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}

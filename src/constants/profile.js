@@ -17,9 +17,17 @@ const USER_TABS = {
   purchase: 'PURCHASE'
 }
 
+const INVOICE_VIEW_STATE = {
+  loading: 'LOADING',
+  empty: 'EMPTY',
+  error: 'ERROR',
+  show: 'SHOW'
+}
+
 
 export {
   MODES,
   LOGIN_PATHS,
-  USER_TABS
+  USER_TABS,
+  INVOICE_VIEW_STATE
 }

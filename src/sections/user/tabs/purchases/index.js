@@ -1,199 +1,162 @@
 import React, { useState, useEffect } from 'react'
 
 // Material
-import { Alert, AlertTitle, Pagination } from '@material-ui/lab'
-import { Chip, Button } from '@material-ui/core';
-import { EventOutlined, InfoOutlined } from '@material-ui/icons'
-
-// Gatsby
-import { useStaticQuery, graphql } from 'gatsby'
+import { Alert, AlertTitle } from '@material-ui/lab'
+import { Button, CircularProgress } from '@material-ui/core';
+import { InfoOutlined } from '@material-ui/icons'
 
 // Hooks
 import { useLocalStorage } from 'react-use'
-import { useGlobalState } from '../../../../state/profile'
+import { useSnackbar } from 'notistack'
 
 // Constants
 import { KEYS } from '../../../../constants/localStorage'
+import { INVOICE_VIEW_STATE } from '../../../../constants/profile'
 
 // API
-import axios from 'axios'
+import { GetPurchaseHistoryCount, GetPurchaseHistory } from '../../../../api/user'
 
-// Query String
-import { stringify } from 'qs'
+// Components
+import Timeline from './components/timeline'
 
 // Template
 import TabTemplate from '../../components/tabTemplate'
 
 // Styles
-import styles from './styles.module.scss';
+import styles from './styles.module.scss'
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const OFFSET_AMOUNT = 5
 
-function formatDate(date) {
-  const dateObj = new Date(date)
-
-  const day = dateObj.getDate()
-  const month = MONTHS[dateObj.getMonth()]
-  const year = dateObj.getFullYear()
-
-  const hours = dateObj.getHours()
-  const minutes = dateObj.getMinutes()
-
-  return `${day > 9 ? day : '0' + day} ${month} ${year}, ${hours}:${minutes}`
-}
-
-const TimelineItem = props => {
-  return (
-    <div
-      className={styles['timelineItem']}
-    >
-      <div
-        className={styles['visual']}
-      >
-        <div className={styles['dot']} />
-        <div className={styles['line']} />
-      </div>
-
-      <div
-        className={styles['info']}
-      >
-        <Chip
-          icon={<EventOutlined />}
-          label={formatDate(props.date)}
-          variant='outlined'
-          color='secondary'
-        />
-
-        
-      </div>
-    </div>
-  )
-}
-
-const Timeline = props => {
+const PurchasesTab = props => {
   const {
-    handleChange,
-    page,
-    pages,
-    loading,
+    site
   } = props
 
-  return (
-    <div
-      className={styles['timeline']}
-    >
-      <div
-        className={styles['content']}
-      >
-        {props.children}
-      </div>
-      
-      <div
-        className={styles['pagination']}
-      >
-        <Pagination
-          disabled={loading}
-          page={page}
-          count={pages}
-          onChange={handleChange}
-          color='secondary'
-          variant='outlined'  
-        />
-      </div>
-    </div>
-  )
-}
-
-const SKIP_AMOUNT = 10
-
-const PurchasesTab = () => {
-  // Meta info
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            server
-            port
-          }
-        }
-      }
-    `
-  )
+  const { enqueueSnackbar } = useSnackbar()
 
   // Always subtract one when getting invoices
-  const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(true)
-  const [pages, setPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [invoices, setInvoices] = useState([])
 
-  // On initial load assume there are invoices
-  const [hasInvoices, setHasInvoices] = useState(true)
-
-  const [auth] = useGlobalState('auth')
+  const [currentView, setCurrentView] = useState(INVOICE_VIEW_STATE.loading)
 
   const [token] = useLocalStorage(KEYS.jwt)
 
+
   useEffect(() => {
-    getInvoices()
+    // Count the total invoices
+    countMyInvoices()
   }, [])
 
-  async function getInvoices(offset) {
-    
-  }
-
-  async function getInvoiceCount() {
-    const query = stringify({
-      _where: { 'user_eq': auth.id }
+  async function countMyInvoices() {
+    const results = await GetPurchaseHistoryCount({
+      server: site.siteMetadata.server,
+      protocol: site.siteMetadata.protocol,
+      port: site.siteMetadata.port
+    }, {
+      token
     })
 
-    try {
-      const data = await axios.get(`http://${site.siteMetadata.server}:${site.siteMetadata.port}/invoices/count?${query}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
       })
-    } catch (e) {
-
-    }
-    
-    console.log(query)
-    axios.get(`http://${site.siteMetadata.server}:${site.siteMetadata.port}/invoices/count?${query}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((v) => {
-      
-    }).catch((e) => {
-      alert('error items')
-      console.log(e.response)
     })
+
+    if(results.type === 'success') {
+      const { data: { data: amount } } = results
+
+      if(amount > 0) {
+        const totalPages = Math.ceil(amount / OFFSET_AMOUNT)
+
+        setTotalPages(totalPages)
+        loadInvoices(currentPage - 1)
+      } else {
+        setCurrentView(INVOICE_VIEW_STATE.empty)
+      }
+    } else {
+      setCurrentView(INVOICE_VIEW_STATE.error)
+    }
   }
 
-  function _handleChange(e, value) {
-    setLoading(true)
-    setPage(value)
+  async function loadInvoices(offset) {
+    const results = await GetPurchaseHistory({
+      server: site.siteMetadata.server,
+      protocol: site.siteMetadata.protocol,
+      port: site.siteMetadata.port
+    }, {
+      offset,
+      limit: OFFSET_AMOUNT,
+      token
+    })
+
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
+
+    if(results.type === 'success') {
+      const {data: {data: loadedInvoices}} = results
+
+      setInvoices(loadedInvoices)
+
+      setCurrentView(INVOICE_VIEW_STATE.show)
+    } else {
+      setCurrentView(INVOICE_VIEW_STATE.error)
+    }
   }
 
-  return (
-    <TabTemplate
-      title='Purchase History'
-    >
-      {
-        hasInvoices ? (
-          <Timeline
-            handleChange={_handleChange}
-            page={page}
-            pages={pages}
-            loading={loading}
+  async function loadOlder() {
+    // Check if it can increase
+    if(currentPage >= totalPages) return
+
+    setCurrentView(INVOICE_VIEW_STATE.loading)
+
+    // Increase current page
+    const newCurrentPage = currentPage + 1
+
+    // Load new set of invoices and wait
+    await loadInvoices((newCurrentPage - 1) * OFFSET_AMOUNT)
+
+    setCurrentPage(newCurrentPage)
+  }
+
+  /**
+   * LOL
+   */
+  async function loadNewer() {
+    // Check if it can decrease
+    if(currentPage <= 1) return
+
+    setCurrentView(INVOICE_VIEW_STATE.loading)
+
+    // Increase current page
+    const newCurrentPage = currentPage - 1
+
+    // Load new set of invoices and wait
+    await loadInvoices((newCurrentPage - 1) * OFFSET_AMOUNT)
+
+    setCurrentPage(newCurrentPage)
+  }
+
+  function View() {
+    switch(currentView) {
+      case INVOICE_VIEW_STATE.loading: {
+        return (
+          <div
+            className={styles['loading']}
           >
-            <TimelineItem
-              date={Date.now()}
+            <CircularProgress
+              color='secondary'
             />
-            <TimelineItem
-              date={Date.now()}
-            />
-          </Timeline>
-        ) : (
+          </div>
+        )
+      }
+
+      case INVOICE_VIEW_STATE.empty: {
+        return (
           <Alert
             variant='outlined'
             severity='success'
@@ -211,11 +174,57 @@ const PurchasesTab = () => {
             >
               No History
             </AlertTitle>
-            You do not have a purchase history yet. Take a look at our shop
+            You do not have a purchase history yet.
           </Alert>
         )
       }
-      
+
+      case INVOICE_VIEW_STATE.error: {
+        return (
+          <Alert
+            variant='outlined'
+            severity='error'
+            icon={<InfoOutlined />}
+            action={
+              <Button
+                color='inherit'
+              >
+                Retry
+              </Button>
+            }
+          >
+            <AlertTitle
+              className={styles['alertTitle']}
+            >
+              Something went wrong
+            </AlertTitle>
+            Your invoice history could not be displayed.
+          </Alert>
+        )
+      }
+
+      case INVOICE_VIEW_STATE.show: {
+        return (
+          <Timeline
+            invoices={invoices}
+            totalPages={totalPages}
+            currentPage={currentPage}
+
+            loadOlder={loadOlder}
+            loadNewer={loadNewer}
+
+            site={site}
+          />
+        )
+      }
+    }
+  }
+
+  return (
+    <TabTemplate
+      title='Purchase History'
+    >
+      <View />    
     </TabTemplate>
   )
 }

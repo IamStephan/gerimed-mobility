@@ -70,14 +70,65 @@ async function GetPurchaseHistory({
   protocol,
   port
 }, {
-  skip,
-  offset
+  offset,
+  limit,
+  token
 }) {
+  try {
+    const data = await axios.post(`${protocol}://${server}:${port}/users/my-invoices`, {
+      start: offset,
+      limit
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
 
+    return {
+      type: 'success',
+      data,
+      // Do not notify anything, results will do
+      notis: []
+    }
+  } catch(e) {
+    return {
+      type: 'error',
+      notis: SanitizeErrors(e)
+    }
+  }
+}
+
+async function GetPurchaseHistoryCount({
+  server,
+  protocol,
+  port
+}, {
+  token
+}) {
+  try {
+    const data = await axios.get(`${protocol}://${server}:${port}/users/count-my-invoices`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return {
+      type: 'success',
+      data,
+      // Do not notify anything, results will do
+      notis: []
+    }
+  } catch(e) {
+    return {
+      type: 'error',
+      notis: SanitizeErrors(e)
+    }
+  }
 }
 
 export {
   GetUser,
   UpdateUser,
-  GetPurchaseHistory
+  GetPurchaseHistory,
+  GetPurchaseHistoryCount
 }

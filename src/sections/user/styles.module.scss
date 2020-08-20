@@ -24,6 +24,7 @@ $breakpoint-1: 700;
 
     .tabPanel {
       padding: #{$padding * 2}px;
+      position: relative;
       flex: 1;
     }
   }

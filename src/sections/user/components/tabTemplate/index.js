@@ -18,6 +18,7 @@ const TabTemplate = props => {
       <Typography
         variant='h4'
         className={styles['title']}
+        id='tabTemplateTitle'
       >
         {title}
       </Typography>
