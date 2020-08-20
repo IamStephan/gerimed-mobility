@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 // Material
-import { Typography, Button } from '@material-ui/core'
+import { Typography, Button, LinearProgress } from '@material-ui/core'
 
 // Gatsby
 import { navigate } from 'gatsby'
@@ -71,6 +71,13 @@ const Settings = props => {
     <TabTemplate
       title='Settings'
     >
+      {
+        submitting ? (
+          <LinearProgress
+            color='secondary'
+          />
+        ) : null
+      }
       <div
         className={styles['settings']}
       >

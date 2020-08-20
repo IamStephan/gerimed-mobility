@@ -21,7 +21,7 @@ import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
 
 // Material
-import { Typography, ButtonGroup, Button, TextField, Select } from '@material-ui/core'
+import { Typography, ButtonGroup, Button, TextField, Select, LinearProgress } from '@material-ui/core'
 
 // Styles
 import styles from './styles.module.scss'
@@ -143,6 +143,13 @@ const Shipping = props => {
     <TabTemplate
       title='Shipping Information'
     >
+      {
+        submitting ? (
+          <LinearProgress
+            color='secondary'
+          />
+        ) : null
+      }
       <form
         noValidate
         className={styles['container']}
@@ -171,6 +178,7 @@ const Shipping = props => {
                   variant='outlined'
                   name='street'
                   inputRef={register}
+                  disabled={submitting}
                   error={errors.street}
                   helperText={errors.street?.message}
                 />
@@ -208,6 +216,7 @@ const Shipping = props => {
                   variant='outlined'
                   name='suburb'
                   inputRef={register}
+                  disabled={submitting}
                   error={errors.suburb}
                   helperText={errors.suburb?.message}
                 />
@@ -246,6 +255,7 @@ const Shipping = props => {
                   variant='outlined'
                   name='postCode'
                   inputRef={register}
+                  disabled={submitting}
                   error={errors.postCode}
                   helperText={errors.postCode?.message}
                 />
@@ -284,6 +294,7 @@ const Shipping = props => {
                   variant='outlined'
                   name='province'
                   inputRef={register}
+                  disabled={submitting}
                   error={errors.province}
                   helperText={errors.province?.message}
                 >
@@ -333,6 +344,7 @@ const Shipping = props => {
                   variant='outlined'
                   name='country'
                   inputRef={register}
+                  disabled={submitting}
                   error={errors.country}
                   helperText={errors.country?.message}
                 >

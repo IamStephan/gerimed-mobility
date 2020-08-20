@@ -21,7 +21,7 @@ import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
 
 // Material
-import { Typography, ButtonGroup, Button, TextField } from '@material-ui/core'
+import { Typography, ButtonGroup, Button, TextField, LinearProgress } from '@material-ui/core'
 
 // Styles
 import styles from './styles.module.scss'
@@ -127,6 +127,14 @@ const Info = props => {
     <TabTemplate
       title='Account Information'
     >
+      {
+        submitting ? (
+          <LinearProgress
+            color='secondary'
+          />
+        ) : null
+      }
+      
       <form
         noValidate
         className={styles['container']}
@@ -155,6 +163,7 @@ const Info = props => {
                   variant='outlined'
                   name='firstName'
                   inputRef={register}
+                  disabled={submitting}
                   error={errors.firstName}
                   helperText={errors.firstName?.message}
                 />
@@ -192,6 +201,7 @@ const Info = props => {
                   variant='outlined'
                   name='lastName'
                   inputRef={register}
+                  disabled={submitting}
                   error={errors.lastName}
                   helperText={errors.lastName?.message}
                 />
@@ -254,6 +264,7 @@ const Info = props => {
                   name='phone'
                   inputRef={register}
                   error={errors.phone}
+                  disabled={submitting}
                   helperText={errors.phone?.message}
                 />
               ) : (
