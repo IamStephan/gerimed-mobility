@@ -52,7 +52,8 @@ const DummyScrollDetector = props => {
    */
   const {
     direction,
-    relativeDistance
+    relativeDistance,
+    position
   } = useScrollData()
 
   
@@ -60,7 +61,7 @@ const DummyScrollDetector = props => {
     // For scrolling Down
     if(
       (direction.y === 'down' && !peekHide) &&
-      (relativeDistance.y > PEEK_HIDE_TRIGGER_DISTANCE) &&
+      (position.y > PEEK_HIDE_TRIGGER_DISTANCE) &&
       (navMode === MODE.normal)
     ) {
       setPeekHide(true)
@@ -72,7 +73,7 @@ const DummyScrollDetector = props => {
     // For scrolling up
     if(
       (direction.y === 'up' && peekHide) &&
-      (relativeDistance.y > PEEK_HIDE_TRIGGER_DISTANCE) &&
+      (relativeDistance.y > PEEK_HIDE_TRIGGER_DISTANCE / 2) &&
       (navMode === MODE.normal)
     ) {
       setPeekHide(false)
@@ -120,8 +121,6 @@ const NormalButton = props => {
 /**
  * TODO:
  *  - convert css animation to js (flip toolkit?)
- *  - Create a seperate component for the mobile drawer
- *  - move the icons to the drawer on mobile deviecs
  */
 
  /**
@@ -274,6 +273,7 @@ const Navbar = props => {
           }
         </div>
       </nav>
+
       
       {
         breakpointTwo ? (
