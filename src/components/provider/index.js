@@ -1,11 +1,22 @@
 import React from 'react'
-import { ThemeProvider } from '@material-ui/core'
-
-// Theme
-import theme from './theme'
+import { ThemeProvider, createMuiTheme } from '@material-ui/core'
 
 // Notifications
 import { SnackbarProvider } from 'notistack'
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'light',
+    primary: {
+      light: '#FFFF01',
+      main: '#FFFF01',
+      dark: '#FFFF01'
+    },
+    secondary: {
+      main: '#008835',
+    }
+  },
+});
 
 const notiStyles = {
   success: { zIndex: 999 },

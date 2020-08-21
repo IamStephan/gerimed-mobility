@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 
 // Hooks
 import { useLocalStorage } from 'react-use'
-//import { useSnackbar } from 'notistack'
+import { useSnackbar } from 'notistack'
 
 // Gatsby
 import { useStaticQuery, graphql } from 'gatsby'
@@ -42,7 +42,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     `
   )
 
-  // const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
 
   const [mode, setMode] = useState(MODES.loading)
   const [token] = useLocalStorage(KEYS.jwt)
@@ -57,11 +57,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       token
     })
 
-    // results.notis.forEach(({ message }) => {
-    //   enqueueSnackbar(message, {
-    //     variant: results.type
-    //   })
-    // })
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
 
     if(results.type === 'success') {
       const { data } = results
