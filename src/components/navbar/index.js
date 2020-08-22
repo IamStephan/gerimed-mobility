@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
 // Hooks
-import { useMedia, useLocalStorage } from 'react-use'
+import { useToken } from '../../hooks/useToken'
+import { useMedia } from 'react-use'
 import { useScrollData } from 'scroll-data-hook'
 
 // Gatsby
@@ -147,7 +148,7 @@ const Navbar = props => {
     navMode
   } = props
 
-  const [token] = useLocalStorage(KEYS.jwt)
+  const { info: { token } } = useToken(KEYS.jwt)
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [peekHide, setPeekHide] = useState(false)

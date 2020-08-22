@@ -6,7 +6,7 @@ import { Button, CircularProgress } from '@material-ui/core';
 import { InfoOutlined } from '@material-ui/icons'
 
 // Hooks
-import { useLocalStorage } from 'react-use'
+import { useToken } from '../../../../hooks/useToken'
 import { useSnackbar } from 'notistack'
 
 // Constants
@@ -41,7 +41,7 @@ const PurchasesTab = props => {
 
   const [currentView, setCurrentView] = useState(INVOICE_VIEW_STATE.loading)
 
-  const [token] = useLocalStorage(KEYS.jwt)
+  const { info: { token } } = useToken(KEYS.jwt)
 
 
   useEffect(() => {
@@ -108,7 +108,7 @@ const PurchasesTab = props => {
     }
   }
 
-  async function handlePageChange(e, page) {
+  async function handlePageChange(_, page) {
     // Prevent unnecessary api calls
     if(currentPage === page) return
 
@@ -165,6 +165,7 @@ const PurchasesTab = props => {
             variant='outlined'
             severity='error'
             icon={<InfoOutlined />}
+            className={styles['alertError']}
             action={
               <Button
                 color='inherit'

@@ -1,8 +1,5 @@
 import React from 'react'
 
-// Material
-import { Typography } from '@material-ui/core'
-
 // Gatsby
 import { useStaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image/withIEPolyfill'

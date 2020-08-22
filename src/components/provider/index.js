@@ -42,6 +42,7 @@ const Provider = props => {
           variantWarning: notiStyles.warning,
           variantInfo: notiStyles.info,
         }}
+        preventDuplicate
       >
         { props.children }  
       </SnackbarProvider>

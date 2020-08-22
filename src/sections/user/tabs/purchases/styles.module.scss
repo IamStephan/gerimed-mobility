@@ -1,6 +1,12 @@
+@import '../../../../utils/colors';
 
 .alertTitle {
   font-weight: bolder;
+}
+
+.alertError {
+  // WTF, in testing this isnt even needed!
+  background-color: $light !important;
 }
 
 .loading {

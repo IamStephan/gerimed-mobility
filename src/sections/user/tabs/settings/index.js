@@ -7,7 +7,7 @@ import { Typography, Button, LinearProgress } from '@material-ui/core'
 import { navigate } from 'gatsby'
 
 // Hooks
-import { useLocalStorage } from 'react-use'
+import { useToken } from '../../../../hooks/useToken'
 import { useSnackbar } from 'notistack'
 
 // Constants
@@ -30,8 +30,8 @@ const Settings = props => {
     site
   } = props
 
-  const [submitting, setSubmitting] = useState(false) 
-  const [v, s, removeToken] = useLocalStorage(KEYS.jwt)
+  const [submitting, setSubmitting] = useState(false)
+  const { deleteToken } = useToken(KEYS.jwt)
   const [info] = useGlobalState('info')
 
   const { enqueueSnackbar } = useSnackbar()
@@ -43,7 +43,7 @@ const Settings = props => {
    * own in strapi
    */
   function logout() {
-    removeToken()
+    deleteToken()
     navigate('/')
   }
 

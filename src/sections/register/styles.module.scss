@@ -27,6 +27,9 @@ $register-width: 450;
 
     .titleContainer {
       padding: #{$padding * 1.5}px #{$padding * 5}px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       .title {
         font-weight: bold;
@@ -43,6 +46,11 @@ $register-width: 450;
         display: flex;
         flex-direction: column;
         align-items: stretch;
+      }
+
+      .inputAlt {
+        padding-left: #{$padding * 1.5}px;
+        padding-right: #{$padding * 1.5}px;
       }
     }
 

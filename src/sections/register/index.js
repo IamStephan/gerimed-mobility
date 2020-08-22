@@ -14,16 +14,25 @@ import * as yup from 'yup'
 import { Link, useStaticQuery, graphql } from 'gatsby'
 
 // Material
-import { TextField, Button, Divider, Typography, LinearProgress } from '@material-ui/core'
+import {
+  TextField,
+  InputAdornment,
+  Button,
+  Divider,
+  Typography,
+  LinearProgress,
+  Link as Btn,
+  FormControlLabel,
+  Checkbox,
+  IconButton
+} from '@material-ui/core'
+import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
 
 // API
 import { Register } from '../../api/auth'
 
 // Notifications
 import { useSnackbar } from 'notistack'
-
-// Constants
-import { KEYS } from '../../constants/localStorage'
 
 // Styles
 import styles from './styles.module.scss'
@@ -39,7 +48,7 @@ const registerShema = yup.object().shape({
     .matches(/(?=.*[A-Z])/g, 'Password must contain at least one uppercase letter')
     .matches(/(?=.*[a-z])/g, 'Password must contain at least one lowercase letter')
     .required(),
-  confirmPassword: yup.string().oneOf([ yup.ref('password'), null ], ' Passwords do not match').required('')
+  terms: yup.boolean()
 })
 
 /**
@@ -72,10 +81,21 @@ const RegisterSection = () => {
 
   // Shows user is submitting the form
   const [submitting, setSubmitting] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
 
   async function _handleSubmit(data) {
     setSubmitting(true)
+
+    if(!data.terms) {
+      const errorMessage = 'You need to agree to the terms and policies.'
+      enqueueSnackbar(errorMessage, {
+        variant: 'error'
+      })
+
+      setSubmitting(false)
+      return
+    }
 
     const results = await Register({
       protocol: site.siteMetadata.protocol,
@@ -100,6 +120,10 @@ const RegisterSection = () => {
     }
 
     setSubmitting(false)
+  }
+
+  function toggleShowPassword() {
+    setShowPassword(prev => !prev)
   }
 
   return (
@@ -203,7 +227,7 @@ const RegisterSection = () => {
             >
               <TextField
                 inputRef={register}
-                type='password'
+                type={showPassword ? 'text' : 'password'}
                 label='Password'
                 name='password'
                 variant='outlined'
@@ -211,24 +235,56 @@ const RegisterSection = () => {
                 disabled={submitting}
                 error={errors.password}
                 helperText={errors.password?.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment
+                      position='end'
+                    >
+                      <IconButton
+                        onClick={toggleShowPassword}
+                      >
+                        {
+                          showPassword ? <VisibilityOutlined /> : <VisibilityOffOutlined />
+                        }
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
                 required
               />
             </div>
 
             <div
-              className={styles['input']}
+              className={styles['inputAlt']}
             >
-              <TextField
-                inputRef={register}
-                type='password'
-                label='Confirm Password'
-                name='confirmPassword'
-                variant='outlined'
-                color='secondary'
-                disabled={submitting}
-                error={errors.confirmPassword}
-                helperText={errors.confirmPassword?.message}
-                required
+              <FormControlLabel
+                control={(
+                  <Checkbox
+                    color='secondary'
+                    inputRef={register}
+                    name='terms'
+                  />
+                )}
+                label={(
+                  <Typography>
+                    I hereby agree to the {' '}
+                    <Btn
+                      // component={Link}
+                      // to='/profile/login'
+                      color='secondary'
+                    >
+                      terms of use {' '}
+                    </Btn>
+                    and {' '}
+                    <Btn
+                      component={Link}
+                      // to='/profile/login'
+                      color='secondary'
+                    >
+                      privacy policy.
+                    </Btn>
+                  </Typography>
+                )}
               />
             </div>
 
@@ -247,23 +303,23 @@ const RegisterSection = () => {
             </div>
           </form>
 
-          <br />
           <Divider />
-          <br />
           
           <div
             className={styles['alternate']}
           >
-            <Button
-              variant='outlined'
-              color='secondary'
-              component={Link}
-              to='/profile/login'
-              fullWidth
-              disabled={submitting}
+            <Typography
+              variant='body1'
             >
-              Login
-            </Button>
+              Already have an account? {' '}
+              <Btn
+                color='secondary'
+                component={Link}
+                to='/profile/login'
+              >
+                Login
+              </Btn>
+            </Typography>
           </div>
           
         </div>

@@ -11,18 +11,31 @@ import * as yup from 'yup'
 import { Link, navigate } from 'gatsby'
 
 // Material
-import { TextField, Button, Divider, Typography, ButtonGroup, LinearProgress } from '@material-ui/core'
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  Checkbox,
+  Button,
+  Divider,
+  Typography,
+  LinearProgress,
+  FormControlLabel,
+  Link as Btn,
+  ListItem,
+  ListItemIcon,
+  Breadcrumbs,
+  Chip
+} from '@material-ui/core'
+import { VisibilityOutlined, VisibilityOffOutlined, ChevronLeft } from '@material-ui/icons'
 
 // Hooks
-import { useLocalStorage } from 'react-use'
+import { useToken } from '../../../../hooks/useToken'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 
 // API
 import { Login } from '../../../../api/auth'
-
-// Notifications
-
 
 // Constants
 import { KEYS } from '../../../../constants/localStorage'
@@ -33,8 +46,11 @@ import styles from './styles.module.scss'
 // Schema Definition
 const loginShema = yup.object().shape({
   identifier: yup.string().email().required(),
-  password: yup.string().required()
+  password: yup.string().required(),
+  remember: yup.boolean()
 })
+
+const emailNeedsVery = 'Auth.form.error.confirmed'
 
 const LoginMode = props => {
   const {
@@ -50,9 +66,14 @@ const LoginMode = props => {
 
   // Shows user is submitting the form
   const [submitting, setSubmitting] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   // Used to store the jwt token
-  const [_, setToken] = useLocalStorage(KEYS.jwt)
+  const { saveToken } = useToken(KEYS.jwt)
+
+  function toggleShowPassword() {
+    setShowPassword(prev => !prev)
+  }
 
   async function _handleSubmit(data) {
     setSubmitting(true)
@@ -66,7 +87,21 @@ const LoginMode = props => {
       password: data.password
     })
 
-    results.notis.forEach(({ message }) => {
+    results.notis.forEach(({ message, id }) => {
+      if(id === emailNeedsVery) {
+        enqueueSnackbar(message, {
+          variant: results.type,
+          action: () => {
+            return (
+              <Button
+                color='inherit'
+              >
+                Resend
+              </Button>
+            )
+          }
+        })
+      }
       enqueueSnackbar(message, {
         variant: results.type
       })
@@ -76,7 +111,7 @@ const LoginMode = props => {
       const { data: { jwt } } = results.data
       
       // Set jwt token
-      setToken(jwt)
+      saveToken(jwt, data.remember)
 
       // redirect
       navigate('/profile')
@@ -100,15 +135,7 @@ const LoginMode = props => {
         ) : null
       }
 
-      <div
-        className={styles['logoContainer']}
-      >
-        <Link
-          to='/'
-        >
-          <Logo />
-        </Link>
-      </div>
+      <br />
 
       <div
         className={styles['titleContainer']}
@@ -149,7 +176,7 @@ const LoginMode = props => {
         >
           <TextField
             inputRef={register}
-            type='password'
+            type={showPassword ? 'text' : 'password'}
             label='Password'
             name='password'
             variant='outlined'
@@ -157,7 +184,59 @@ const LoginMode = props => {
             error={errors.password}
             helperText={errors.password?.message}
             required
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  position='end'
+                >
+                  <IconButton
+                    onClick={toggleShowPassword}
+                  >
+                    {
+                      showPassword ? <VisibilityOutlined /> : <VisibilityOffOutlined />
+                    }
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
           />
+        </div>
+
+        <div
+          className={styles['forgotRemember']}
+        >
+          <div
+            className={styles['remember']}
+          >
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  color='secondary'
+                  inputRef={register}
+                  name='remember'
+                />
+              )}
+
+              label='Remember me'
+            />
+          </div>
+
+          <div
+            className={styles['forgot']}
+          >
+            <Typography
+              variant='body1'
+            >
+              <Btn
+                color='secondary'
+                component={Link}
+                to='/profile/login/email'
+              >
+                Forgot password?
+              </Btn>
+            </Typography>
+          </div>
+         
         </div>
 
         <div
@@ -175,50 +254,23 @@ const LoginMode = props => {
         </div>
       </form>
 
-      <br />
       <Divider />
-      <br />
-      
-      <div
-        className={styles['alternate']}
-      >
-        <Button
-          variant='outlined'
-          color='secondary'
-          component={Link}
-          disabled={submitting}
-          to='/profile/register'
-          fullWidth
-        >
-          Create a new account
-        </Button>
-      </div>
 
       <div
         className={styles['alternate']}
       >
-        <ButtonGroup
-          orientation='vertical'
-          fullWidth
-          variant='text'
-          disabled={submitting}
+        <Typography
+          variant='body1'
         >
-          <Button
+          Don't have an account? {' '}
+          <Btn
             color='secondary'
             component={Link}
-            to={`/profile/login/email`}
+            to='/profile/register'
           >
-            Forgot Password
-          </Button>
-          <Button
-            color='secondary'
-            component={Link}
-            to={`/profile/login/resend`}
-          >
-            Resend Confirmation
-          </Button>
-        </ButtonGroup>
-        
+            Register
+          </Btn>
+        </Typography>
       </div>
     </div>
   )

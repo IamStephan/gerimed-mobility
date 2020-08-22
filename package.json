@@ -39,6 +39,7 @@
     "react-hook-form": "^6.3.0",
     "react-hooks-global-state": "^1.0.1",
     "react-intersection-observer": "^8.26.2",
+    "react-spring": "^8.0.27",
     "react-use": "^15.3.2",
     "sanitize.css": "^11.0.1",
     "scroll-data-hook": "^1.0.4",

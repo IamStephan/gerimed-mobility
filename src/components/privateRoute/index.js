@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 // Hooks
-import { useLocalStorage } from 'react-use'
+import { useToken } from '../../hooks/useToken'
 import { useSnackbar } from 'notistack'
 
 // Gatsby
@@ -45,7 +45,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const [mode, setMode] = useState(MODES.loading)
-  const [token] = useLocalStorage(KEYS.jwt)
+  const {info: { token } } = useToken(KEYS.jwt)
 
 
   async function init(token) {

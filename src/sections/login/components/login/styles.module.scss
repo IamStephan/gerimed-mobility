@@ -30,6 +30,19 @@
       flex-direction: column;
       align-items: stretch;
     }
+
+    .forgotRemember {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: #{$padding * 1.5}px;
+      padding-right: #{$padding * 1.5}px;
+
+      .forgot {
+        margin-left: #{$margin * 1.5}px;
+      }
+    }
   }
 
   .alternate {
