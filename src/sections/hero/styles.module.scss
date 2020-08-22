@@ -2,6 +2,8 @@
 @import '../../utils/colors.scss';
 @import '../../components/navbar/styles.module';
 
+@import '../../utils/mixins';
+
 $max-content-width: 675;
 $cta-margin-left: 50;
 $content-margin: 125;
@@ -14,8 +16,10 @@ $breakpoint-2: 425;
 $background-brightness: 27.5%;
 
 .hero {
+  @include accountForNavBar();
   position: relative;
   z-index: 2;
+  
   margin-bottom: #{$section-space / 4}px;
 
   .imgContainer {

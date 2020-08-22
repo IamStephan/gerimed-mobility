@@ -26,8 +26,10 @@ $breakpoint-2: 750;
 .navbar {
   background-color: $dark;
   height: #{$navbarHeightNormal}px;
-  position: sticky;
+  position: fixed;
+  left: 0px;
   top: 0px;
+  width: 100%;
   transform: translateY(0%);
   display: flex;
   align-items: center;

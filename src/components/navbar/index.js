@@ -27,8 +27,9 @@ import { NAV_BAR_ACTIONS } from '../../constants/state'
 
 // Styles
 import styles from './styles.module.scss'
+import { peek } from 'react-helmet'
 
-const PEEK_HIDE_TRIGGER_DISTANCE = 250
+const PEEK_HIDE_TRIGGER_DISTANCE = 150
 
 /**
  * NOTE:
@@ -53,45 +54,59 @@ const DummyScrollDetector = props => {
    */
   const {
     direction,
-    relativeDistance,
+    speed,
     position
   } = useScrollData()
 
   
   useEffect(() => {
-    // For scrolling Down
-    if(
-      (direction.y === 'down' && !peekHide) &&
-      (position.y > PEEK_HIDE_TRIGGER_DISTANCE) &&
-      (navMode === MODE.normal)
-    ) {
-      setPeekHide(true)
-      dispatch({
-        type: NAV_BAR_ACTIONS.hideNavbarpeek
-      })
+    if(navMode === MODE.trans) {
+      if(peekHide) {
+        setPeekHide(false)
+        dispatch({
+          type: NAV_BAR_ACTIONS.peekNavbar
+        })
+      }
+
+      return
     }
 
-    // For scrolling up
-    if(
-      (direction.y === 'up' && peekHide) &&
-      (relativeDistance.y > PEEK_HIDE_TRIGGER_DISTANCE / 2) &&
-      (navMode === MODE.normal)
-    ) {
-      setPeekHide(false)
-      dispatch({
-        type: NAV_BAR_ACTIONS.peekNavbar
-      })
+    // Hide peek is only allowed when the nav bar is passed trigger distance
+    if(position.y <= PEEK_HIDE_TRIGGER_DISTANCE) {
+      if(peekHide) {
+        setPeekHide(false)
+        dispatch({
+          type: NAV_BAR_ACTIONS.peekNavbar
+        })
+      }
+
+      return
     }
 
-    // Safety Check
-    if(peekHide && MODE.normal !== navMode) {
-      setPeekHide(false)
-      dispatch({
-        type: NAV_BAR_ACTIONS.peekNavbar
-      })
+    // For scrolling down
+    if(direction.y === 'down' && !peekHide) {
+      if(speed.y > 600) {
+        setPeekHide(true)
+        dispatch({
+          type: NAV_BAR_ACTIONS.hideNavbarpeek
+        })
+      }
+
+      return
     }
 
-  }, [relativeDistance])
+    // For scrolling down
+    if(direction.y === 'up' && peekHide) {
+      if(speed.y > 600) {
+        setPeekHide(false)
+        dispatch({
+          type: NAV_BAR_ACTIONS.peekNavbar
+        })
+      }
+
+      return
+    }
+  })
 
   return null
 }

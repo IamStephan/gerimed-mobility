@@ -18,10 +18,10 @@ $animDur: 250;
 
     .tabHeader {
       position: sticky;
-      top: #{$navbarHeightNormal + $margin / 2}px;
+      top: #{$navbarHeightNormal}px;
       border-right: 1px solid rgba($dark, 0.25);
       background-color: $light;
-      z-index: 999;
+      z-index: 996;
       transition: top #{$animDur}ms ease-in-out;
 
       &.pushHeader {

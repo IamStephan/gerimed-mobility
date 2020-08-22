@@ -4,11 +4,15 @@
 // Nav Styles
 @import '../../components/navbar/styles.module';
 
+@import '../../utils/mixins';
+
 $showcase-padding: 200;
 
 $breakpoint-1: 700;
 
 .userShowcaseSection {
+  @include accountForNavBar();
+  
   position: relative;
   margin-bottom: #{$section-space / 2}px;
 
