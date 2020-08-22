@@ -40,6 +40,7 @@ const IndexPage = () => {
       page={PAGES.home}
       navMode={inView ? NAVMODE.trans : NAVMODE.normal}
       footerMode={FOOTERMODE.normal}
+      accountNav={false}
     >
       <SEO
         title='Home'

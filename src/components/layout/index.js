@@ -13,7 +13,8 @@ const Layout = props => {
   const {
     page,
     navMode,
-    footerMode
+    footerMode,
+    accountNav
   } = props
 
   const NavProps = {
@@ -28,7 +29,7 @@ const Layout = props => {
   return (
     <>
       <div
-        className={styles['layout']}
+        className={`${styles['layout']} ${accountNav ? styles['accountNav'] : ''}`}
       >
         <Navbar
           {...NavProps}
@@ -49,9 +50,8 @@ const Layout = props => {
   )
 }
 
-Layout.propTypes = {
-  page: t.string,
-  trans: t.bool,
+Layout.defaultProps = {
+  accountNav: true
 }
 
 export default Layout

@@ -34,6 +34,7 @@ const ProfileTemplate = () => {
       page={PAGES.profile}
       navMode={inView ? NAVMODE.trans : NAVMODE.normal}
       footerMode={FOOTERMODE.curve}
+      accountNav={false}
     >
       <div
         ref={ref}
