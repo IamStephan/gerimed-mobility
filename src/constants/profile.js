@@ -7,8 +7,7 @@ const MODES = {
 const LOGIN_PATHS = {
   normal: '/profile/login',
   password: '/profile/login/password_reset',
-  email: '/profile/login/email',
-  resend: '/profile/login/resend'
+  email: '/profile/login/email'
 }
 
 const USER_TABS = {

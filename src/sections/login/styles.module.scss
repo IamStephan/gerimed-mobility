@@ -10,6 +10,10 @@ $login-width: 450;
   background-color: $light;
   display: flex;
   justify-content: center;
+  align-items: center;
+
+  // offset center
+  margin-bottom: 100px;
 }
 
 @media screen and (max-width: #{$breakpoint-1}px) {

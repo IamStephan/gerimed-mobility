@@ -1,0 +1,17 @@
+@import '../../utils/colors';
+@import '../../utils/sizes';
+
+.titleContainer {
+  padding: #{$padding * 1.5}px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-weight: bold;
+  }
+
+  .iconButton {
+    border: 1px solid $secondary;
+  }
+}

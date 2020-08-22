@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
 
-// SVGs
-import Logo from '../../../../svg/logo_green.svg'
-
 // Schema
 import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
@@ -22,12 +19,11 @@ import {
   LinearProgress,
   FormControlLabel,
   Link as Btn,
-  ListItem,
-  ListItemIcon,
-  Breadcrumbs,
-  Chip
 } from '@material-ui/core'
-import { VisibilityOutlined, VisibilityOffOutlined, ChevronLeft } from '@material-ui/icons'
+import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
+
+// Components
+import AuthTitle from '../../../../components/authTitle'
 
 // Hooks
 import { useToken } from '../../../../hooks/useToken'
@@ -35,7 +31,7 @@ import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 
 // API
-import { Login } from '../../../../api/auth'
+import { Login, ResendConfirmation } from '../../../../api/auth'
 
 // Constants
 import { KEYS } from '../../../../constants/localStorage'
@@ -57,7 +53,7 @@ const LoginMode = props => {
     site,
   } = props
 
-  const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   // The form and its validation
   const { register, handleSubmit, errors } = useForm({
@@ -73,6 +69,27 @@ const LoginMode = props => {
 
   function toggleShowPassword() {
     setShowPassword(prev => !prev)
+  }
+
+  async function _handleResend(email) {
+    setSubmitting(true)
+    const results = await ResendConfirmation({
+      protocol: site.siteMetadata.protocol,
+      server: site.siteMetadata.server,
+      port: site.siteMetadata.port
+    }, {
+      email
+    })
+
+    closeSnackbar()
+
+    results.notis.forEach(({ message }) => {
+      enqueueSnackbar(message, {
+        variant: results.type
+      })
+    })
+
+    setSubmitting(false)
   }
 
   async function _handleSubmit(data) {
@@ -91,10 +108,12 @@ const LoginMode = props => {
       if(id === emailNeedsVery) {
         enqueueSnackbar(message, {
           variant: results.type,
+          persist: true,
           action: () => {
             return (
               <Button
                 color='inherit'
+                onClick={() => _handleResend(data.identifier)}
               >
                 Resend
               </Button>
@@ -135,19 +154,9 @@ const LoginMode = props => {
         ) : null
       }
 
-      <br />
-
-      <div
-        className={styles['titleContainer']}
-      >
-        <Typography
-          variant='h3'
-          color='secondary'
-          className={styles['title']}
-        >
-          Login
-        </Typography>
-      </div>
+      <AuthTitle
+        title='Login'
+      />
 
       <form
         noValidate

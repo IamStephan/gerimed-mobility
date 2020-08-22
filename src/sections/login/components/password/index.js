@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-// SVGs
-import Logo from '../../../../svg/logo_green.svg'
-
 // Schema
 import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
@@ -16,8 +13,18 @@ import { parse } from 'query-string'
 // Gatsby
 import { Link, navigate } from 'gatsby'
 
+// Components
+import AuthTitle from '../../../../components/authTitle'
+
 // Material
-import { TextField, Button, Divider, Typography, LinearProgress } from '@material-ui/core'
+import {
+  TextField,
+  Button,
+  Divider,
+  LinearProgress,
+  Link as Btn,
+  Typography 
+} from '@material-ui/core'
 
 // Hooks
 import { useForm } from 'react-hook-form'
@@ -68,6 +75,15 @@ const PasswordMode = props => {
   async function _handleSubmit(data) {
     setSubmitting(true)
 
+    if(!location.search) {
+      setSubmitting(false)
+      enqueueSnackbar('Cannot reset password without verification', {
+        variant: 'error'
+      })
+
+      return
+    }
+
     // Get the code from the url
     const parsedData = parse(location.search)
 
@@ -108,27 +124,10 @@ const PasswordMode = props => {
           </div>
         ) : null
       }
-      <div
-        className={styles['logoContainer']}
-      >
-        <Link
-          to='/'
-        >
-          <Logo />
-        </Link>
-      </div>
 
-      <div
-        className={styles['titleContainer']}
-      >
-        <Typography
-          variant='h3'
-          color='secondary'
-          className={styles['title']}
-        >
-          New Password
-        </Typography>
-      </div>
+      <AuthTitle
+        title='New Password'
+      />
 
       <form
         noValidate
@@ -184,23 +183,23 @@ const PasswordMode = props => {
         </div>
       </form>
 
-      <br />
       <Divider />
-      <br />
       
       <div
         className={styles['alternate']}
       >
-        <Button
-          variant='outlined'
-          color='secondary'
-          component={Link}
-          to='/profile/login'
-          disabled={submitting}
-          fullWidth
+        <Typography
+          variant='body1'
         >
-          Login
-        </Button>
+          Remember your password? {' '}
+          <Btn
+            color='secondary'
+            component={Link}
+            to='/profile/login'
+          >
+            Login
+          </Btn>
+        </Typography>
       </div>
     </div>
   )

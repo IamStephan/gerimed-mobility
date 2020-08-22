@@ -4,7 +4,6 @@ import React, { useCallback } from 'react'
 import LoginMode from './components/login'
 import EmailMode from './components/email'
 import PasswordMode from './components/password'
-import Resend from './components/resend'
 
 // Query Params
 import { useLocation } from '@reach/router'
@@ -63,14 +62,6 @@ const LoginSection = () => {
         )
       }
 
-      case LOGIN_PATHS.resend: {
-        return (
-          <Resend
-            site={site}
-          />
-        )
-      }
-
       case LOGIN_PATHS.password: {
         return (
           <PasswordMode
@@ -94,6 +85,7 @@ const LoginSection = () => {
       <section
         className={styles['loginSection']}
       >
+        
         <LoginModeComponents />
       </section>
     </>

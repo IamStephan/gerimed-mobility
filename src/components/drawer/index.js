@@ -109,7 +109,11 @@ const Drawer = props => {
       <div
         className={styles['menu']}
       >
-        <ListItem>
+        <ListItem
+          button
+          component={Link}
+          to='/'
+        >
           <ListItemAvatar>
             <Avatar
               variant='rounded'

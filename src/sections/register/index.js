@@ -11,7 +11,7 @@ import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
 
 // Gatsby
-import { Link, useStaticQuery, graphql } from 'gatsby'
+import { Link, useStaticQuery, graphql, navigate } from 'gatsby'
 
 // Material
 import {
@@ -27,6 +27,9 @@ import {
   IconButton
 } from '@material-ui/core'
 import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
+
+// Components
+import AuthTitle from '../../components/authTitle'
 
 // API
 import { Register } from '../../api/auth'
@@ -146,27 +149,9 @@ const RegisterSection = () => {
             ) : null
           }
 
-          <div
-            className={styles['logoContainer']}
-          >
-            <Link
-              to='/'
-            >
-              <Logo />
-            </Link>
-          </div>
-
-          <div
-            className={styles['titleContainer']}
-          >
-            <Typography
-              variant='h3'
-              color='secondary'
-              className={styles['title']}
-            >
-              Register
-            </Typography>
-          </div>
+          <AuthTitle
+            title='Register'
+          />
 
           <form
             noValidate

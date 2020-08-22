@@ -1,17 +1,25 @@
 import React, { useState } from 'react'
 
-// SVGs
-import Logo from '../../../../svg/logo_green.svg'
 
 // Schema
 import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
 
+// Material
+import {
+  TextField,
+  Button,
+  Typography,
+  LinearProgress,
+  Link as Btn,
+  Divider
+} from '@material-ui/core'
+
 // Gatsby
 import { Link } from 'gatsby'
 
-// Material
-import { TextField, Button, Typography, LinearProgress } from '@material-ui/core'
+// Components
+import AuthTitle from '../../../../components/authTitle'
 
 // Hooks
 import { useForm } from 'react-hook-form'
@@ -83,27 +91,9 @@ const EmailMode = props => {
         ): null
       }
 
-      <div
-        className={styles['logoContainer']}
-      >
-        <Link
-          to='/'
-        >
-          <Logo />
-        </Link>
-      </div>
-
-      <div
-        className={styles['titleContainer']}
-      >
-        <Typography
-          variant='h3'
-          color='secondary'
-          className={styles['title']}
-        >
-          Password Reset
-        </Typography>
-      </div>
+      <AuthTitle
+        title='Reset Password'
+      />
 
       <form
         noValidate
@@ -140,6 +130,25 @@ const EmailMode = props => {
             Send Request
           </Button>
         </div>
+
+        <Divider />
+
+        <div
+        className={styles['alternate']}
+      >
+        <Typography
+          variant='body1'
+        >
+          Remember your password? {' '}
+          <Btn
+            color='secondary'
+            component={Link}
+            to='/profile/login'
+          >
+            Login
+          </Btn>
+        </Typography>
+      </div>
       </form>
     </div>
   )

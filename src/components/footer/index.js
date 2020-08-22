@@ -2,7 +2,10 @@ import React from 'react'
 import t from 'prop-types'
 
 // Material
-import { Button, Typography } from '@material-ui/core'
+import { Button, Typography, Link as Btn } from '@material-ui/core'
+
+// Gatsby
+import { Link } from 'gatsby'
 
 // Constants
 import { MODE } from '../../constants/footer'
@@ -159,12 +162,9 @@ const Footer = props => {
           <section
             className={styles['section']}
           >
-            <Button
-              disableElevation
-              color='primary'
-            >
-              Policies
-            </Button>
+            <Typography>
+              ©2020 - Gerimed Mobility | All right reserved
+            </Typography>
           </section>
 
           <section
@@ -173,7 +173,12 @@ const Footer = props => {
             <Typography
               color='primary'
             >
-              ©2020 - Gerimed Mobility | All right reserved
+              <Btn
+                component={Link}
+                to='/terms'
+              >
+                Terms and Conditions
+              </Btn>
             </Typography>
           </section>
         </div>

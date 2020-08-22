@@ -11,6 +11,10 @@ $register-width: 450;
   background-color: $light;
   display: flex;
   justify-content: center;
+  align-items: center;
+
+  // offset center
+  margin-bottom: 100px;
 
   .registerContainer {
     padding: #{$padding * 2}px;
@@ -26,10 +30,14 @@ $register-width: 450;
     }
 
     .titleContainer {
-      padding: #{$padding * 1.5}px #{$padding * 5}px;
+      padding: #{$padding * 1.5}px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
+
+      .iconButton {
+        border: 1px solid $secondary;
+      }
 
       .title {
         font-weight: bold;
