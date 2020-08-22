@@ -236,7 +236,7 @@ const Navbar = props => {
                   </li>
                   <li>
                     <NormalButton
-                      active={page === PAGES.policy}
+                      active={page === PAGES.terms}
                       navMode={navMode}
                       to='/terms'
                     >

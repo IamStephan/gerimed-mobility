@@ -153,10 +153,10 @@ const Drawer = props => {
           />
 
           <MenuItem
-            label='Policies'
+            label='Legal'
             Icon={PolicyOutlined}
-            selected={page === PAGES.policy}
-            to='/policies'
+            selected={page === PAGES.terms}
+            to='/terms'
           />
         </List>
 

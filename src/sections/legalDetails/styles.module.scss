@@ -1,0 +1,10 @@
+@import '../../utils/sizes';
+
+.legalSection {
+
+  .legalContainer {
+    max-width: #{$clamp-width}px;
+    margin: auto;
+    padding: #{$padding}px;
+  }
+}

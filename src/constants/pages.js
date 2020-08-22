@@ -4,7 +4,7 @@ const PAGES = {
   about: 'ABOUT',
   contact: 'CONTACT',
   checkout: 'CHECKOUT',
-  policy: 'POLICY',
+  terms: 'TERMS',
   account: 'ACCOUNT',
   product: 'PRODUCT',
   productList: 'PRODUCT_LIST',
