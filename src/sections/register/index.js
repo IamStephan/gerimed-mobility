@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
 
-// SVGs
-import Logo from '../../svg/logo_green.svg'
-
 // Hooks
 import { useForm } from 'react-hook-form'
 
@@ -254,8 +251,8 @@ const RegisterSection = () => {
                   <Typography>
                     I hereby agree to the {' '}
                     <Btn
-                      // component={Link}
-                      // to='/profile/login'
+                      component={Link}
+                      to='/terms'
                       color='secondary'
                     >
                       terms of use {' '}
@@ -263,7 +260,7 @@ const RegisterSection = () => {
                     and {' '}
                     <Btn
                       component={Link}
-                      // to='/profile/login'
+                      to='/policies'
                       color='secondary'
                     >
                       privacy policy.

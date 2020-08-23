@@ -9,18 +9,18 @@ import { MODE as NAVMODE} from '../../constants/navbar'
 import { MODE as FOOTERMODE} from '../../constants/footer'
 
 // Sections
-import TermsDetails from '../../sections/termsDetails'
+import PolicyDetails from '../../sections/policyDetails'
 
-const TermConditions = () => {
+const Policies = () => {
   return (
     <Layout
-      page={PAGES.terms}
+      page={PAGES.policies}
       navMode={NAVMODE.normal}
       footerMode={FOOTERMODE.curve}
     >
-      <TermsDetails />
+      <PolicyDetails />
     </Layout>
   )
 }
 
-export default TermConditions
+export default Policies

@@ -156,17 +156,10 @@ const Footer = props => {
             </Button>
           </section>
         </div>
-        <div
-          className={styles['meta']}
-        >
-          <section
-            className={styles['section']}
-          >
-            <Typography>
-              ©2020 - Gerimed Mobility | All right reserved
-            </Typography>
-          </section>
 
+        <div
+          className={styles['legal']}
+        >
           <section
             className={styles['section']}
           >
@@ -181,14 +174,37 @@ const Footer = props => {
               </Btn>
             </Typography>
           </section>
+
+          <section
+            className={styles['section']}
+          >
+            <Typography
+              color='primary'
+            >
+              <Btn
+                component={Link}
+                to='/policies'
+              >
+                Privacy Policies
+              </Btn>
+            </Typography>
+          </section>
+        </div>
+
+        <div
+          className={styles['meta']}
+        >
+          <section
+            className={styles['section']}
+          >
+            <Typography>
+              ©2020 - Gerimed Mobility | All right reserved
+            </Typography>
+          </section>
         </div>
       </div>
     </footer>
   )
-}
-
-Footer.propTypes = {
-  footerMode: t.oneOf([...Object.values(MODE)])
 }
 
 Footer.default = {

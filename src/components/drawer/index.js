@@ -27,7 +27,6 @@ import {
   StorefrontOutlined,
   InfoOutlined,
   PhoneOutlined,
-  PolicyOutlined,
   ShoppingCartOutlined,
   AccountCircleOutlined,
   ExpandLess,
@@ -150,13 +149,6 @@ const Drawer = props => {
             Icon={PhoneOutlined}
             selected={page === PAGES.contact}
             to='/contact'
-          />
-
-          <MenuItem
-            label='Legal'
-            Icon={PolicyOutlined}
-            selected={page === PAGES.terms}
-            to='/terms'
           />
         </List>
 

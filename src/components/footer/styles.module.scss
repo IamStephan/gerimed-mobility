@@ -31,6 +31,18 @@ $breakpoint-1: 730;
       }
     }
 
+    .legal {
+      border-top: 1px solid rgba($light, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+
+      .section {
+        padding: #{$padding * 2}px;
+      }
+    }
+
     .meta {
       border-top: 1px solid rgba($light, 0.45);
       display: flex;

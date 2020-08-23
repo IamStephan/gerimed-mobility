@@ -1,0 +1,18 @@
+@import '../../utils/sizes';
+
+.termsSection {
+  padding: #{$padding * 2}px;
+
+  .termsContainer {
+    max-width: #{$clamp-width}px;
+    margin: auto;
+
+    .title {
+      font-weight: bold;
+    }
+
+    .header {
+      font-weight: bold;
+    }
+  }
+}

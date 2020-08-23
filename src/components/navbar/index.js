@@ -27,7 +27,6 @@ import { NAV_BAR_ACTIONS } from '../../constants/state'
 
 // Styles
 import styles from './styles.module.scss'
-import { peek } from 'react-helmet'
 
 const PEEK_HIDE_TRIGGER_DISTANCE = 150
 
@@ -232,15 +231,6 @@ const Navbar = props => {
                       to='/contact'
                     >
                       Contact
-                    </NormalButton>
-                  </li>
-                  <li>
-                    <NormalButton
-                      active={page === PAGES.terms}
-                      navMode={navMode}
-                      to='/terms'
-                    >
-                      Legal
                     </NormalButton>
                   </li>
                 </ol>

@@ -4,8 +4,6 @@ const PAGES = {
   about: 'ABOUT',
   contact: 'CONTACT',
   checkout: 'CHECKOUT',
-  terms: 'TERMS',
-  account: 'ACCOUNT',
   product: 'PRODUCT',
   productList: 'PRODUCT_LIST',
   checkout: 'CHECKOUT',
@@ -13,9 +11,12 @@ const PAGES = {
   loader: 'LOADER',
   notfound: 'NOTFOUND',
 
+  // Legal
+  terms: 'TERMS',
+  policies: 'POLICIES',
+
   // Dynamic Pages
   login: 'LOGIN',
-  emailConfirm: 'EMAIL_CONFIRM',
   forgotpassword: 'FORGOT_PASSWORD',
   passwordReset: 'PASSWORD_RESET',
   register: 'REGISTER',
