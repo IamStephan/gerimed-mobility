@@ -4,6 +4,9 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core'
 // Notifications
 import { SnackbarProvider } from 'notistack'
 
+// Https requests
+import { Provider as HttpsProvider } from 'use-http'
+
 const theme = createMuiTheme({
   palette: {
     type: 'light',
@@ -30,22 +33,26 @@ const Provider = props => {
     <ThemeProvider
       theme={theme}
     >
-      <SnackbarProvider
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-
-        classes={{
-          variantSuccess: notiStyles.success,
-          variantError: notiStyles.error,
-          variantWarning: notiStyles.warning,
-          variantInfo: notiStyles.info,
-        }}
-        preventDuplicate
+      <HttpsProvider
+        url={`${process.env.PROTOCOL}://${process.env.SERVER}:${process.env.PORT}`}
       >
-        { props.children }  
-      </SnackbarProvider>
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+
+          classes={{
+            variantSuccess: notiStyles.success,
+            variantError: notiStyles.error,
+            variantWarning: notiStyles.warning,
+            variantInfo: notiStyles.info,
+          }}
+          preventDuplicate
+        >
+          { props.children }  
+        </SnackbarProvider>
+      </HttpsProvider>
     </ThemeProvider>
   )
 }

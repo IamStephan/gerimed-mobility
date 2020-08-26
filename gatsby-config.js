@@ -1,11 +1,15 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
   siteMetadata: {
     title: `Gerimed Moility`,
     description: `Your one stop medical supply shop`,
     author: `Avvent Studio`,
-    protocol: 'http',
-    server: 'localhost',
-    port: '1337'
+    protocol: process.env.PROTOCOL,
+    server: process.env.SERVER,
+    port: process.env.PORT
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -61,7 +65,19 @@ module.exports = {
       },
     },
     '@bumped-inc/gatsby-plugin-optional-chaining',
-    
+    {
+      resolve: `gatsby-source-graphql`,
+      options: {
+        // Arbitrary name for the remote schema Query type
+        typeName: `Custom`,
+        // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
+        fieldName: `backend`,
+        // Url to query from
+        url: `${process.env.PROTOCOL}://${process.env.SERVER}:${process.env.PORT}/graphql`,
+        // Dev Testing
+        //refetchInterval: 30
+      },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

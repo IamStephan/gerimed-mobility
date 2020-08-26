@@ -1,130 +1,60 @@
-import React from 'react'
-
-// Material
-import { Typography, Card, CardHeader, CardMedia, CardActions, IconButton } from '@material-ui/core'
-import { VisibilityOutlined, FavoriteOutlined, ShoppingCartOutlined } from '@material-ui/icons'
+import React, { useEffect, useState } from 'react'
 
 // Gatsby
-import { useStaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image'
+import { useStaticQuery, graphql } from 'gatsby'
+
+// Hooks
+import { useFetch } from 'use-http'
+
+// Components
+import ShopItemRow from '../../components/shopItemRow'
 
 // Styles
 import styles from './styles.module.scss'
 
-/**
- * NOTE:
- * =====
- * These images and entire section imports images ineffeciently
- * these images will be loaded dynamically but this is just a show case
- */
-
-const PRUDUCT_LIST = [
-  {
-    name: 'Wheelchair – Classique',
-    price: 'R1 500',
-    img: 'product1'
-  },
-  {
-    name: 'Electric Wheelchair – Explorer',
-    price: 'R26 500',
-    img: 'product2'
-  },
-  {
-    name: 'Drive Medical – R8 Aluminium',
-    price: 'R3 000',
-    img: 'product3'
-  },
-  {
-    name: 'Hospital bed – Manual',
-    price: 'R12 000',
-    img: 'product4'
-  }
-]
-
- const Product = props => {
-    return (
-      <div
-        className={styles['product']}
-      >
-        <Card
-          style={{
-            boxShadow: 'none'
-          }}
-        >
-          <CardHeader
-            title={props.name}
-            subheader={props.price}
-          />
-
-          <CardMedia
-            component={() => (
-              <div
-                className={styles['imgContainer']}
-              >
-                <Img
-                  className={styles['img']}
-                  fluid={props.img}
-                />
-              </div>
-            )}
-          />
-
-          <CardActions>
-            <IconButton>
-              <ShoppingCartOutlined />
-            </IconButton>
-
-            <IconButton>
-              <FavoriteOutlined />
-            </IconButton>
-            
-            <IconButton
-              className={styles['action']}
-            >
-              <VisibilityOutlined />
-            </IconButton>
-          </CardActions>
-        </Card>
-      </div>
-    )
- }
-
-const Featured = () => {
-  const images = useStaticQuery(graphql`
-    query {
-      product1: file(relativePath: {eq: "gallery/temp_products/product_1.png"}) {
-        childImageSharp {
-          fluid (maxWidth: 500) {
-            ...GatsbyImageSharpFluid
-          }
+const QUERY = `
+  query {
+    featured {
+      products {
+        id
+        name
+        price
+        showcase {
+          formats
+          url
         }
-      }
-
-      product2: file(relativePath: {eq: "gallery/temp_products/product_2.png"}) {
-        childImageSharp {
-          fluid (maxWidth: 500) {
-            ...GatsbyImageSharpFluid
-          }
-        }
-      }
-
-      product3: file(relativePath: {eq: "gallery/temp_products/product_3.png"}) {
-        childImageSharp {
-          fluid (maxWidth: 500) {
-            ...GatsbyImageSharpFluid
-          }
-        }
-      }
-
-      product4: file(relativePath: {eq: "gallery/temp_products/product_4.png"}) {
-        childImageSharp {
-          fluid (maxWidth: 500) {
-            ...GatsbyImageSharpFluid
-          }
+        categories {
+          id
+          name
         }
       }
     }
-  `)
+  }
+`
+
+const Featured = () => {
+  const [products, setProducts] = useState([])
+  const { query, response, loading } = useFetch('/graphql')
+
+  useEffect(() => {
+    loadFeaturedProducts()
+  }, [])
+
+  async function loadFeaturedProducts() {
+    const { data } = await query(QUERY)
+
+    if(response.ok) {
+      // The loading state gets updated here with the rerender
+      console.log(data)
+      setProducts(data.featured.products)
+    } else {
+      /**
+       * If this fails instead of showing an error message instead
+       * just use fallback data
+       */
+    }
+  }
 
   return (
     <section
@@ -145,32 +75,16 @@ const Featured = () => {
           />
         </svg>
       </div>
-      
+
+
       <div
         className={styles['featuredContainer']}
       >
-        <Typography
-          className={styles['title']}
-          variant='h3'
-          color='secondary'
-        >
-          Our popular products
-        </Typography>
-
-        <div
-          className={styles['showcase']}
-        >
-          {
-            PRUDUCT_LIST.map((item, i) => (
-              <Product
-                key={i}
-                name={item.name}
-                price={item.price}
-                img={images[item.img].childImageSharp.fluid}
-              />
-            ))
-          }
-        </div>
+        <ShopItemRow
+          title='Our Featured Products'
+          products={products}
+          loading={loading}
+        />
       </div>
 
       <div

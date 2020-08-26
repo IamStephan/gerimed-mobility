@@ -17,42 +17,8 @@ $breakpoint-2: 575;
   .featuredContainer {
     max-width: #{$clamp-width}px;
     margin: auto;
-    padding: #{$padding * 2}px;
     padding-top: #{$shape-divider-height + ($padding * 2)}px;
     padding-bottom: #{$shape-divider-height + ($padding * 2)}px;
-
-    .title {
-      font-weight: bold;
-      margin-bottom: #{$margin * 3}px;
-    }
-
-    .showcase {
-      display: flex;
-      justify-content: space-evenly;
-      overflow: auto;
-
-      .product {
-        display: flex;
-        max-width: 300px;
-        padding-left: #{$padding * 2}px;
-        padding-right: #{$padding * 2}px;
-
-        .imgContainer {
-          display: flex;
-          justify-content: center;
-
-          .img {
-            height: 150px;
-            width: 150px;
-          }
-        }
-        
-
-        .action {
-          margin-left: auto;
-        }
-      }
-    }
   }
 
   .topDivider {

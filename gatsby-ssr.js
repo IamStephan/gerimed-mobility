@@ -12,6 +12,7 @@ import './src/utils/reset.scss'
  * ==================
  * This is not actually server side rendering
  * It essentially means that this is compiled at build time
+ * by the gatsby 'server'
  */
 
  /**

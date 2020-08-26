@@ -4,6 +4,9 @@ import React from 'react'
 import { graphql, useStaticQuery } from 'gatsby'
 import Img from 'gatsby-image'
 
+// Hooks
+import { useFeaturedCategories } from '../../hooks/useFeaturedCategories'
+
 // Material
 import { Typography } from '@material-ui/core'
 
@@ -28,52 +31,18 @@ const GridItem = props => {
           {props.title}
         </Typography>
 
-        <Typography
+        {/* <Typography
           className={styles['total']}
         >
           • {props.total} products
-        </Typography>
+        </Typography> */}
       </div>
     </div>
   )
 }
 
 const Catalog = () => {
-  const images = useStaticQuery(graphql`
-    query {
-      masks: file(relativePath: {eq: "gallery/catalog/masks2.jpg"}) {
-        childImageSharp {
-          fluid {
-            ...GatsbyImageSharpFluid
-          } 
-        }
-      }
-
-      appliances: file(relativePath: {eq: "gallery/catalog/bathAid.jpg"}) {
-        childImageSharp {
-          fluid {
-            ...GatsbyImageSharpFluid
-          } 
-        }
-      }
-
-      icu: file(relativePath: {eq: "gallery/catalog/icu.jpg"}) {
-        childImageSharp {
-          fluid {
-            ...GatsbyImageSharpFluid
-          } 
-        }
-      }
-
-      mobility: file(relativePath: {eq: "gallery/catalog/mobility.jpg"}) {
-        childImageSharp {
-          fluid {
-            ...GatsbyImageSharpFluid
-          } 
-        }
-      }
-    }
-  `)
+  const { categories } = useFeaturedCategories()
 
   return (
     <section
@@ -82,55 +51,19 @@ const Catalog = () => {
       <div
         className={styles['catalogContent']}
       >
-        <GridItem
-          title='Mobility'
-          total='84'
-        >
-          <Img
-            fluid={images.masks.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </GridItem>
-
-        <GridItem
-          title='Appliances'
-          total='685'
-        >
-          <Img
-            fluid={images.mobility.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </GridItem>
-
-        <GridItem
-          title='Commodes'
-          total='50'
-        >
-          <Img
-            fluid={images.mobility.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </GridItem>
-
-        <GridItem
-          title='Grabrails'
-          total='65'
-        >
-          <Img
-            fluid={images.icu.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </GridItem>
-
-        <GridItem
-          title='Seating'
-          total='865'
-        >
-          <Img
-            fluid={images.icu.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </GridItem>
+        {
+          categories.map(({ category, showcase }) => (
+            <GridItem
+              key={category.id}
+              title={category.name}
+            >
+              <img
+                src={`http://localhost:1337${showcase.url}`}
+                className={styles['img']}
+              />
+            </GridItem>
+          ))
+        }
       </div>
     </section>
   )
