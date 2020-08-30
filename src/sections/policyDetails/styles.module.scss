@@ -1,18 +1,17 @@
 @import '../../utils/sizes';
 
 .policySection {
-  padding: #{$padding * 2}px;
 
-  .policyContainer {
-    max-width: #{$clamp-width}px;
-    margin: auto;
+  // Increase specifity
+  &.policySection {
+    padding: #{$padding * 2}px;
+  }
 
-    .title {
-      font-weight: bold;
-    }
+  .title {
+    font-weight: bold;
+  }
 
-    .header {
-      font-weight: bold;
-    }
+  .header {
+    font-weight: bold;
   }
 }

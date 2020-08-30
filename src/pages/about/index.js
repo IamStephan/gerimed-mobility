@@ -5,7 +5,6 @@ import Layout from '../../templates/content_layout'
 
 // Constants
 import { PAGES } from '../../constants/pages'
-import { MODE as FOOTERMODE} from '../../constants/footer'
 
 // Sections
 import AboutSection from '../../sections/about'
@@ -16,7 +15,6 @@ const About = () => {
   return (
     <Layout
       page={PAGES.about}
-      footerMode={FOOTERMODE.curve}
     >
       <PsuedoMap />
       <AboutSection />

@@ -10,13 +10,11 @@ import FAQ from '../../sections/faq'
 
 // Constants
 import { PAGES } from '../../constants/pages'
-import { MODE as FOOTERMODE } from '../../constants/footer'
 
 const Contact = () => {
   return (
     <Layout
       page={PAGES.contact}
-      footerMode={FOOTERMODE.curve}
     >
       <ContactSection />
       <MapSmall />
