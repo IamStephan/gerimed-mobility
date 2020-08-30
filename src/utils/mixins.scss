@@ -1,6 +1,6 @@
 
 // Navbar Styles
-@import '../components/navbar/styles.module';
+@import '../organisms/navbar/styles.module';
 
 @mixin accountForNavBar($topPadding: 0) {
   padding-top: #{$navbarHeightTrans + $topPadding}px;

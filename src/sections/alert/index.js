@@ -1,29 +1,24 @@
 import React from 'react'
 
-import { Alert, AlertTitle } from '@material-ui/lab'
+// Templates
+import { Section } from '../../templates/content_layout'
 
-// Styles
-import styles from './styles.module.scss'
+// Material
+import { Alert, AlertTitle } from '@material-ui/lab'
 
 const AlertSec = () => {
   return (
-    <section
-      className={styles['alertSection']}
-    >
-      <div
-        className={styles['alertContainer']}
+    <Section>
+      <Alert
+        security='success'
+        variant='outlined'
       >
-        <Alert
-          security='success'
-          variant='outlined'
-        >
-          <AlertTitle>
-            <strong>We are open!</strong>
-          </AlertTitle>
-          Gerimed mobility is <strong>registered</strong> as an essential business.
-        </Alert>
-      </div>
-    </section>
+        <AlertTitle>
+          <strong>We are open!</strong>
+        </AlertTitle>
+        Gerimed mobility is <strong>registered</strong> as an essential business.
+      </Alert>
+    </Section>
   )
 }
 

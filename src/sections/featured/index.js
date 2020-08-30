@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-// Gatsby
-import Img from 'gatsby-image'
-import { useStaticQuery, graphql } from 'gatsby'
+// Templates
+import { Section } from '../../templates/content_layout'
 
 // Hooks
 import { useFetch } from 'use-http'
@@ -13,6 +12,7 @@ import ShopItemRow from '../../components/shopItemRow'
 // Styles
 import styles from './styles.module.scss'
 
+// Fetch Query
 const QUERY = `
   query {
     featured {
@@ -56,8 +56,9 @@ const Featured = () => {
   }
 
   return (
-    <section
+    <Section
       className={styles['featuredSection']}
+      isClamped={false}
     >
       <div
         className={styles['topDivider']}
@@ -101,7 +102,7 @@ const Featured = () => {
           />
         </svg>
       </div>
-    </section>
+    </Section>
   )
 }
 

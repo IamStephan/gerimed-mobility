@@ -1,8 +1,7 @@
 import React from 'react'
 
-// Gatsby
-import { graphql, useStaticQuery } from 'gatsby'
-import Img from 'gatsby-image'
+// Templates
+import { Section } from '../../templates/content_layout'
 
 // Hooks
 import { useFeaturedCategories } from '../../hooks/useFeaturedCategories'
@@ -45,27 +44,23 @@ const Catalog = () => {
   const { categories } = useFeaturedCategories()
 
   return (
-    <section
-      className={styles['catalogContainer']}
+    <Section
+      className={styles['catalogSection']}
     >
-      <div
-        className={styles['catalogContent']}
-      >
-        {
-          categories.map(({ category, showcase }) => (
-            <GridItem
-              key={category.id}
-              title={category.name}
-            >
-              <img
-                src={`http://localhost:1337${showcase.url}`}
-                className={styles['img']}
-              />
-            </GridItem>
-          ))
-        }
-      </div>
-    </section>
+      {
+        categories.map(({ category, showcase }) => (
+          <GridItem
+            key={category.id}
+            title={category.name}
+          >
+            <img
+              src={`http://localhost:1337${showcase.url}`}
+              className={styles['img']}
+            />
+          </GridItem>
+        ))
+      }
+    </Section>
   )
 }
 

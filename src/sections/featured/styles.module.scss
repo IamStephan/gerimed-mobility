@@ -7,7 +7,6 @@ $breakpoint-1: 1075;
 $breakpoint-2: 575;
 
 .featuredSection {
-  padding: #{$padding * 2}px;
   padding-bottom: #{$shape-divider-height + ($padding * 2)}px;
   padding-top: #{$shape-divider-height + ($padding * 2)}px;
   background-color: $grey;

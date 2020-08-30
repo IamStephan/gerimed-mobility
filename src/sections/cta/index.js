@@ -1,5 +1,8 @@
 import React from 'react'
 
+// Templates
+import { Section } from '../../templates/content_layout'
+
 // Material
 import { Button, Typography } from '@material-ui/core'
 
@@ -8,8 +11,11 @@ import styles from './styles.module.scss'
 
 const CTA = () => {
   return (
-    <section
+    <Section
       className={styles['ctaSection']}
+      isClamped={false}
+      isPadded={false}
+      gutter='none'
     >
       <div
         className={styles['topDivider']}
@@ -25,6 +31,7 @@ const CTA = () => {
               class={styles['shapeFill']}/>
         </svg>
       </div>
+      
       <div
         className={styles['ctaContainer']}
       >
@@ -50,7 +57,7 @@ const CTA = () => {
           Shop Now
         </Button>
       </div>
-    </section>
+    </Section>
   )
 }
 

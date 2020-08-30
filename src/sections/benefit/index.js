@@ -1,5 +1,8 @@
 import React from 'react'
 
+// Templates
+import { Section } from '../../templates/content_layout'
+
 // Material
 import { Typography, Avatar } from '@material-ui/core'
 import { LocalOfferOutlined, HelpOutline, SecurityOutlined, StarsOutlined } from '@material-ui/icons'
@@ -32,12 +35,9 @@ const BenefitItem = props => {
 
 const Benefit = () => {
   return (
-    <section
+    <Section
       className={styles['benefitSection']}
     >
-      <div
-        className={styles['benefitContainer']}
-      >
         <div
           className={`${styles['explain']}`}
         >
@@ -107,8 +107,7 @@ const Benefit = () => {
             </Avatar>
           </BenefitItem>
         </div>
-      </div>
-    </section>
+    </Section>
   )
 }
 

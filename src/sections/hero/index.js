@@ -1,5 +1,8 @@
 import React from 'react'
 
+// Templates
+import { Section } from '../../templates/content_layout'
+
 // Material
 import { Typography, Button } from '@material-ui/core'
 
@@ -10,22 +13,28 @@ import Img from 'gatsby-image/withIEPolyfill' // <= Required for the position to
 // Styles
 import styles from './styles.module.scss'
 
-const Hero = () => {
-  const data = useStaticQuery(graphql`
-    query {
-      file(relativePath: {eq: "site/hero-2.png"}) {
-        childImageSharp {
-          fluid(maxWidth: 2000) {
-            ...GatsbyImageSharpFluid
-          } 
-        }
+// Static Queries
+const STATIC_QUERY = graphql`
+  query {
+    file(relativePath: {eq: "site/hero-2.png"}) {
+      childImageSharp {
+        fluid(maxWidth: 2000) {
+          ...GatsbyImageSharpFluid
+        } 
       }
     }
-  `)
+  }
+`
+
+const Hero = () => {
+  const data = useStaticQuery(STATIC_QUERY)
 
   return (
-    <section
+    <Section
       className={styles['hero']}
+      isClamped={false}
+      isPadded={false}
+      gutter='none'
     >
       <div
         className={styles['imgContainer']}
@@ -103,7 +112,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   )
 }
 

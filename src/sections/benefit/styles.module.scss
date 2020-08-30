@@ -6,44 +6,38 @@ $breakpoint-1: 990;
 $breakpoint-2: 500;
 
 .benefitSection {
-  margin-bottom: #{$section-space}px;
-  
-  .benefitContainer {
-    max-width: #{$clamp-width}px;
-    margin: auto;
-    display: flex;
+  display: flex;
 
-    .explain {
-      flex: 1;
-      padding: #{$padding * 2}px;
+  .explain {
+    flex: 1;
+    padding: #{$padding * 2}px;
 
-      .header {
-        margin-bottom: #{$margin * 4}px;
-        font-weight: bold;
-      }
+    .header {
+      margin-bottom: #{$margin * 4}px;
+      font-weight: bold;
     }
+  }
 
-    .items {
-      flex: 2;
+  .items {
+    flex: 2;
+    display: flex;
+    flex-wrap: wrap;
+
+    .item {
+      width: 50%;
+      margin-bottom: #{$margin * 4}px;
+      padding: #{$padding * 2}px;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
 
-      .item {
-        width: 50%;
-        margin-bottom: #{$margin * 4}px;
-        padding: #{$padding * 2}px;
-        display: flex;
-        flex-direction: column;
+      .avatar {
+        background-color: $secondary;
+        margin-bottom: #{$margin * 3}px;
+      }
 
-        .avatar {
-          background-color: $secondary;
-          margin-bottom: #{$margin * 3}px;
-        }
-
-        .title {
-          margin-bottom: #{$margin * 2}px;
-          font-weight: bold;
-        }
+      .title {
+        margin-bottom: #{$margin * 2}px;
+        font-weight: bold;
       }
     }
   }
@@ -52,21 +46,19 @@ $breakpoint-2: 500;
 
 @media screen and (max-width: #{$breakpoint-1}px) {
   .benefitSection {
-    .benefitContainer {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
 
-      .explain {
-        max-width: 600px;
-  
-        .header {
-          text-align: center;
-        }
+    .explain {
+      max-width: 600px;
 
-        .subheader {
-          text-align: center;
-          margin-bottom: #{$margin * 2}px;
-        }
+      .header {
+        text-align: center;
+      }
+
+      .subheader {
+        text-align: center;
+        margin-bottom: #{$margin * 2}px;
       }
     }
   }
@@ -74,21 +66,19 @@ $breakpoint-2: 500;
 
 @media screen and (max-width: #{$breakpoint-2}px) {
   .benefitSection {
-    .benefitContainer {
-      .items {
-        flex-direction: column;
-        
-        .item {
-          width: 100%;
-          align-items: center;
+    .items {
+      flex-direction: column;
+      
+      .item {
+        width: 100%;
+        align-items: center;
 
-          .title {
-            text-align: center;
-          }
+        .title {
+          text-align: center;
+        }
 
-          .text {
-            text-align: center;
-          }
+        .text {
+          text-align: center;
         }
       }
     }
