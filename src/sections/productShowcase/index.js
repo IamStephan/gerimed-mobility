@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react'
 
+// Template
+import { Section } from '../../templates/content_layout'
+
 // Carousel
 import { useEmblaCarousel } from 'embla-carousel/react'
 
 // Quesy string
 import { parse } from 'qs'
-
-// Gatbsy
-import { navigate } from 'gatsby'
 
 // Hooks
 import { useFetch } from 'use-http'
@@ -19,6 +19,7 @@ import { useLocation } from '@reach/router'
 // Styles
 import styles from './styles.module.scss'
 
+// Fetch Query
 const QUERY = `
   query Product($id: ID!) {
     product(id: $id) {
@@ -51,9 +52,6 @@ const ProductShowcase = () => {
   const [images, setImages] = useState([])
   // Carousel index
   const [selectedIndex, setSelectedIndex] = useState(0)
-
-  // Track the URL and the product ID (For full resets)
-  const previousProductID = usePreviousDistinct(productID)
   
   // Query based operations based on URL
   const location = useLocation()
@@ -160,66 +158,61 @@ const ProductShowcase = () => {
   }
 
   return (
-    <section
+    <Section
       className={styles['productSection']}
     >
       <div
-        className={styles['productContainer']}
+        className={styles['productShowcase']}
       >
         <div
-          className={styles['productShowcase']}
+          className={styles['main']}
+          ref={showcaseRef}
         >
           <div
-            className={styles['main']}
-            ref={showcaseRef}
+            className={styles['mainContainer']}
           >
-            <div
-              className={styles['mainContainer']}
-            >
-              {
-                images.map(image => (
-                  <div
-                    className={styles['mainImageSlide']}
-                  >
-                    <img
-                      className={styles['mainImage']}
-                      src={SelectPreferedImageMain(image.url, image.formats)}
-                    />
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-
-          <div
-            className={styles['thumb']}
-            ref={thumbRef}
-          >
-            <div
-              className={styles['thumbContainer']}
-            >
-              {
-                images.map((image, i) => (
-                  <div
-                    className={styles['thumbImageSlide']}
-                    onClick={() => onThumbClick(i) }
-                    style={{
-                      opacity: selectedIndex == i ? 1 : 0.25
-                    }}
-                  >
-                    <img
-                      className={styles['thumbImage']}
-                      src={SelectPreferedImageThumb(image.url, image.formats)}
-                    />
-                  </div>
-                ))
-              }
-            </div>
+            {
+              images.map(image => (
+                <div
+                  className={styles['mainImageSlide']}
+                >
+                  <img
+                    className={styles['mainImage']}
+                    src={SelectPreferedImageMain(image.url, image.formats)}
+                  />
+                </div>
+              ))
+            }
           </div>
         </div>
-        
+
+        <div
+          className={styles['thumb']}
+          ref={thumbRef}
+        >
+          <div
+            className={styles['thumbContainer']}
+          >
+            {
+              images.map((image, i) => (
+                <div
+                  className={styles['thumbImageSlide']}
+                  onClick={() => onThumbClick(i) }
+                  style={{
+                    opacity: selectedIndex == i ? 1 : 0.25
+                  }}
+                >
+                  <img
+                    className={styles['thumbImage']}
+                    src={SelectPreferedImageThumb(image.url, image.formats)}
+                  />
+                </div>
+              ))
+            }
+          </div>
+        </div>
       </div>
-    </section>
+    </Section>
   )
 }
 

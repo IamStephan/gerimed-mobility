@@ -4,70 +4,64 @@ $mainSize: 450;
 $thumbHeight: 85;
 
 .productSection {
-  .productContainer {
-    padding: #{$padding * 2}px;
-    max-width: #{$clamp-width}px;
-    margin: auto;
+  .productShowcase {
+    display: flex;
+    flex-direction: column;
 
-    .productShowcase {
-      display: flex;
-      flex-direction: column;
+    .main {
+      width: #{$mainSize}px;
+      height: #{$mainSize}px;
+      margin-bottom: 10px;
+      overflow: hidden;
 
-      .main {
-        width: #{$mainSize}px;
-        height: #{$mainSize}px;
-        margin-bottom: 10px;
-        overflow: hidden;
+      //Dev
+      //background-color: pink;
 
-        //Dev
-        //background-color: pink;
+      .mainContainer {
+        display: flex;
+        position: relative;
 
-        .mainContainer {
-          display: flex;
+        .mainImageSlide {
+          min-width: #{$mainSize}px;
+          height: #{$mainSize}px;
           position: relative;
 
-          .mainImageSlide {
-            min-width: #{$mainSize}px;
-            height: #{$mainSize}px;
-            position: relative;
-
-            .mainImage {
-              position: absolute;
-              top: 0px;
-              left: 0px;
-              width: 100%;
-              height: 100%;
-              object-fit: contain;
-            }
+          .mainImage {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
           }
         }
       }
+    }
 
-      .thumb {
-        width: #{$mainSize}px;
-        height: #{$thumbHeight}px;
-        overflow: hidden;
+    .thumb {
+      width: #{$mainSize}px;
+      height: #{$thumbHeight}px;
+      overflow: hidden;
 
-        //Dev
-        //background-color: red;
+      //Dev
+      //background-color: red;
 
-        .thumbContainer {
-          display: flex;
+      .thumbContainer {
+        display: flex;
+        position: relative;
+
+        .thumbImageSlide {
+          min-width: #{$thumbHeight}px;
+          height: #{$thumbHeight}px;
           position: relative;
 
-          .thumbImageSlide {
-            min-width: #{$thumbHeight}px;
-            height: #{$thumbHeight}px;
-            position: relative;
-
-            .thumbImage {
-              position: absolute;
-              top: 0px;
-              left: 0px;
-              width: 100%;
-              height: 100%;
-              object-fit: contain;
-            }
+          .thumbImage {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
           }
         }
       }
