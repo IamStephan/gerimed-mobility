@@ -1,24 +1,16 @@
 @import '../../utils/sizes';
 
 .faqSection {
-  margin-top: #{$section-space / 2}px;
+  .title {
+    font-weight: bold;
+    margin-bottom: #{$margin * 2}px;
+  }
 
-  .faqContainer {
-    max-width: #{$clamp-width}px;
-    margin: auto;
-    padding: #{$padding}px;
+  .questions {
+    margin-bottom: #{$section-space / 2}px;
 
-    .title {
+    .header {
       font-weight: bold;
-      margin-bottom: #{$margin * 2}px;
-    }
-
-    .questions {
-      margin-bottom: #{$section-space / 2}px;
-
-      .header {
-        font-weight: bold;
-      }
     }
   }
 }

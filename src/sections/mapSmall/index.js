@@ -3,13 +3,18 @@ import React from 'react'
 // SVGs
 import Map from '../../svg/psuedo_map.svg'
 
+// Templates
+import { Section } from '../../templates/content_layout'
+
 // Styles
 import styles from './styles.module.scss'
 
 const MapSmall = () => {
   return (
-    <section
+    <Section
       className={styles['mapSmallSection']}
+      isClamped={false}
+      gutter='none'
     >
       <div
         className={styles['mapContainer']}
@@ -51,7 +56,7 @@ const MapSmall = () => {
           />
         </svg>
       </div>
-    </section>
+    </Section>
   )
 }
 

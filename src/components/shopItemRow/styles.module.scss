@@ -21,6 +21,11 @@
       -khtml-user-select: none;
       -webkit-tap-highlight-color: transparent;
 
+      .loader {
+        width: 100%;
+        margin-top: #{$margin * 2}px;
+      }
+
       .rowItem {
         position: relative;
       }

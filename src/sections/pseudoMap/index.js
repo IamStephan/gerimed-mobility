@@ -7,13 +7,19 @@ import { LocationOn } from '@material-ui/icons'
 // SVGs
 import Map from '../../svg/psuedo_map.svg'
 
+// Templates
+import { Section } from '../../templates/content_layout'
+
 // Styles
 import styles from './styles.module.scss'
 
 const PseudoMap = () => {
   return (
-    <section
+    <Section
       className={styles['mapSection']}
+      isClamped={false}
+      isPadded={false}
+      gutter='none'
     >
       <div
         className={styles['mapContainer']}
@@ -74,7 +80,7 @@ const PseudoMap = () => {
               class={styles['shapeFill']}/>
         </svg>
       </div>
-    </section>
+    </Section>
   )
 }
 

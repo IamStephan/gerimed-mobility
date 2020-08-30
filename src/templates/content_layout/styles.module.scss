@@ -1,0 +1,60 @@
+@import '../../utils/colors';
+@import '../../utils/sizes';
+
+//Nav Styles
+@import '../../organisms/navbar/styles.module';
+
+.section {
+  
+  &.clamped {
+    max-width: #{$clamp-width}px;
+    margin: auto;
+  }
+
+  &.padded {
+    padding: #{$padding}px;
+  }
+
+  &.gutter_bottom {
+    margin-bottom: #{$section-margin}px;
+  }
+
+  &.gutter_top {
+    margin-top: #{$section-margin}px;
+  }
+
+  &.gutter_both {
+    margin-top: #{$section-margin}px;
+    margin-bottom: #{$section-margin}px;
+  }
+
+  &.gutter_none {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+.detector {
+  position: absolute;
+  z-index: -9999;
+  pointer-events: none;
+  top: 0px;
+  left: 0px;
+  height: #{$navbarHeightTrans}px;
+  width: 100%;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;;
+  flex-direction: column;
+
+  .main {
+    flex: 1; // <== Ensure the footer is always stuck at the bottom
+    background-color: $light;
+
+    &.navNormal {
+      margin-top: #{$navbarHeightNormal}px;
+    }
+  }
+}

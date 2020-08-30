@@ -4,8 +4,17 @@
 // Local
 @import '../navbar/styles.module';
 
+$animDur: 250;
+
 .filter {
   position: sticky;
-  padding: #{$padding}px;
-  top: #{$navbarHeightNormal + $margin * 2}px;
+  padding: #{$padding * 2}px;
+  top: #{$navbarHeightNormal}px;
+  background-color: $light;
+  transition: top #{$animDur}ms ease-in-out;
+  border-bottom: 1px rgba($dark, 0.25) solid;
+
+  &.peek {
+    top: 0px
+  }
 }

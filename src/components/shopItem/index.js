@@ -17,7 +17,7 @@ import styles from './styles.module.scss'
 
 const Title = props => {
   const {
-    to,
+    productID,
     title
   } = props
 
@@ -27,7 +27,7 @@ const Title = props => {
         color='inherit'
         className={styles['title']}
         component={Link}
-        to={to}
+        to={`/product?product=${productID}`}
       >
         <TruncateText
           text={title}
@@ -41,6 +41,7 @@ const Title = props => {
 
 const ShopItem = props => {
   const {
+    id,
     name,
     price,
     showcase,
@@ -73,6 +74,7 @@ const ShopItem = props => {
       
       <Title
         title={name}
+        productID={id}
       />
 
       <div

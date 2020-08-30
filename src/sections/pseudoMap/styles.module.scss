@@ -8,9 +8,6 @@
 .mapSection {
   position: relative;
 
-  // This seems inconsistant but it is more aesthetic
-  margin-bottom: #{($section-space / 4) - ($padding * 2)}px;
-
   .bottomDivider {
     position: absolute;
     bottom: -1px;

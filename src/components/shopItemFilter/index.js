@@ -4,13 +4,26 @@ import React from 'react'
 import { TextField, InputAdornment } from '@material-ui/core'
 import { SearchOutlined } from '@material-ui/icons'
 
+// State
+import { useGlobalState } from '../../state/navbar'
+
 // Styles
 import styles from './styles.module.scss'
 
+/**
+ * Flters:
+ * =======
+ *  - category
+ *  - price
+ *  - name
+ */
+
 const ShopItemFilter = () => {
+  const [peeking] = useGlobalState('navbarPeek')
+
   return (
     <div
-      className={styles['filter']}
+      className={`${styles['filter']} ${peeking ? '' : styles['peek']}`}
     >
       <TextField
         label='Search Products...'

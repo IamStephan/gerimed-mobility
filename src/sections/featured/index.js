@@ -46,7 +46,6 @@ const Featured = () => {
 
     if(response.ok) {
       // The loading state gets updated here with the rerender
-      console.log(data)
       setProducts(data.featured.products)
     } else {
       /**

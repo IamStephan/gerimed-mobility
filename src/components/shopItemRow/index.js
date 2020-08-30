@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { useEmblaCarousel } from 'embla-carousel/react'
 
 // Material
-import { Typography, Divider } from '@material-ui/core'
+import { Typography, Divider, LinearProgress } from '@material-ui/core'
 
 // Components
 import ShopItem from '../shopItem'
@@ -63,17 +63,19 @@ const ShopItemRow = props => {
           >
             {
               loading ? (
-                <div
-                  className={styles['rowItem']}
-                >
-                  loading
-                </div>
+
+                <LinearProgress
+                  color='secondary'
+                  className={styles['loader']}
+                />
+
               ) : products.map((product) => (
                 <div
                   key={product.id}
                   className={styles['rowItem']}
                 >
                   <ShopItem
+                    id={product.id  }
                     name={product.name}
                     price={product.price}
                     categories={product.categories}

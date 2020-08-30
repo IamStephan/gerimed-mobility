@@ -4,9 +4,9 @@ import React from 'react'
 import { Router } from '@reach/router'
 
 // Templates
-import Register from '../../templates/register'
-import Login from '../../templates/login'
-import ProfileTemplate from '../../templates/profile'
+import Register from '../../client_pages/register'
+import Login from '../../client_pages/login'
+import ProfileTemplate from '../../client_pages/profile'
 
 // Components
 import PrivateRoute from '../../components/privateRoute'

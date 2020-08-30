@@ -82,7 +82,6 @@ export const { dispatch, useGlobalState } = createStore((state, action) => {
     postCode: '',
     province: '',
     country: '',
-
   },
 
   settings: {

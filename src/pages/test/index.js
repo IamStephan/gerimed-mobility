@@ -1,67 +1,92 @@
 import React from 'react'
 
-// Components
-import ShopItemRow from '../../components/shopItemRow'
+// Hooks
+import { useRendersCount } from 'react-use'
 
-const DummyData = [
-  {
-    name: 'Electric Wheelchair – KD Smart – Heavy Duty',
-    category: [
-      {
-        name: 'Mobility',
-        categoryId: 'asdasd'
-      },
-    ],
-    price: 4000,
-    itemId: 'asdasdasd',
-    imgUrl: 'asdasdasd'
-  },
-  {
-    name: 'Electric Wheelchair – KD Smart – Heavy Duty',
-    category: [
-      {
-        name: 'Mobility',
-        categoryId: 'asdasd'
-      },
-    ],
-    price: 4000,
-    itemId: 'asdasdasd',
-    imgUrl: 'asdasdasd'
-  },
-  {
-    name: 'Electric Wheelchair – KD Smart – Heavy Duty',
-    category: [
-      {
-        name: 'Mobility',
-        categoryId: 'asdasd'
-      },
-    ],
-    price: 4000,
-    itemId: 'asdasdasd',
-    imgUrl: 'asdasdasd'
-  },
-  {
-    name: 'Electric Wheelchair – KD Smart – Heavy Duty',
-    category: [
-      {
-        name: 'Mobility',
-        categoryId: 'asdasd'
-      },
-    ],
-    price: 4000,
-    itemId: 'asdasdasd',
-    imgUrl: 'asdasdasd'
-  },
-]
+// Templates
+import ContentLayout, { Section, NavbarDetector } from '../../templates/content_layout'
 
 const TestPage = () => {
+  const renders = useRendersCount()
   return (
-    <div>
-      <ShopItemRow
-        products={DummyData}
-        title='Our Feature Products'
-      />
-    </div>
+    <ContentLayout
+      isNavNormal={false}
+    >
+      <NavbarDetector />
+      <Section
+        isClamped={false}
+        isPadded={false}
+      >
+        asd
+      </Section>
+
+      <Section>
+        {
+          renders
+        }
+      </Section>
+
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </ContentLayout>
   )
 }
 

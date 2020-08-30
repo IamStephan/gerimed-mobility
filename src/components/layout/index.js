@@ -1,8 +1,6 @@
 import React from 'react'
-import t from 'prop-types'
 
 // Components
-//import Provider from '../provider'
 import Navbar from '../navbar'
 import Footer from '../footer'
 
