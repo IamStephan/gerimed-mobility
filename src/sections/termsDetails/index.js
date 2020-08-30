@@ -21,16 +21,6 @@ const Title = props => {
   )
 }
 
-const Caption = props => {
-  return (
-    <Typography
-      paragraph
-    >
-      {props.children}
-    </Typography>
-  )
-}
-
 const Header = props => {
   return (
     <Typography

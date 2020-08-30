@@ -1,4 +1,4 @@
-import React, { useRef, createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 
 // Orgnisms
 import Navbar from '../../organisms/navbar'
@@ -59,7 +59,6 @@ export const NavbarDetector = () => {
     } else if(navMode === NAVMODES.normal && inView) {
       setNavMode(NAVMODES.trans)
     }
-    
   }, [inView])
 
   return (
