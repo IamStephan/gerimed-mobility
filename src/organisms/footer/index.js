@@ -32,7 +32,7 @@ const Text = props => (
 
 const Footer = props => {
   const {
-    footerMode
+    footerMode = MODE.curve
   } = props
 
   return (
