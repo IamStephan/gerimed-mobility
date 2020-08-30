@@ -1,20 +1,14 @@
 import React from 'react'
 
-// Components
-import ShopUtemFilter from '../../components/shopItemFilter'
+// Templates
+import { Section } from '../../templates/content_layout'
 
-// Styles
-import styles from './styles.module.scss'
+// Components
 import ShopItemFilter from '../../components/shopItemFilter'
 
-const ShopItems = props => {
+const ShopItems = () => {
   return (
-    <section
-      className={styles['shopItemsSection']}
-    >
-      <div
-        className={styles['shopItemsContainer']}
-      >
+    <Section>
         <ShopItemFilter />
         <br />
         <br />
@@ -61,8 +55,7 @@ const ShopItems = props => {
         <br />
         <br />
         <br />
-      </div>
-    </section>
+    </Section>
   )
 }
 
