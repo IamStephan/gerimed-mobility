@@ -1,59 +1,40 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 // Templates
 import { Section } from '../../templates/content_layout'
 
 // Hooks
-import { useFetch } from 'use-http'
+import { useMachine } from '@xstate/react'
+
+// Controller
+import { FetchGraphqlData } from '../../controllers/fetchGraphqlData'
+
+// Model
+import { FeaturedProducts } from './model'
 
 // Components
-import ShopItemRow from '../../components/shopItemRow'
+import ShopItemRow from '../../molecules/shop_item_row'
 
 // Styles
 import styles from './styles.module.scss'
 
-// Fetch Query
-const QUERY = `
-  query {
-    featured {
-      products {
-        id
-        name
-        price
-        showcase {
-          formats
-          url
-        }
-        categories {
-          id
-          name
-        }
-      }
-    }
-  }
-`
 
 const Featured = () => {
-  const [products, setProducts] = useState([])
-  const { query, response, loading } = useFetch('/graphql')
-
-  useEffect(() => {
-    loadFeaturedProducts()
-  }, [])
-
-  async function loadFeaturedProducts() {
-    const { data } = await query(QUERY)
-
-    if(response.ok) {
-      // The loading state gets updated here with the rerender
-      setProducts(data.featured.products)
-    } else {
-      /**
-       * If this fails instead of showing an error message instead
-       * just use fallback data
-       */
+  const [current, send] = useMachine(FetchGraphqlData, {
+    id: 'FeaturedProducts',
+    context: {
+      graphqlQuery: FeaturedProducts,
+      graphqlVariables: {
+        limit: 5
+      }
     }
-  }
+  })
+
+  const loading = current.matches('loading') || current.matches('retry')
+
+  const products = current.context.data?.products
+
+  console.log(products)
 
   return (
     <Section
@@ -76,16 +57,24 @@ const Featured = () => {
         </svg>
       </div>
 
+      {
+        loading && (
+          <div>
+            Loading
+          </div>
+        )
+      }
 
-      <div
+
+      {/* <div
         className={styles['featuredContainer']}
       >
         <ShopItemRow
           title='Our Featured Products'
           products={products}
-          loading={loading}
+          loading={current.matches('loading')}
         />
-      </div>
+      </div> */}
 
       <div
         className={styles['bottomDivider']}

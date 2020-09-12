@@ -9,19 +9,19 @@ import Login from '../../client_pages/login'
 import ProfileTemplate from '../../client_pages/profile'
 
 // Components
-import PrivateRoute from '../../components/privateRoute'
+import PrivateRoute from '../../organisms/private_route'
 
 const Profile = () => {
   return (
     <Router
       basepath='/profile'
     >
-      <PrivateRoute
+      {/* <PrivateRoute
         component={ProfileTemplate}
         path='/'
       />
       <Register path='/register' />
-      <Login path='/login/*' />
+      <Login path='/login/*' /> */}
     </Router>
   )
 }

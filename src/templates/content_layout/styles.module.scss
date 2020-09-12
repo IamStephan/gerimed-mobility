@@ -4,8 +4,30 @@
 //Nav Styles
 @import '../../organisms/navbar/styles.module';
 
+@mixin gutterSizes($type) {
+  &.gutter_xs {
+    margin-#{$type}: #{$section-margin / 2}px;
+  }
+
+  &.gutter_sm {
+    margin-#{$type}: #{$section-margin / 1.5}px;
+  }
+
+  &.gutter_md {
+    margin-#{$type}: #{$section-margin}px;
+  }
+
+  &.gutter_lg {
+    margin-#{$type}: #{$section-margin * 1.5}px;
+  }
+
+  &.gutter_xlg {
+    margin-#{$type}: #{$section-margin * 2}px;
+  }
+  margin-#{$type}: #{$section-margin}px;
+}
+
 .section {
-  
   &.clamped {
     max-width: #{$clamp-width}px;
     margin: auto;
@@ -16,16 +38,16 @@
   }
 
   &.gutter_bottom {
-    margin-bottom: #{$section-margin}px;
+    @include gutterSizes(bottom);
   }
 
   &.gutter_top {
-    margin-top: #{$section-margin}px;
+    @include gutterSizes(top);
   }
 
   &.gutter_both {
-    margin-top: #{$section-margin}px;
-    margin-bottom: #{$section-margin}px;
+    @include gutterSizes(top);
+    @include gutterSizes(bottom);
   }
 
   &.gutter_none {

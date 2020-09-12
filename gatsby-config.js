@@ -2,6 +2,8 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 
+const FEATURED_CATEGORIES = require('./strapi_graphql_queries/featured_categories')
+
 module.exports = {
   siteMetadata: {
     title: `Gerimed Moility`,
@@ -60,26 +62,25 @@ module.exports = {
     {
       resolve: `gatsby-plugin-nprogress`,
       options: {
-        // Setting a color is optional.
         color: `#FFFF01`,
       },
     },
     '@bumped-inc/gatsby-plugin-optional-chaining',
     {
-      resolve: `gatsby-source-graphql`,
+      resolve: 'gatsby-source-strapi-extended',
       options: {
-        // Arbitrary name for the remote schema Query type
-        typeName: `Custom`,
-        // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
-        fieldName: `backend`,
-        // Url to query from
-        url: `${process.env.PROTOCOL}://${process.env.SERVER}:${process.env.PORT}/graphql`,
-        // Dev Testing
-        //refetchInterval: 30
-      },
-    },
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
+        apiURL: `http://localhost:1337`,
+        queryLimit: 1000, // Default to 100
+        // contentTypes: [`article`, `user`],
+        // //If using single types place them in this array.
+        // singleTypes: [`home-page`, `contact`],
+        graphqlTypes: [
+          {
+            type: 'Featuredcategories',
+            query: require('./strapi_graphql_queries/featured_categories')
+          }
+        ]
+      }
+    }
   ],
 }

@@ -14,7 +14,7 @@ import { KEYS } from '../../../../constants/localStorage'
 import { INVOICE_VIEW_STATE } from '../../../../constants/profile'
 
 // API
-import { GetPurchaseHistoryCount, GetPurchaseHistory } from '../../../../api/user'
+// import { GetPurchaseHistoryCount, GetPurchaseHistory } from '../../../../api/user'
 
 // Components
 import Timeline from './components/timeline'
@@ -50,62 +50,62 @@ const PurchasesTab = props => {
   }, [])
 
   async function countMyInvoices() {
-    const results = await GetPurchaseHistoryCount({
-      server: site.siteMetadata.server,
-      protocol: site.siteMetadata.protocol,
-      port: site.siteMetadata.port
-    }, {
-      token
-    })
+    // const results = await GetPurchaseHistoryCount({
+    //   server: site.siteMetadata.server,
+    //   protocol: site.siteMetadata.protocol,
+    //   port: site.siteMetadata.port
+    // }, {
+    //   token
+    // })
 
-    results.notis.forEach(({ message }) => {
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
+    // results.notis.forEach(({ message }) => {
+    //   enqueueSnackbar(message, {
+    //     variant: results.type
+    //   })
+    // })
 
-    if(results.type === 'success') {
-      const { data: { data: amount } } = results
+    // if(results.type === 'success') {
+    //   const { data: { data: amount } } = results
 
-      if(amount > 0) {
-        const totalPages = Math.ceil(amount / OFFSET_AMOUNT)
+    //   if(amount > 0) {
+    //     const totalPages = Math.ceil(amount / OFFSET_AMOUNT)
 
-        setTotalPages(totalPages)
-        loadInvoices(currentPage - 1)
-      } else {
-        setCurrentView(INVOICE_VIEW_STATE.empty)
-      }
-    } else {
-      setCurrentView(INVOICE_VIEW_STATE.error)
-    }
+    //     setTotalPages(totalPages)
+    //     loadInvoices(currentPage - 1)
+    //   } else {
+    //     setCurrentView(INVOICE_VIEW_STATE.empty)
+    //   }
+    // } else {
+    //   setCurrentView(INVOICE_VIEW_STATE.error)
+    // }
   }
 
   async function loadInvoices(offset) {
-    const results = await GetPurchaseHistory({
-      server: site.siteMetadata.server,
-      protocol: site.siteMetadata.protocol,
-      port: site.siteMetadata.port
-    }, {
-      offset,
-      limit: OFFSET_AMOUNT,
-      token
-    })
+    // const results = await GetPurchaseHistory({
+    //   server: site.siteMetadata.server,
+    //   protocol: site.siteMetadata.protocol,
+    //   port: site.siteMetadata.port
+    // }, {
+    //   offset,
+    //   limit: OFFSET_AMOUNT,
+    //   token
+    // })
 
-    results.notis.forEach(({ message }) => {
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
+    // results.notis.forEach(({ message }) => {
+    //   enqueueSnackbar(message, {
+    //     variant: results.type
+    //   })
+    // })
 
-    if(results.type === 'success') {
-      const {data: {data: loadedInvoices}} = results
+    // if(results.type === 'success') {
+    //   const {data: {data: loadedInvoices}} = results
 
-      setInvoices(loadedInvoices)
+    //   setInvoices(loadedInvoices)
 
-      setCurrentView(INVOICE_VIEW_STATE.show)
-    } else {
-      setCurrentView(INVOICE_VIEW_STATE.error)
-    }
+    //   setCurrentView(INVOICE_VIEW_STATE.show)
+    // } else {
+    //   setCurrentView(INVOICE_VIEW_STATE.error)
+    // }
   }
 
   async function handlePageChange(_, page) {

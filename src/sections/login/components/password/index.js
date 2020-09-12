@@ -14,7 +14,7 @@ import { parse } from 'query-string'
 import { Link, navigate } from 'gatsby'
 
 // Components
-import AuthTitle from '../../../../components/authTitle'
+import AuthTitle from '../../../../molecules/auth_title'
 
 // Material
 import {
@@ -31,7 +31,6 @@ import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 
 // API
-import { ResetPassword } from '../../../../api/auth'
 
 // Styles
 import styles from './styles.module.scss'
@@ -73,41 +72,41 @@ const PasswordMode = props => {
   }, [])
 
   async function _handleSubmit(data) {
-    setSubmitting(true)
+    // setSubmitting(true)
 
-    if(!location.search) {
-      setSubmitting(false)
-      enqueueSnackbar('Cannot reset password without verification', {
-        variant: 'error'
-      })
+    // if(!location.search) {
+    //   setSubmitting(false)
+    //   enqueueSnackbar('Cannot reset password without verification', {
+    //     variant: 'error'
+    //   })
 
-      return
-    }
+    //   return
+    // }
 
-    // Get the code from the url
-    const parsedData = parse(location.search)
+    // // Get the code from the url
+    // const parsedData = parse(location.search)
 
-    const results = await ResetPassword({
-      protocol: site.siteMetadata.protocol,
-      server: site.siteMetadata.server,
-      port: site.siteMetadata.port
-    }, {
-      code: parsedData.code,
-      password: data.password,
-      confirmPassword: data.confirmPassword,
-    })
+    // const results = await ResetPassword({
+    //   protocol: site.siteMetadata.protocol,
+    //   server: site.siteMetadata.server,
+    //   port: site.siteMetadata.port
+    // }, {
+    //   code: parsedData.code,
+    //   password: data.password,
+    //   confirmPassword: data.confirmPassword,
+    // })
 
-    results.notis.forEach(({ message }) => {
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
+    // results.notis.forEach(({ message }) => {
+    //   enqueueSnackbar(message, {
+    //     variant: results.type
+    //   })
+    // })
 
-    if(results.type === 'success') {
-      navigate('/profile/login')
-    }
+    // if(results.type === 'success') {
+    //   navigate('/profile/login')
+    // }
 
-    setSubmitting(false)
+    // setSubmitting(false)
   }
 
   return (

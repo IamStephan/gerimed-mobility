@@ -1,24 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 // Template
 import TabTemplate from '../../components/tabTemplate'
 
-// Constants
-import { PROFILE_ACTIONS } from '../../../../constants/state'
-
-// State
-import { dispatch, useGlobalState } from '../../../../state/profile'
-
 // Hooks
+import { useUser } from '../../../../hooks/useUser'
+import { useMachine } from '@xstate/react'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 
-// API
-import { UpdateUser } from '../../../../api/user'
+// Controller
+import { LocalState } from './controller'
+
+// Model
+import { InfoSchema } from './model'
 
 // Schema
 import { yupResolver } from '@hookform/resolvers'
-import * as yup from 'yup'
 
 // Material
 import { Typography, ButtonGroup, Button, TextField, LinearProgress } from '@material-ui/core'
@@ -26,101 +24,37 @@ import { Typography, ButtonGroup, Button, TextField, LinearProgress } from '@mat
 // Styles
 import styles from './styles.module.scss'
 
-// Schema Definition
-const infoSchema = yup.object().shape({
-  firstName: yup.string().required('First Name is required.'),
-  lastName: yup.string().required('Last Name is required.'),
-  phone: yup.string()
-})
-
-/**
- * TODO: validate more field more rigid
- *       ! DO THIS ON THE SERVER !
- */
-const Info = props => {
-  const {
-    site
-  } = props
-
+const Info = () => {
   const { enqueueSnackbar } = useSnackbar()
 
-  const [info] = useGlobalState('info')
-  const [auth] = useGlobalState('auth')
-
-  const [editMode, setEditMode] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-
-  // The form and its validation
-  const { register, handleSubmit, errors, reset } = useForm({
-    resolver: yupResolver(infoSchema),
-    // This is not reactive and needs to be reset
-    defaultValues: {
-      firstName: info.firstName,
-      lastName: info.lastName,
-      phone: info.phone,
+  const [current] = useMachine(LocalState, {
+    context: {
+      notifications: {
+        enqueueSnackbar
+      }
     }
   })
 
-  async function _handleSubmit(info) {
-    const {
-      firstName,
-      lastName,
-      phone
-    } = info
+  const { info } = useUser()
 
-    const { token } = auth
-
-    setSubmitting(true)
-
-    const submitData = {
-      'first_name': firstName,
-      'last_name': lastName,
-      'phone': phone
+  // The form and its validation
+  const { register, handleSubmit, errors, reset } = useForm({
+    resolver: yupResolver(InfoSchema),
+    defaultValues: {
+      firstName: info['first_name'],
+      lastName: info['last_name'],
+      phone: info['phone'],
     }
+  })
 
-
-    const results = await UpdateUser({
-      protocol: site.siteMetadata.protocol,
-      server: site.siteMetadata.server,
-      port: site.siteMetadata.port
-    }, { token }, {
-      dataToSubmit: submitData
-    })
-
-    results.notis.forEach(({ message }) => {
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
-
-    if(results.type === 'success') {
-      const { data } = results
-
-      const newData = {
-        firstName: data['first_name'],
-        lastName: data['last_name'],
-        phone: data['phone'],
-      }
-
-      reset(newData)
-
-      dispatch({
-        type: PROFILE_ACTIONS.updateInfo,
-        ...newData
-      })
-
-      setEditMode(false)
-    }
-
-    setSubmitting(false)
+  async function _handleSubmit(data) {
+    
   }
 
   function OpenEditMode() {
-    setEditMode(true)
   }
 
   function CloseEditMode() {
-    setEditMode(false)
   }
 
   return (
@@ -128,7 +62,7 @@ const Info = props => {
       title='Account Information'
     >
       {
-        submitting ? (
+        false ? (
           <LinearProgress
             color='secondary'
           />
@@ -157,20 +91,20 @@ const Info = props => {
             className={styles['right']}
           >
             {
-              editMode ? (
+              false ? (
                 <TextField
                   color='secondary'
                   variant='outlined'
                   name='firstName'
                   inputRef={register}
-                  disabled={submitting}
+                  disabled={false}
                   error={errors.firstName}
                   helperText={errors.firstName?.message}
                 />
               ) : (
                 <Typography>
                   {
-                    info.firstName
+                    info['first_name']
                   }
                 </Typography>
               )
@@ -195,20 +129,20 @@ const Info = props => {
             className={styles['right']}
           >
             {
-              editMode ? (
+              false ? (
                 <TextField
                   color='secondary'
                   variant='outlined'
                   name='lastName'
                   inputRef={register}
-                  disabled={submitting}
+                  disabled={false}
                   error={errors.lastName}
                   helperText={errors.lastName?.message}
                 />
               ) : (
                 <Typography>
                   {
-                    info.lastName
+                    info['last_name']
                   }
                 </Typography>
               )
@@ -234,7 +168,7 @@ const Info = props => {
           >
             <Typography>
               {
-                info.email
+                info['email']
               }
             </Typography>
           </div>
@@ -257,20 +191,20 @@ const Info = props => {
             className={styles['right']}
           >
             {
-              editMode ? (
+              false ? (
                 <TextField
                   color='secondary'
                   variant='outlined'
                   name='phone'
                   inputRef={register}
                   error={errors.phone}
-                  disabled={submitting}
+                  disabled={false}
                   helperText={errors.phone?.message}
                 />
               ) : (
                 <Typography>
                   {
-                    info.phone || '-'
+                    info['phone'] || '-'
                   }
                 </Typography>
               )
@@ -283,9 +217,9 @@ const Info = props => {
         >
 
           {
-            editMode ? (
+            false ? (
               <ButtonGroup
-                disabled={submitting}
+                disabled={false}
                 disableElevation
                 color='secondary'
               >

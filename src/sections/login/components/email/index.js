@@ -19,14 +19,13 @@ import {
 import { Link } from 'gatsby'
 
 // Components
-import AuthTitle from '../../../../components/authTitle'
+import AuthTitle from '../../../../molecules/auth_title'
 
 // Hooks
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 
 // API
-import { RequestPasswordReset } from '../../../../api/auth'
 
 // Styles
 import styles from './styles.module.scss'
@@ -52,27 +51,27 @@ const EmailMode = props => {
   const [submitting, setSubmitting] = useState(false)
 
   async function _handleSubmit(data) {
-    setSubmitting(true)
+    // setSubmitting(true)
 
-    const results = await RequestPasswordReset({
-      protocol: site.siteMetadata.protocol,
-      server: site.siteMetadata.server,
-      port: site.siteMetadata.port
-    }, {
-      email: data.email
-    })
+    // const results = await RequestPasswordReset({
+    //   protocol: site.siteMetadata.protocol,
+    //   server: site.siteMetadata.server,
+    //   port: site.siteMetadata.port
+    // }, {
+    //   email: data.email
+    // })
 
-    results.notis.forEach(({ message }) => {
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
+    // results.notis.forEach(({ message }) => {
+    //   enqueueSnackbar(message, {
+    //     variant: results.type
+    //   })
+    // })
 
-    if(results.type === 'success') {
-      reset()
-    }
+    // if(results.type === 'success') {
+    //   reset()
+    // }
 
-    setSubmitting(false)
+    // setSubmitting(false)
   }
 
   return (

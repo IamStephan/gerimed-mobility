@@ -1,10 +1,10 @@
 import React from "react"
 
 // Templates
-import Layout, { NavbarDetector } from '../templates/content_layout'
+import Layout from '../templates/content_layout'
 
 // Components
-import SEO from '../components/seo'
+import SEO from '../molecules/seo'
 
 // Constants
 import { PAGES } from '../constants/pages'
@@ -23,14 +23,13 @@ const IndexPage = () => {
   return (
     <Layout
       page={PAGES.home}
-      isNavNormal={false}
+      enableTransMode={true}
       footerMode={FOOTERMODE.normal}
     >
       <SEO
         title='Home'
         description='Gerimed Mobility Home'
       />
-      <NavbarDetector />
       <Hero />
       <AlertSec />
       <Catalog />

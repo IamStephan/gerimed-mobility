@@ -21,6 +21,7 @@ const LoginSection = () => {
   const location = useLocation()
 
   // Meta info
+  // NOT NEEDED!!
   const { site } = useStaticQuery(
     graphql`
       query {

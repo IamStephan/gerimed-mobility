@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 // Schema
 import { yupResolver } from '@hookform/resolvers'
-import * as yup from 'yup'
 
 // Gatsby
-import { Link, navigate } from 'gatsby'
+import { Link } from 'gatsby'
 
 // Material
 import {
@@ -23,135 +22,67 @@ import {
 import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
 
 // Components
-import AuthTitle from '../../../../components/authTitle'
+import AuthTitle from '../../../../molecules/auth_title'
 
 // Hooks
-import { useToken } from '../../../../hooks/useToken'
+import { useMachine } from '@xstate/react'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 
-// API
-import { Login, ResendConfirmation } from '../../../../api/auth'
+// Controller
+import { LocalState } from './controller'
 
-// Constants
-import { KEYS } from '../../../../constants/localStorage'
+// Model
+import { LoginSchema } from './model'
 
 // Styles
 import styles from './styles.module.scss'
 
-// Schema Definition
-const loginShema = yup.object().shape({
-  identifier: yup.string().email().required(),
-  password: yup.string().required(),
-  remember: yup.boolean()
-})
-
-const emailNeedsVery = 'Auth.form.error.confirmed'
-
-const LoginMode = props => {
-  const {
-    site,
-  } = props
-
+const LoginMode = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
-  // The form and its validation
-  const { register, handleSubmit, errors } = useForm({
-    resolver: yupResolver(loginShema)
+  const [current, send] = useMachine(LocalState, {
+    context: {
+      notifications: {
+        enqueueSnackbar,
+        closeSnackbar
+      }
+    }
   })
 
-  // Shows user is submitting the form
-  const [submitting, setSubmitting] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-
-  // Used to store the jwt token
-  const { saveToken } = useToken(KEYS.jwt)
+  
+  const { register, handleSubmit, errors } = useForm({
+    resolver: yupResolver(LoginSchema)
+  })
 
   function toggleShowPassword() {
-    setShowPassword(prev => !prev)
-  }
-
-  async function _handleResend(email) {
-    setSubmitting(true)
-    const results = await ResendConfirmation({
-      protocol: site.siteMetadata.protocol,
-      server: site.siteMetadata.server,
-      port: site.siteMetadata.port
-    }, {
-      email
-    })
-
-    closeSnackbar()
-
-    results.notis.forEach(({ message }) => {
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
-
-    setSubmitting(false)
+    send('TOGGLEPASSWORD')
   }
 
   async function _handleSubmit(data) {
-    setSubmitting(true)
-
-    const results = await Login({
-      protocol: site.siteMetadata.protocol,
-      server: site.siteMetadata.server,
-      port: site.siteMetadata.port
-    }, {
+    send('LOGIN', {
       identifier: data.identifier,
-      password: data.password
+      password: data.password,
+      shouldRemember: data.remember
     })
-
-    results.notis.forEach(({ message, id }) => {
-      if(id === emailNeedsVery) {
-        enqueueSnackbar(message, {
-          variant: results.type,
-          persist: true,
-          action: () => {
-            return (
-              <Button
-                color='inherit'
-                onClick={() => _handleResend(data.identifier)}
-              >
-                Resend
-              </Button>
-            )
-          }
-        })
-      }
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
-
-    if(results.type === 'success') {
-      const { data: { jwt } } = results.data
-      
-      // Set jwt token
-      saveToken(jwt, data.remember)
-
-      // redirect
-      navigate('/profile')
-    }
-
-    setSubmitting(false)
   }
+
+  const loading = current.matches('loading')
+  const showPassword = current.context.showPassword
 
   return (
     <div
       className={styles['loginContainer']}
     >
       {
-        submitting ? (
+        loading && (
           <div>
             <LinearProgress
               color='secondary'
             />
             <br />
           </div>
-        ) : null
+        )
       }
 
       <AuthTitle
@@ -173,7 +104,7 @@ const LoginMode = props => {
             name='identifier'
             variant='outlined'
             color='secondary'
-            disabled={submitting}
+            disabled={loading}
             error={errors.identifier}
             helperText={errors.identifier?.message}
             required
@@ -189,7 +120,8 @@ const LoginMode = props => {
             label='Password'
             name='password'
             variant='outlined'
-            color='secondary'disabled={submitting}
+            color='secondary'
+            disabled={loading}
             error={errors.password}
             helperText={errors.password?.message}
             required
@@ -218,6 +150,7 @@ const LoginMode = props => {
             className={styles['remember']}
           >
             <FormControlLabel
+              disabled={loading}
               control={(
                 <Checkbox
                   color='secondary'
@@ -256,7 +189,7 @@ const LoginMode = props => {
             type='submit'
             variant='contained'
             color='secondary'
-            disabled={submitting}
+            disabled={loading}
           >
             Login
           </Button>

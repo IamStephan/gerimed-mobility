@@ -26,10 +26,7 @@ import {
 import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
 
 // Components
-import AuthTitle from '../../components/authTitle'
-
-// API
-import { Register } from '../../api/auth'
+import AuthTitle from '../../molecules/auth_title'
 
 // Notifications
 import { useSnackbar } from 'notistack'
@@ -85,41 +82,41 @@ const RegisterSection = () => {
 
 
   async function _handleSubmit(data) {
-    setSubmitting(true)
+    // setSubmitting(true)
 
-    if(!data.terms) {
-      const errorMessage = 'You need to agree to the terms and policies.'
-      enqueueSnackbar(errorMessage, {
-        variant: 'error'
-      })
+    // if(!data.terms) {
+    //   const errorMessage = 'You need to agree to the terms and policies.'
+    //   enqueueSnackbar(errorMessage, {
+    //     variant: 'error'
+    //   })
 
-      setSubmitting(false)
-      return
-    }
+    //   setSubmitting(false)
+    //   return
+    // }
 
-    const results = await Register({
-      protocol: site.siteMetadata.protocol,
-      server: site.siteMetadata.server,
-      port: site.siteMetadata.port
-    }, {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      password: data.password
-    })
+    // const results = await Register({
+    //   protocol: site.siteMetadata.protocol,
+    //   server: site.siteMetadata.server,
+    //   port: site.siteMetadata.port
+    // }, {
+    //   firstName: data.firstName,
+    //   lastName: data.lastName,
+    //   email: data.email,
+    //   password: data.password
+    // })
 
-    // Results only return a success or an error so show them all
-    results.notis.forEach(({ message }) => {
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
+    // // Results only return a success or an error so show them all
+    // results.notis.forEach(({ message }) => {
+    //   enqueueSnackbar(message, {
+    //     variant: results.type
+    //   })
+    // })
 
-    if(results.type === 'success') {
-      reset()
-    }
+    // if(results.type === 'success') {
+    //   reset()
+    // }
 
-    setSubmitting(false)
+    // setSubmitting(false)
   }
 
   function toggleShowPassword() {
