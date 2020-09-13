@@ -1,4 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+
+// Molecule Skeletons
+import ShopItemSkeleton from '../shop_item'
 
 // Carousel
 import { useEmblaCarousel } from 'embla-carousel/react'
@@ -6,33 +9,21 @@ import { useEmblaCarousel } from 'embla-carousel/react'
 // Material
 import { Typography, Divider } from '@material-ui/core'
 
-// Components
-import ShopItem from '../shop_item'
-
 // Styles
 import styles from './styles.module.scss'
 
-const ShopItemRow = props => {
+const ShopRowItemSkeleton = props => {
   const {
-    products,
-    title
+    title,
+    productCount = 5
   } = props
 
-
-  const [emblaRef, embla] = useEmblaCarousel({
+  const [emblaRef] = useEmblaCarousel({
     containScroll: 'keepSnaps',
     align: 'start',
   })
 
-  useEffect(() => {
-    if(!embla || !products) return
-
-    /**
-     * The data of the carousel changed and embla does not pick it up
-     * Reinit the component
-     */
-    embla.reInit()
-  }, [products, embla])
+  const dummyProducts = Array(productCount).fill(1)
 
   return (
     <div
@@ -61,18 +52,12 @@ const ShopItemRow = props => {
             className={styles['rowContainer']}
           >
             {
-             products.map((product) => (
+               dummyProducts.map((key, i) => (
                 <div
-                  key={product.id}
+                  key={key + i}
                   className={styles['rowItem']}
                 >
-                  <ShopItem
-                    id={product.id  }
-                    name={product.name}
-                    price={product.price}
-                    categories={product.categories}
-                    showcase={product.showcase}
-                  />
+                  <ShopItemSkeleton />
                 </div>
               ))
             }
@@ -83,4 +68,4 @@ const ShopItemRow = props => {
   )
 }
 
-export default ShopItemRow
+export default ShopRowItemSkeleton

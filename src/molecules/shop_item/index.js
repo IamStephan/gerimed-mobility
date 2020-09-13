@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 // Material
 import { Typography, Chip, Link as Btn } from '@material-ui/core'
@@ -8,6 +8,9 @@ import { Link } from 'gatsby'
 
 // Text
 import TruncateText from 'react-text-truncate'
+
+// Utils
+import { strapiImageUrl } from '../../utils/js'
 
 // Styles
 import styles from './styles.module.scss'
@@ -19,7 +22,9 @@ const Title = props => {
   } = props
 
   return (
-    <Typography>
+    <Typography
+      className={styles['titleContainer']}
+    >
       <Btn
         color='inherit'
         className={styles['title']}
@@ -45,7 +50,7 @@ const ShopItem = props => {
     categories
   } = props
 
-  function formatPrice(price) {
+  const formatPrice = useCallback(() => {
     const currency = new Intl.NumberFormat('en-UK', {
       style: 'currency',
       currency: 'ZAR',
@@ -54,7 +59,16 @@ const ShopItem = props => {
     })
 
     return currency.format(price)
-  }
+  }, [])
+
+  const url = useCallback(() => {
+    const preferedSize = 'small'
+    const baseUrl = process.env.GATSBY_API_URL
+    const url = showcase[0].url
+    const formats = showcase[0].formats
+
+    return strapiImageUrl(preferedSize, baseUrl, url, formats)
+  }, [])
 
   return (
     <div
@@ -65,7 +79,7 @@ const ShopItem = props => {
       >
         <img
           className={styles['img']}
-          src={`http://localhost:1337${showcase[0].url}`}
+          src={url()}
         />
       </div>
       
@@ -78,7 +92,7 @@ const ShopItem = props => {
         className={styles['categoryContainer']}
       >
         {
-          categories.map((category, i) => (
+          categories.length ? categories.map((category, i) => (
             <Chip
               key={category.id}
               className={styles['category']}
@@ -88,7 +102,16 @@ const ShopItem = props => {
               size='small'
               clickable
             />
-          ))
+          )) : (
+            <Chip
+              className={styles['category']}
+              label={'Unsorted'}
+              color='secondary'
+              variant='outlined'
+              size='small'
+              clickable
+            />
+          )
         }
       </div>
 

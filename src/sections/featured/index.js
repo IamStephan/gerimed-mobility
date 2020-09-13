@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useRef, useCallback } from 'react'
 
 // Templates
 import { Section } from '../../templates/content_layout'
+
+// Material
+import { Button } from '@material-ui/core'
+import { Alert, AlertTitle } from '@material-ui/lab'
 
 // Hooks
 import { useMachine } from '@xstate/react'
@@ -12,17 +16,22 @@ import { FetchGraphqlData } from '../../controllers/fetchGraphqlData'
 // Model
 import { FeaturedProducts } from './model'
 
-// Components
+// Molecules
 import ShopItemRow from '../../molecules/shop_item_row'
+
+// Molecule Skeletons
+import ShopItemRowSkeleton from '../../molecule_skeletons/shop_item_row'
 
 // Styles
 import styles from './styles.module.scss'
 
-
 const Featured = () => {
+  const ref = useRef(null)
   const [current, send] = useMachine(FetchGraphqlData, {
     id: 'FeaturedProducts',
     context: {
+      containerRef: ref,
+      shouldStartIdle: true,
       graphqlQuery: FeaturedProducts,
       graphqlVariables: {
         limit: 5
@@ -30,11 +39,60 @@ const Featured = () => {
     }
   })
 
-  const loading = current.matches('loading') || current.matches('retry')
-
+  const ShopRowTitle = 'Our Featured Products'
   const products = current.context.data?.products
 
-  console.log(products)
+  const StateToShow = useCallback(() => {
+    const loading = current.matches('loading') || current.matches('retry') || current.matches('idle')
+    const error = current.matches({fail: 'idle'}) || current.matches({fail: 'reset'})
+    const success = current.matches('success')
+
+    switch(true) {
+      case loading: {
+        return (
+          <ShopItemRowSkeleton
+            title={ShopRowTitle}
+          />
+        )
+      }
+
+      case error: {
+        return (
+          <Alert
+            severity='error'
+            variant='outlined'
+            action={(
+              <Button
+                color='inherit'
+                size='small'
+                onClick={retry}
+              >
+                Retry
+              </Button>
+            )}
+          >
+            <AlertTitle>
+              <b>Could not load Featured Products</b>
+            </AlertTitle>
+            There seems to be a technical error. Please, retry or contact us.
+          </Alert>
+        )
+      }
+
+      case success: {
+        return (
+          <ShopItemRow
+            title={ShopRowTitle}
+            products={products}
+          />
+        )
+      }
+    }
+  }, [current.value, current.matches])
+
+  const retry = useCallback(() => {
+    send('RESET')
+  }, [])
 
   return (
     <Section
@@ -57,24 +115,13 @@ const Featured = () => {
         </svg>
       </div>
 
-      {
-        loading && (
-          <div>
-            Loading
-          </div>
-        )
-      }
 
-
-      {/* <div
+      <div
+        ref={ref}
         className={styles['featuredContainer']}
       >
-        <ShopItemRow
-          title='Our Featured Products'
-          products={products}
-          loading={current.matches('loading')}
-        />
-      </div> */}
+        { StateToShow() }
+      </div>
 
       <div
         className={styles['bottomDivider']}

@@ -8,13 +8,15 @@ const FeaturedProducts = `
     $limit: Int!
   ) {
     products(
-      sort: "updatedAt:asc",
+      sort: "updatedAt:desc",
       limit: $limit,
       start: 0
     ) {
+      id
       name
       price
       categories {
+        id
         name
       }
       showcase {
