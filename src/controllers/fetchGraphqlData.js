@@ -6,24 +6,26 @@ import axios from 'axios'
 const RETRY_LIMIT = 3
 const REQUEST_TIMEOUT = 3000
 
-/**
- * Data that needs to be provided:
- * ===============================
- *  id: string (for debugging)
- *  context: {
- *    query: string
- *  }
- */
-
 const FetchGraphqlData = new Machine({
-  initial: 'loading',
+  initial: 'idle',
   context: {
     data: null,
     graphqlQuery: null,
     graphqlVariables: null,
     retries: 0,
+    // Lazy Loading
+    containerRef: null,
+    lazyLoadThreshold: 0.25
   },
   states: {
+    idle: {
+      invoke: {
+        src: 'lazyMode'
+      },
+      on: {
+        LOAD: 'loading'
+      }
+    },
     loading: {
       after: {
         [REQUEST_TIMEOUT]: {
@@ -69,7 +71,7 @@ const FetchGraphqlData = new Machine({
          * =======================
          *  - the service itself returns data
          *  - axios returns data
-         *  - graphql has a data field ( can be changed in the query, but this is a reusable controller )
+         *  - graphql has a data field
          */
         const { data: { data: { data } } } = event
 
@@ -81,8 +83,27 @@ const FetchGraphqlData = new Machine({
     limitNotReached: (context) => context.retries < RETRY_LIMIT
   },
   services: {
+    lazyMode: (context) => (send) => {
+      
+      if(!window.IntersectionObserver || !context.containerRef){
+        send('LOAD')
+      } else {
+        let observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if(entry.isIntersecting) {
+              observer.disconnect()
+              send('LOAD')
+            }
+          })
+        }, {
+          threshold: context.lazyLoadThreshold
+        })
+
+        observer.observe(context.containerRef.current)
+      }
+    },
     fetchData: (context) => {
-      return axios.post(`http://localhost:1337/graphql`, {
+      return axios.post(`${process.env.GATSBY_API_URL}/graphql`, {
         query: context.graphqlQuery,
         variables: context.graphqlVariables || {}
       })
