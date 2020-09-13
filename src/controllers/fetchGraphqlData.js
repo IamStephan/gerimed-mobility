@@ -1,4 +1,4 @@
-import { Machine, assign } from 'xstate'
+import { Machine, assign, send } from 'xstate'
 
 // API
 import axios from 'axios'
@@ -49,18 +49,36 @@ const FetchGraphqlData = new Machine({
           target: 'loading',
           cond: 'limitNotReached'
         },
-        { target: 'fail' }
+        { target: 'fail'}
       ]
     },
     success: {
       type: 'final'
     },
     fail: {
-      type: 'final'
+      initial: 'idle',
+      states: {
+        idle: {
+          on: {
+            RESET: 'reset'
+          }
+        },
+        reset: {
+          entry: ['reset', 'retryFetching'],
+        }
+      },
     }
+  },
+  on: {
+    RETRY_FETCHING: 'loading'
   }
 }, {
   actions: {
+    reset: assign({
+      retries: 0,
+      data: null
+    }),
+    retryFetching: send('RETRY_FETCHING'),
     increaseRetries: assign({
       retries: (context) => context.retries + 1
     }),
