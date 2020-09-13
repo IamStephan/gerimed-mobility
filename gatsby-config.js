@@ -69,7 +69,7 @@ module.exports = {
     {
       resolve: 'gatsby-source-strapi-extended',
       options: {
-        apiURL: `http://localhost:1337`,
+        apiURL: process.env.GATSBY_API_URL,
         queryLimit: 1000, // Default to 100
         // contentTypes: [`article`, `user`],
         // //If using single types place them in this array.
