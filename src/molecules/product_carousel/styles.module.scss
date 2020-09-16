@@ -4,9 +4,7 @@ $carousal_size: 400;
 
 .productRow {
   padding: #{$padding}px;
-  position: relative;
-  width: #{$carousal_size}px;
-  max-width: calc(100% - #{$padding * 2}px);
+  max-width: #{$carousal_size}px;
 
   .rowViewport {
     overflow: hidden;
