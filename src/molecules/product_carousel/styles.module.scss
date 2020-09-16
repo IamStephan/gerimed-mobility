@@ -1,0 +1,42 @@
+@import '../../utils/sizes';
+
+$carousal_size: 400;
+
+.productRow {
+  padding: #{$padding}px;
+  position: relative;
+  width: #{$carousal_size}px;
+  max-width: calc(100% - #{$padding * 2}px);
+
+  .rowViewport {
+    overflow: hidden;
+    max-width: #{$carousal_size}px;
+    margin-top: #{$margin / 2}px;
+    position: relative;
+  
+    .rowContainer {
+      position: relative;
+      display: flex;
+      min-width: 100%;
+      min-height: 100%;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -khtml-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+
+      .rowItem {
+        position: relative;
+        min-width: 100%;
+
+        .img {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+  }
+}

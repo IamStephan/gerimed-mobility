@@ -27,14 +27,11 @@ const ShopItem = () => {
     <div
       className={styles['item']}
     >
-      <div
-        className={styles['imgContainer']}
-      >
-        <Skeleton
-          className={styles['img']}
-          variant='rect'
-        />
-      </div>
+
+      <Skeleton
+        className={styles['img']}
+        variant='rect'
+      />
       
       <Title />
 

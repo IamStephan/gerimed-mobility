@@ -1,21 +1,24 @@
 import { Machine, assign, send } from 'xstate'
 
-// API
-import axios from 'axios'
+// Utils
+import { axiosQueryFactory } from '../utils/js'
 
 const RETRY_LIMIT = 3
-const REQUEST_TIMEOUT = 3000
+const REQUEST_TIMEOUT = 10000
 
 const FetchGraphqlData = new Machine({
   initial: 'idle',
   context: {
     data: null,
+    errors: null,
     graphqlQuery: null,
     graphqlVariables: null,
     retries: 0,
     // Lazy Loading
     containerRef: null,
-    lazyLoadThreshold: 0.25
+    lazyLoadThreshold: 0.25,
+
+    runOnce: true
   },
   states: {
     idle: {
@@ -53,6 +56,11 @@ const FetchGraphqlData = new Machine({
       ]
     },
     success: {
+      always: [
+        {target: 'success_final', cond: 'shouldRunOnce'}
+      ]
+    },
+    success_final: {
       type: 'final'
     },
     fail: {
@@ -64,13 +72,16 @@ const FetchGraphqlData = new Machine({
           }
         },
         reset: {
-          entry: ['reset', 'retryFetching'],
+          entry: ['reset', 'resetFetching'],
         }
       },
     }
   },
   on: {
-    RETRY_FETCHING: 'loading'
+    RESET_FETCHING: 'loading',
+    SET_NEW_FETCH_CONTEXT: {
+      actions: 'setNewFetchData'
+    }
   }
 }, {
   actions: {
@@ -78,7 +89,13 @@ const FetchGraphqlData = new Machine({
       retries: 0,
       data: null
     }),
-    retryFetching: send('RETRY_FETCHING'),
+    resetFetching: send('RESET_FETCHING'),
+    setNewFetchData: assign({
+      graphqlQuery: (context, event) => event?.context?.graphqlQuery ? event.context.graphqlQuery : context.graphqlQuery,
+      graphqlVariables: (context, event) => event?.context?.graphqlVariables ? event.context.graphqlVariables : context.graphqlVariables,
+      retries: 0,
+      errors: null
+    }),
     increaseRetries: assign({
       retries: (context) => context.retries + 1
     }),
@@ -98,7 +115,8 @@ const FetchGraphqlData = new Machine({
     })
   },
   guards: {
-    limitNotReached: (context) => context.retries < RETRY_LIMIT
+    limitNotReached: (context) => context.retries < RETRY_LIMIT,
+    shouldRunOnce: (context) => context.runOnce
   },
   services: {
     lazyMode: (context) => (send) => {
@@ -121,7 +139,7 @@ const FetchGraphqlData = new Machine({
       }
     },
     fetchData: (context) => {
-      return axios.post(`${process.env.GATSBY_API_URL}/graphql`, {
+      return axiosQueryFactory(`${process.env.GATSBY_API_URL}/graphql`, {
         query: context.graphqlQuery,
         variables: context.graphqlVariables || {}
       })

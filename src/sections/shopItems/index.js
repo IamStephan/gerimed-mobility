@@ -4,55 +4,21 @@ import React from 'react'
 import { Section } from '../../templates/content_layout'
 
 // Molecules
+import ShopFilter from '../../molecules/shop_filter'
 
 const ShopItems = () => {
   return (
-    <Section>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+    <Section
+      isClamped={false}
+      isPadded={false}
+    >
+      <ShopFilter
+      
+      />
+
+      <Section>
+        asdasd
+      </Section>
     </Section>
   )
 }

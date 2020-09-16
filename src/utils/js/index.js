@@ -1,6 +1,6 @@
 export { extractStrapiErrors } from './extractStrapiErrors'
 
 export { axiosMutationFactory } from './axiosMutationFactory'
-export { axiosQueryAuthFactory } from './axiosQueryAuthFactory.js'
+export { axiosQueryFactory } from './axiosQueryFactory.js'
 
 export { strapiImageUrl } from './strapiImageUrl'

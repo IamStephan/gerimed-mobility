@@ -1,0 +1,16 @@
+@import '../../utils/sizes';
+@import '../../utils/border';
+
+// Molecules
+@import '../../molecules/product_carousel/styles.module';
+
+.skeletonContainer {
+  padding: #{$padding}px;
+  position: relative;
+
+  .skeleton {
+    width: #{$carousal_size}px;
+    height: #{$carousal_size}px;
+    border-radius: #{$border-radius}px;
+  }
+}

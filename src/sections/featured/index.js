@@ -39,13 +39,17 @@ const Featured = () => {
     }
   })
 
+  const retry = useCallback(() => {
+    send('RESET')
+  }, [])
+
   const ShopRowTitle = 'Our Featured Products'
   const products = current.context.data?.products
 
   const StateToShow = useCallback(() => {
     const loading = current.matches('loading') || current.matches('retry') || current.matches('idle')
     const error = current.matches({fail: 'idle'}) || current.matches({fail: 'reset'})
-    const success = current.matches('success')
+    const success = current.matches('success') || current.matches('success_final')
 
     switch(true) {
       case loading: {
@@ -90,9 +94,7 @@ const Featured = () => {
     }
   }, [current.value, current.matches])
 
-  const retry = useCallback(() => {
-    send('RESET')
-  }, [])
+  
 
   return (
     <Section

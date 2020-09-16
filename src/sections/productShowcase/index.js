@@ -1,17 +1,32 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 
 // Template
 import { Section } from '../../templates/content_layout'
 
-// Carousel
-import { useEmblaCarousel } from 'embla-carousel/react'
-
-// Quesy string
-import { parse } from 'qs'
+// Material
+import { Typography, Divider, Button, Tab, Chip, TextField } from '@material-ui/core'
+import { Rating, TabContext, TabList, TabPanel, Alert } from '@material-ui/lab'
 
 // Hooks
-import { useFetch } from 'use-http'
-import { usePreviousDistinct } from 'react-use'
+import { useMachine } from '@xstate/react'
+
+// States
+import { FetchGraphqlData } from '../../controllers/fetchGraphqlData'
+import { CarouselController } from './controller'
+
+// Molecules
+import ProductCarousel from '../../molecules/product_carousel'
+import ProductCarouselThumb from '../../molecules/product_carousel_thumb'
+
+// Molecule Skeletons
+import ProductCarouselSkeleton from '../../molecule_skeletons/product_carousel'
+import ProductCarouselThumbSkeleton from '../../molecule_skeletons/product_carousel_thumb'
+
+// Models
+import { GET_PRODUCT } from './model'
+
+// Query String
+import { parse } from 'qs'
 
 // Router
 import { useLocation } from '@reach/router'
@@ -19,199 +34,283 @@ import { useLocation } from '@reach/router'
 // Styles
 import styles from './styles.module.scss'
 
-// Fetch Query
-const QUERY = `
-  query Product($id: ID!) {
-    product(id: $id) {
-      name
-      description
-      price
-      showcase {
-        url
-        formats
-      }
-      
-      categories {
-        id
-        name
-      }
-    }
-  }
-`
-
-/**
- * TODO:
- * ======
- * - detect a change in id and do a full reset
- */
 
 const ProductShowcase = () => {
-  // Current ProductID (For full resets)
-  const [productID, setProductID] = useState(null)
-  // images for the product
-  const [images, setImages] = useState([])
-  // Carousel index
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  
-  // Query based operations based on URL
   const location = useLocation()
-
-  // HTTP request for the product
-  const { query, error } = useFetch('/graphql')
-
-  // Carousels
-  const [showcaseRef, emblaShowcase] = useEmblaCarousel()
-  const [thumbRef, emblaThumb] = useEmblaCarousel({
-    containScroll: 'keepSnaps'
+  const qsParams = parse(location.search, {
+    ignoreQueryPrefix: true
   })
 
-  // Thumb Clicks
-  const onThumbClick = useCallback((index) => {
-    if(!emblaShowcase || !emblaThumb) return
-
-    if(emblaThumb.clickAllowed()) {
-      emblaShowcase.scrollTo(index)
-      setSelectedIndex(index)
+  // Data Controller
+  const [currentData, sendDataEvent] = useMachine(FetchGraphqlData, {
+    context: {
+      runOnce: false,
+      graphqlQuery: GET_PRODUCT,
+      graphqlVariables: {
+        id: qsParams.id
+      }
     }
-  }, [emblaShowcase, emblaThumb])
+  })
 
-  // When the main showcase image gets scrolled
-  const onSelect = useCallback(() => {
-    if(!emblaShowcase || !emblaThumb) return
+  // Carousel contoller
+  const [currentCarousel, sendCarouselEvent] = useMachine(CarouselController)
 
-    setSelectedIndex(emblaShowcase.selectedScrollSnap())
-    emblaThumb.scrollTo(emblaShowcase.selectedScrollSnap())
-  }, [emblaShowcase, emblaThumb])
+  const setIndex = useCallback((i) => {
+    sendCarouselEvent('SET_INDEX', {
+      index: i
+    })
+  }, [sendCarouselEvent])
 
-  // When the productID gets updated
   useEffect(() => {
-    // if(!location.search) {
-    //   // There is no item selected redirect
-    //   navigate('/shop')
-    // }
-    const queryString = parse(location.search, {
-      ignoreQueryPrefix: true
+    if(!qsParams.id) return
+
+    sendDataEvent('SET_NEW_FETCH_CONTEXT', {
+      context: {
+        graphqlVariables: {
+          id: qsParams.id
+        }
+      }
+    })
+    sendDataEvent('RESET_FETCHING')
+
+    sendCarouselEvent('RESET_INDEX')
+  }, [qsParams.id])
+
+  const formatPrice = useCallback((price) => {
+    const currency = new Intl.NumberFormat('en-UK', {
+      style: 'currency',
+      currency: 'ZAR',
+      currencyDisplay: 'narrowSymbol',
+      minimumFractionDigits: 2
     })
 
-    getProduct(queryString.product)
+    return currency.format(price)
+  }, [])
 
-    console.log(queryString)
-  }, [location.search])
+  // States
+  const loading = currentData.matches('loading') || currentData.matches('retry') || currentData.matches('idle')
+  const error = currentData.matches({fail: 'idle'}) || currentData.matches({fail: 'reset'})
+  const success = currentData.matches('success') || currentData.matches('success_final')
 
-  // Stops the carousels from freezing
-  useEffect(() => {
-    if(!images || !emblaShowcase || !emblaThumb) return
+  // Data
+  const product = currentData?.context?.data?.product
+  const images = product?.showcase
+  const index = currentCarousel.context.index
 
-    emblaShowcase.reInit()
-    emblaThumb.reInit()
-  }, [images, emblaShowcase, emblaThumb])
+  //console.log(product)
 
-  // When the main showcase carousel scrolls and selects an image
-  useEffect(() => {
-    if(!emblaShowcase) return 
+  const Carousel = useCallback(() => {
+    switch(true) {
+      case loading: {
+        return (
+          <>
+            <ProductCarouselSkeleton />
+            <ProductCarouselThumbSkeleton />
+          </>
+        )
+      }
+      case success: {
+        return (
+          <>
+            <ProductCarousel
+              images={images}
+              index={index}
+              setIndex={setIndex}
+            />
 
-    onSelect()
-    emblaShowcase.on('select', onSelect)
+            <Divider />
 
-    return () => {
-      emblaShowcase.off('select', onSelect)
+            <ProductCarouselThumb
+              images={images}
+              index={index}
+              setIndex={setIndex}
+            />
+
+            <Divider />
+          </>
+        )
+      }
+
+      case error: {
+        return (
+          <div>
+            Error
+          </div>
+        )
+      }
+      // Dummy
+      default: {
+        return <div />
+      }
     }
-  }, [emblaShowcase])
+  }, [currentData.value, currentData.matches, index])
 
-  // Get the Product based on the URL
-  async function getProduct(id) {
-    console.log(id)
-    const { data: { product } } = await query(QUERY, {
-      id
-    })
+  const Details = useCallback(() => {
+    switch(true) {
+      case loading: {
+        return (
+          <>
 
-    if(!product) {
-      // Product not found
-      return
+          </>
+        )
+      }
+
+      case success: {
+        return (
+          <>
+            <Typography
+              className={styles['title']}
+              variant='h4'
+            >
+              <b>{ product.name }</b>
+            </Typography>
+
+            <div
+              className={styles['categoryContainer']}
+            >
+              {
+                product.categories.length ? product.categories.map((category, i) => (
+                  <Chip
+                    key={category.id}
+                    className={styles['category']}
+                    label={category.name}
+                    color='secondary'
+                    variant='outlined'
+                    size='small'
+                    clickable
+                  />
+                )) : (
+                  <Chip
+                    className={styles['category']}
+                    label={'Unsorted'}
+                    color='secondary'
+                    variant='outlined'
+                    size='small'
+                    clickable
+                  />
+                )
+              }
+            </div>
+            
+            {/* <Rating
+              className={styles['rating']}
+              name="pristine"
+              precision={0.5}
+              value={null}
+            /> */}
+
+            <div
+              className={styles['priceContainer']}
+            >
+              <Typography
+                className={styles['price']}
+                variant='h5'
+              >
+                <b>{ formatPrice(product.price) }</b>
+              </Typography>
+
+              <div>
+                <Chip
+                  variant='default'
+                  color='secondary'
+                  size='small'
+                  label={ !product.isLimited ? 'Available' : product.quantity ? 'In Stock' : 'Out of Stock' }
+                />
+              </div>
+            </div>
+
+            {
+              !product.isLimited && (
+                <Alert severity='info'>
+                  This item is not held on-premise, therefore, shipping might take longer than expected.
+                </Alert>
+              )
+            }
+
+            <Divider
+              className={styles['divider']}
+            />
+
+            <div
+              className={styles['cartActions']}
+            >
+              <TextField
+                label='Quantity'
+                color='secondary'
+                variant='outlined'
+                size='small'
+                type='number'
+                value={1}
+                className={styles['input']}
+              />
+
+              <Button
+                variant='contained'
+                color='secondary'
+                disableElevation
+                className={styles['button']}
+              >
+                Add To Cart
+              </Button>
+            </div>
+
+            <TabContext
+              value='desc'
+            >
+              <TabList
+              >
+                <Tab label='Details' value='desc' />
+                {/* <Tab label='Reviews' value='review' /> */}
+              </TabList>
+              <Divider />
+
+              <TabPanel value='desc'>
+                <div dangerouslySetInnerHTML={{
+                  __html: product.details
+                }} />
+              </TabPanel>
+            </TabContext>
+
+          </>
+        )
+      }
+
+      case error: {
+        return (
+          <div>
+
+          </div>
+        )
+      }
+
+      default: {
+        // Dummy
+        return <div />
+      }
     }
-
-    console.log(product.showcase)
-
-    setImages(product.showcase)
-  }
-
-  function SelectPreferedImageMain(directURL, formats) {
-    // select the prefered image size (if the image is to small just use the direct url)
-    let url = directURL
-
-    if(formats?.small) {
-      url = formats.small.url
-    }
-
-    return `${process.env.PROTOCOL}://${process.env.SERVER}:${process.env.PORT}${url}`
-  }
-
-  function SelectPreferedImageThumb(directURL, formats) {
-    // select the prefered image size (if the image is to small just use the direct url)
-    let url = directURL
-
-    if(formats?.thumbnail) {
-      url = formats.thumbnail.url
-    }
-
-    return `${process.env.PROTOCOL}://${process.env.SERVER}:${process.env.PORT}${url}`
-  }
+  }, [currentData.value, currentData.matches])
 
   return (
     <Section
       className={styles['productSection']}
+      gutter='none'
     >
       <div
-        className={styles['productShowcase']}
+        className={styles['carouselContainer']}
+      >
+      { Carousel() }
+      </div>
+
+      <div
+        className={styles['detailsContainer']}
       >
         <div
-          className={styles['main']}
-          ref={showcaseRef}
+          className={styles['details']}
         >
-          <div
-            className={styles['mainContainer']}
-          >
-            {
-              images.map(image => (
-                <div
-                  className={styles['mainImageSlide']}
-                >
-                  <img
-                    className={styles['mainImage']}
-                    src={SelectPreferedImageMain(image.url, image.formats)}
-                  />
-                </div>
-              ))
-            }
-          </div>
-        </div>
-
-        <div
-          className={styles['thumb']}
-          ref={thumbRef}
-        >
-          <div
-            className={styles['thumbContainer']}
-          >
-            {
-              images.map((image, i) => (
-                <div
-                  className={styles['thumbImageSlide']}
-                  onClick={() => onThumbClick(i) }
-                  style={{
-                    opacity: selectedIndex == i ? 1 : 0.25
-                  }}
-                >
-                  <img
-                    className={styles['thumbImage']}
-                    src={SelectPreferedImageThumb(image.url, image.formats)}
-                  />
-                </div>
-              ))
-            }
-          </div>
+          { Details() }
         </div>
       </div>
+      
     </Section>
   )
 }

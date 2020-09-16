@@ -29,7 +29,7 @@ const Title = props => {
         color='inherit'
         className={styles['title']}
         component={Link}
-        to={`/product?product=${productID}`}
+        to={`/product?id=${productID}`}
       >
         <TruncateText
           text={title}
@@ -77,10 +77,14 @@ const ShopItem = props => {
       <div
         className={styles['imgContainer']}
       >
-        <img
-          className={styles['img']}
-          src={url()}
-        />
+        <Link
+          to={`/product?id=${id}`}
+        >
+          <img
+            className={styles['img']}
+            src={url()}
+          />
+        </Link>
       </div>
       
       <Title

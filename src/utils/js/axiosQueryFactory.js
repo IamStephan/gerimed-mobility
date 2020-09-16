@@ -11,7 +11,7 @@ import axios from 'axios'
  * but im splitting them incase i need to make changes
  */ 
 
-function axiosQueryAuthFactory(url, data, options = {}) {
+function axiosQueryFactory(url, data, options = {}) {
   return new Promise((resolve, reject) => {
     axios.post(url, data, options).then(({ data }) => {
       if(data.errors) {
@@ -31,5 +31,5 @@ function axiosQueryAuthFactory(url, data, options = {}) {
 }
 
 export {
-  axiosQueryAuthFactory
+  axiosQueryFactory
 }
