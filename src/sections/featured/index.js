@@ -1,59 +1,100 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef, useCallback } from 'react'
 
 // Templates
 import { Section } from '../../templates/content_layout'
 
-// Hooks
-import { useFetch } from 'use-http'
+// Material
+import { Button } from '@material-ui/core'
+import { Alert, AlertTitle } from '@material-ui/lab'
 
-// Components
-import ShopItemRow from '../../components/shopItemRow'
+// Hooks
+import { useMachine } from '@xstate/react'
+
+// Controller
+import { FetchGraphqlData } from '../../controllers/fetchGraphqlData'
+
+// Model
+import { FeaturedProducts } from './model'
+
+// Molecules
+import ShopItemRow from '../../molecules/shop_item_row'
+
+// Molecule Skeletons
+import ShopItemRowSkeleton from '../../molecule_skeletons/shop_item_row'
 
 // Styles
 import styles from './styles.module.scss'
 
-// Fetch Query
-const QUERY = `
-  query {
-    featured {
-      products {
-        id
-        name
-        price
-        showcase {
-          formats
-          url
-        }
-        categories {
-          id
-          name
-        }
+const Featured = () => {
+  const ref = useRef(null)
+  const [current, send] = useMachine(FetchGraphqlData, {
+    id: 'FeaturedProducts',
+    context: {
+      containerRef: ref,
+      shouldStartIdle: true,
+      graphqlQuery: FeaturedProducts,
+      graphqlVariables: {
+        limit: 5
       }
     }
-  }
-`
+  })
 
-const Featured = () => {
-  const [products, setProducts] = useState([])
-  const { query, response, loading } = useFetch('/graphql')
-
-  useEffect(() => {
-    loadFeaturedProducts()
+  const retry = useCallback(() => {
+    send('RESET')
   }, [])
 
-  async function loadFeaturedProducts() {
-    const { data } = await query(QUERY)
+  const ShopRowTitle = 'Our Featured Products'
+  const products = current.context.data?.products
 
-    if(response.ok) {
-      // The loading state gets updated here with the rerender
-      setProducts(data.featured.products)
-    } else {
-      /**
-       * If this fails instead of showing an error message instead
-       * just use fallback data
-       */
+  const StateToShow = useCallback(() => {
+    const loading = current.matches('loading') || current.matches('retry') || current.matches('idle')
+    const error = current.matches({fail: 'idle'}) || current.matches({fail: 'reset'})
+    const success = current.matches('success') || current.matches('success_final')
+
+    switch(true) {
+      case loading: {
+        return (
+          <ShopItemRowSkeleton
+            title={ShopRowTitle}
+          />
+        )
+      }
+
+      case error: {
+        return (
+          <Alert
+            severity='error'
+            variant='outlined'
+            action={(
+              <Button
+                color='inherit'
+                size='small'
+                onClick={retry}
+              >
+                Retry
+              </Button>
+            )}
+          >
+            <AlertTitle>
+              <b>Could not load Featured Products</b>
+            </AlertTitle>
+            There seems to be a technical error. Please, retry or contact us.
+          </Alert>
+        )
+      }
+
+      case success: {
+        return (
+          <ShopItemRow
+            title={ShopRowTitle}
+            products={products}
+          />
+        )
+      }
     }
-  }
+  }, [current.value, current.matches])
+
+  
 
   return (
     <Section
@@ -78,13 +119,10 @@ const Featured = () => {
 
 
       <div
+        ref={ref}
         className={styles['featuredContainer']}
       >
-        <ShopItemRow
-          title='Our Featured Products'
-          products={products}
-          loading={loading}
-        />
+        { StateToShow() }
       </div>
 
       <div

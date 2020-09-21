@@ -17,6 +17,10 @@ const USER_TABS = {
   purchase: 'PURCHASE'
 }
 
+const TOKEN_KEY = {
+  jwt: 'JWT_TOKEN_MOBILITY'
+}
+
 const INVOICE_VIEW_STATE = {
   loading: 'LOADING',
   empty: 'EMPTY',
@@ -29,5 +33,6 @@ export {
   MODES,
   LOGIN_PATHS,
   USER_TABS,
-  INVOICE_VIEW_STATE
+  INVOICE_VIEW_STATE,
+  TOKEN_KEY
 }

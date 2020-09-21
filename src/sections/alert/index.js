@@ -8,7 +8,10 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 
 const AlertSec = () => {
   return (
-    <Section>
+    <Section
+      gutter='both'
+      gutterSize='xs'
+    >
       <Alert
         security='success'
         variant='outlined'

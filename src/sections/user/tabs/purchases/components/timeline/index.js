@@ -9,7 +9,7 @@ import { Pagination } from '@material-ui/lab'
 import { Link } from 'gatsby'
 
 // Components
-import AspectView from '../../../../../../components/aspectView'
+import AspectView from '../../../../../../molecules/aspect_view'
 
 // Carousel
 import { useEmblaCarousel } from 'embla-carousel/react'

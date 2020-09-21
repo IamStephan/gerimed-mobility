@@ -5,7 +5,7 @@ import { useStaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image/withIEPolyfill'
 
 // Provider
-import StyleProvider from '../../components/provider'
+import StyleProvider from '../../organisms/provider'
 
 // Styles
 import styles from './styles.module.scss'

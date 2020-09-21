@@ -1,70 +1,85 @@
 @import '../../utils/sizes';
+@import '../../utils/colors';
 
-$mainSize: 450;
-$thumbHeight: 85;
+$breakpoint1: 800;
 
 .productSection {
-  .productShowcase {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+
+  .carouselContainer {
+    flex-basis: 400px;
+    flex-shrink: 0;
+  }
+
+  .detailsContainer {
     display: flex;
-    flex-direction: column;
+    flex: 1;
 
-    .main {
-      width: #{$mainSize}px;
-      height: #{$mainSize}px;
-      margin-bottom: 10px;
-      overflow: hidden;
+    .details {
+      flex: 1;
+      padding: #{$padding * 2}px;
 
-      //Dev
-      //background-color: pink;
+      .title {
+        margin-bottom: #{$margin}px;
+      }
 
-      .mainContainer {
+      .rating {
+        margin-bottom: #{$margin}px;
+      }
+
+      .priceContainer {
+        margin-bottom: #{$margin}px;
         display: flex;
-        position: relative;
+        justify-content: space-between;
+      }
+      
+      .divider {
+        margin-bottom: #{$margin * 3}px;
+      }
 
-        .mainImageSlide {
-          min-width: #{$mainSize}px;
-          height: #{$mainSize}px;
-          position: relative;
-
-          .mainImage {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+      .categoryContainer {
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
+    
+        .category {
+          margin-right: #{$margin}px;
+          margin-bottom: #{$margin}px;
+    
+          &:last-child {
+            margin-right: 0px;
           }
+        }
+      }
+
+      .cartActions {
+        margin-bottom: #{$margin * 3}px;
+        display: flex;
+        align-items: center;
+
+        .input {
+          max-width: 75px;
+          margin-right: #{$margin}px;
         }
       }
     }
+  }
+}
 
-    .thumb {
-      width: #{$mainSize}px;
-      height: #{$thumbHeight}px;
-      overflow: hidden;
+@media screen and (max-width: #{$breakpoint1}px) {
+  .productSection {
+    flex-direction: column;
+    align-items: center;
 
-      //Dev
-      //background-color: red;
+    .carouselContainer {
+      flex-shrink: 1;
+      max-width: 100%;
+    }
 
-      .thumbContainer {
-        display: flex;
-        position: relative;
-
-        .thumbImageSlide {
-          min-width: #{$thumbHeight}px;
-          height: #{$thumbHeight}px;
-          position: relative;
-
-          .thumbImage {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-          }
-        }
-      }
+    .detailsContainer {
+      width: 100%;
     }
   }
 }

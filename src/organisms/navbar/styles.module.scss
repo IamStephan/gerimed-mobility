@@ -14,15 +14,6 @@ $menu-width: 300;
 $breakpoint-1: 900;
 $breakpoint-2: 750;
 
-.detect {
-  height: #{$navbarHeightTrans}px;
-  width: 100%;
-  z-index: -999;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-}
-
 .navbar {
   background-color: $dark;
   height: #{$navbarHeightNormal}px;
@@ -30,7 +21,6 @@ $breakpoint-2: 750;
   left: 0px;
   top: 0px;
   width: 100%;
-  transform: translateY(-100%);
   display: flex;
   align-items: center;
   z-index: 997;
@@ -41,15 +31,19 @@ $breakpoint-2: 750;
       background-color #{$animDur}ms ease-in-out,
       transform #{$animDur}ms ease-in-out;
 
-  &.peek {
-    transform: translateY(0%)
-  }
-
-  &.NORMAL {
+  &.normal {
     background-color: $dark;
+
+    &.show {
+      transform: translateY(0%)
+    }
+
+    &.hide {
+      transform: translateY(-100%);
+    }
   }
 
-  &.TRANS {
+  &.trans {
     height: #{$navbarHeightTrans}px;
     background-color: transparent;
     top: 0px;

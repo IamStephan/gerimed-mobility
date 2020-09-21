@@ -17,7 +17,7 @@ import { KEYS } from '../../../../constants/localStorage'
 import { useGlobalState } from '../../../../state/profile'
 
 // API
-import { RequestPasswordReset } from '../../../../api/auth'
+// import { RequestPasswordReset } from '../../../../api/auth'
 
 // Template
 import TabTemplate from '../../components/tabTemplate'
@@ -48,23 +48,23 @@ const Settings = props => {
   }
 
   async function resetPass() {
-    setSubmitting(true)
+    // setSubmitting(true)
 
-    const results = await RequestPasswordReset({
-      protocol: site.siteMetadata.protocol,
-      server: site.siteMetadata.server,
-      port: site.siteMetadata.port
-    }, {
-      email: info.email
-    })
+    // const results = await RequestPasswordReset({
+    //   protocol: site.siteMetadata.protocol,
+    //   server: site.siteMetadata.server,
+    //   port: site.siteMetadata.port
+    // }, {
+    //   email: info.email
+    // })
 
-    results.notis.forEach(({ message }) => {
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
+    // results.notis.forEach(({ message }) => {
+    //   enqueueSnackbar(message, {
+    //     variant: results.type
+    //   })
+    // })
 
-    setSubmitting(false)
+    // setSubmitting(false)
   }
 
   return (

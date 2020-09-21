@@ -13,8 +13,8 @@ import { dispatch, useGlobalState } from '../../../../state/profile'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 
-// API
-import { UpdateUser } from '../../../../api/user'
+// // API
+// import { UpdateUser } from '../../../../api/user'
 
 // Schema
 import { yupResolver } from '@hookform/resolvers'
@@ -73,63 +73,63 @@ const Shipping = props => {
   })
 
   async function _handleSubmit(data) {
-    const {
-      street,
-      suburb,
-      postCode,
-      province,
-      country
-    } = data
+    // const {
+    //   street,
+    //   suburb,
+    //   postCode,
+    //   province,
+    //   country
+    // } = data
 
-    const { token } = auth
+    // const { token } = auth
 
-    setSubmitting(true)
+    // setSubmitting(true)
 
-    const submitData = {
-      'address': {
-        'street': street,
-        'suburb': suburb,
-        'post_code': postCode,
-        'province': province,
-        'country': country
-      }
-    }
+    // const submitData = {
+    //   'address': {
+    //     'street': street,
+    //     'suburb': suburb,
+    //     'post_code': postCode,
+    //     'province': province,
+    //     'country': country
+    //   }
+    // }
 
-    const results = await UpdateUser({
-      protocol: site.siteMetadata.protocol,
-      server: site.siteMetadata.server,
-      port: site.siteMetadata.port
-    }, { token }, {
-      dataToSubmit: submitData
-    })
+    // const results = await UpdateUser({
+    //   protocol: site.siteMetadata.protocol,
+    //   server: site.siteMetadata.server,
+    //   port: site.siteMetadata.port
+    // }, { token }, {
+    //   dataToSubmit: submitData
+    // })
 
-    results.notis.forEach(({ message }) => {
-      enqueueSnackbar(message, {
-        variant: results.type
-      })
-    })
+    // results.notis.forEach(({ message }) => {
+    //   enqueueSnackbar(message, {
+    //     variant: results.type
+    //   })
+    // })
 
-    if(results.type === 'success') {
-      const { data } = results
+    // if(results.type === 'success') {
+    //   const { data } = results
 
-      const newData = {
-        street: data.address.street,
-        suburb: data.address.suburb,
-        postCode: data.address['post_code'],
-        province: data.address.province,
-        country: data.address.country
-      }
-      reset(newData)
+    //   const newData = {
+    //     street: data.address.street,
+    //     suburb: data.address.suburb,
+    //     postCode: data.address['post_code'],
+    //     province: data.address.province,
+    //     country: data.address.country
+    //   }
+    //   reset(newData)
 
-      dispatch({
-        type: PROFILE_ACTIONS.updateShipping,
-        ...newData
-      })
+    //   dispatch({
+    //     type: PROFILE_ACTIONS.updateShipping,
+    //     ...newData
+    //   })
 
-      setEditMode(false)
-    }
+    //   setEditMode(false)
+    // }
 
-    setSubmitting(false)
+    // setSubmitting(false)
   }
 
   function OpenEditMode() {

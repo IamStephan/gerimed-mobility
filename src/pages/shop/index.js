@@ -7,7 +7,7 @@ import Layout from '../../templates/content_layout'
 import { PAGES } from '../../constants/pages'
 
 // Sections
-import Catalog from '../../sections/catalog'
+import FeaturedProducts from '../../sections/featured'
 import ShopItems from '../../sections/shopItems'
 
 const Shop = () => {
@@ -15,8 +15,9 @@ const Shop = () => {
     <Layout
       page={PAGES.shop}
     >
-      <Catalog />
       <ShopItems />
+
+      <FeaturedProducts />
     </Layout>
   )
 }
