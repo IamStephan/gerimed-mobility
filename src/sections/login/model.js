@@ -1,8 +1,8 @@
 import * as yup from 'yup'
 
-const LoginSchema = yup.object().shape({
-  identifier: yup.string().email('Please provide a valid email').required('Email is required'),
-  password: yup.string().required('Password is required'),
+const FormModel = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().required(),
   remember: yup.boolean()
 })
 
@@ -18,6 +18,6 @@ const LoginMutation = `
 `
 
 export {
-  LoginSchema,
+  FormModel,
   LoginMutation
 }

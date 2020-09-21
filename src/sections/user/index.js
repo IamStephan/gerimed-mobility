@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
-
-// Gatsby
-import { useStaticQuery, graphql } from 'gatsby'
-
-// State
-import { useGlobalState } from '../../state/navbar'
+import React, { useCallback } from 'react'
 
 // Hooks
+import { useMachine } from '@xstate/react'
 import { useMedia } from 'react-use'
+
+// Controller
+import { LocalState } from './controller'
 
 // Material
 import { Tab } from '@material-ui/core'
@@ -32,35 +30,121 @@ import { USER_TABS } from '../../constants/profile'
 // Styles
 import styles from './styles.module.scss'
 
-
-/**
- * TODO: Convert form based tabs into actual components to easy use of them
- *       They are very long components and can be converted
- */
 const User = () => {
-  // Meta info
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            protocol
-            server
-            port
-          }
-        }
-      }
-    `
-  )
-  
-  const [tab, setTab] = useState(USER_TABS.info)
-  const [peeking] = useGlobalState('navbarPeek')
+  const [current, send] = useMachine(LocalState)
+
+  const idle = current.matches('idle')
+  const loading = current.matches('loading') || current.matches('retry')
+  const fail = current.matches('fail')
+
+  const tab = current.context.currentTab
 
   // Using a fixed value since initial loads dont work with dynamic values
   const verticalTabs = useMedia('(max-width: 700px)')
 
+  const ShowStates = useCallback(() => {
+    switch(true) {
+      case loading: {
+        return null
+      }
+
+      case idle: {
+        // const generalInfo = {
+        //   first_name: current.context.data.fir
+        //   last_name
+        //   email
+        //   phone
+        // }
+
+        const shipping = {
+          
+        }
+
+        const address = {
+
+        }
+
+        /**
+         * NOTE:
+         * =====
+         * Purchase history has its own controller
+         */
+
+        return (
+          <TabContext
+            value={tab}
+          >
+            <TabList
+              className={`${styles['tabHeader']} ${!false ? styles['pushHeader'] : ''}`}
+              orientation={verticalTabs ? 'horizontal' : 'vertical'}
+              variant='fullWidth'
+              onChange={_handleChange}
+              textColor='secondary'
+            >
+              <Tab
+                icon={<InfoOutlined />}
+                label={verticalTabs ? '' : 'Account'}
+                value={USER_TABS.info}
+              />
+              <Tab
+                icon={<LocalShippingOutlined />}
+                label={verticalTabs ? '' : 'Shipping'}
+                value={USER_TABS.shipping}
+              />
+              <Tab
+                icon={<SettingsOutlined />}
+                label={verticalTabs ? '' : 'Settings'}
+                value={USER_TABS.settings}
+              />
+              <Tab
+                icon={<AccountBalanceWalletOutlined />}
+                label={verticalTabs ? '' : 'Purchases'}
+                value={USER_TABS.purchase}
+              />
+            </TabList>
+
+            <TabPanel
+              value={USER_TABS.info}
+              className={styles['tabPanel']}
+            >
+              {/* <Info /> */}
+            </TabPanel>
+            <TabPanel
+              value={USER_TABS.shipping}
+              className={styles['tabPanel']}
+            >
+              {/* <Shipping /> */}
+            </TabPanel>
+            <TabPanel
+              value={USER_TABS.settings}
+              className={styles['tabPanel']}
+            >
+              {/* <Settings /> */}
+            </TabPanel>
+            <TabPanel
+              value={USER_TABS.purchase}
+              className={styles['tabPanel']}
+            >
+              {/* <Purchases /> */}
+            </TabPanel>
+          </TabContext>
+        )
+      }
+
+      case fail: {
+        return null
+      }
+
+      default: {
+        return null
+      }
+    }
+  }, [current.value, tab, verticalTabs])
+
   function _handleChange(e, value) {
-    setTab(value)
+    send('SET_TAB', {
+      tab: value
+    })
   }
 
   return (
@@ -70,71 +154,9 @@ const User = () => {
       <div
         className={styles['userContainer']}
       >
-        <TabContext
-          value={tab}
-        >
-          <TabList
-            className={`${styles['tabHeader']} ${!peeking ? styles['pushHeader'] : ''}`}
-            orientation={verticalTabs ? 'horizontal' : 'vertical'}
-            variant='fullWidth'
-            onChange={_handleChange}
-            textColor='secondary'
-          >
-            <Tab
-              icon={<InfoOutlined />}
-              label={verticalTabs ? '' : 'Account'}
-              value={USER_TABS.info}
-            />
-            <Tab
-              icon={<LocalShippingOutlined />}
-              label={verticalTabs ? '' : 'Shipping'}
-              value={USER_TABS.shipping}
-            />
-            <Tab
-              icon={<SettingsOutlined />}
-              label={verticalTabs ? '' : 'Settings'}
-              value={USER_TABS.settings}
-            />
-            <Tab
-              icon={<AccountBalanceWalletOutlined />}
-              label={verticalTabs ? '' : 'Purchases'}
-              value={USER_TABS.purchase}
-            />
-          </TabList>
-
-          <TabPanel
-            value={USER_TABS.info}
-            className={styles['tabPanel']}
-          >
-            <Info
-              site={site}
-            />
-          </TabPanel>
-          <TabPanel
-            value={USER_TABS.shipping}
-            className={styles['tabPanel']}
-          >
-            <Shipping
-              site={site}
-            />
-          </TabPanel>
-          <TabPanel
-            value={USER_TABS.settings}
-            className={styles['tabPanel']}
-          >
-            <Settings
-              site={site}
-            />
-          </TabPanel>
-          <TabPanel
-            value={USER_TABS.purchase}
-            className={styles['tabPanel']}
-          >
-            <Purchases
-              site={site}
-            />
-          </TabPanel>
-        </TabContext>
+        {
+          ShowStates()
+        }
       </div>
     </section>
   )

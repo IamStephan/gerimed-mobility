@@ -1,49 +1,33 @@
-import React, { createContext } from "react"
-
-// Hooks
-import { useMachine } from '@xstate/react'
+import React, { useEffect } from "react"
 
 // Controller
 import { LocalController } from './controller'
 
+// Hooks
+import { useMachine } from '@xstate/react'
+
 // Pages
 import Loader from '../../pages/loader'
 
-// Context
-export const UserInfo = createContext()
-
+/**
+ * Used only for the profile page
+ */
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const [current] = useMachine(LocalController)
+  const [current, send] = useMachine(LocalController)
+
+  const show = current.matches('authorized')
 
   switch(true) {
-    // Waterfall
-    case current.matches('ready'): 
-    case current.matches('loadUserInfo') && !current.context.staleLoad:{
-      return null
-    }
-
-    case current.matches('loadUserInfo') && current.context.staleLoad: {
-      return <Loader />
-    }
-
-    case current.matches('authorized'): {
-      return (
-        <UserInfo.Provider
-          value={{
-            info: current.context.userInfo
-          }}
-        >
-          <Component {...rest} />
-        </UserInfo.Provider>
+    case show: {
+      return  (
+        <Component
+          send={send}
+          {...rest}
+        />
       )
     }
 
     default: {
-      /**
-       * STATE MACHINES!!!!!
-       * state will never reach this, but eslint will complain and
-       * i still want this here
-       */
       return null
     }
   }

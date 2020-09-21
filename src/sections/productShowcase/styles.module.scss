@@ -3,15 +3,14 @@
 
 $breakpoint1: 800;
 
-$details_size: 450;
-
 .productSection {
   display: flex;
   align-items: flex-start;
   position: relative;
 
   .carouselContainer {
-    max-width: 100%;
+    flex-basis: 400px;
+    flex-shrink: 0;
   }
 
   .detailsContainer {
@@ -73,5 +72,14 @@ $details_size: 450;
   .productSection {
     flex-direction: column;
     align-items: center;
+
+    .carouselContainer {
+      flex-shrink: 1;
+      max-width: 100%;
+    }
+
+    .detailsContainer {
+      width: 100%;
+    }
   }
 }

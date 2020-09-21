@@ -1,85 +1,85 @@
-import React, { useCallback } from 'react'
+import React, { useState } from 'react'
 
-// Components
-import LoginMode from './components/login'
-import EmailMode from './components/email'
-import PasswordMode from './components/password'
+// Hooks
+import { useMachine } from '@xstate/react'
+import { useForm } from 'react-hook-form'
 
-// Query Params
-import { useLocation } from '@reach/router'
+// Resolvers
+import { yupResolver } from '@hookform/resolvers'
+
+// Model
+import { FormModel } from './model'
+
+// Controller
+import { LocalState } from './controller'
 
 // Gatsby
-import { useStaticQuery, graphql } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 
-// Constants
-import { LOGIN_PATHS } from '../../constants/profile'
+// Material
+import {
+  TextField,
+  InputAdornment,
+  Button,
+  Divider,
+  Typography,
+  LinearProgress,
+  Link as Btn,
+  FormControlLabel,
+  Checkbox,
+  IconButton
+} from '@material-ui/core'
+import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
+
+// Components
+import AuthTitle from '../../molecules/auth_title'
+
+// Notifications
+import { useSnackbar } from 'notistack'
 
 // Styles
 import styles from './styles.module.scss'
 
-const LoginSection = () => {
-  const location = useLocation()
+/**
+ * NOTE:
+ * =====
+ * for now just use alert to show the errors
+ */
+const RegisterSection = () => {
+  const { enqueueSnackbar } = useSnackbar()
 
-  // Meta info
-  // NOT NEEDED!!
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            protocol
-            server
-            port
-          }
-        }
-      }
-    `
-  )
-
-  /**
-   * NOTE:
-   * =====
-   * When this is just a normal function and an update occurs
-   * the entire tree gets rerendered and the child components loose
-   * their state.
-   * 
-   * This makes sure the the tree is only rerendered when the path changes.
-   */
-  const LoginModeComponents = useCallback(() => {
-    switch(location.pathname) {
-      case LOGIN_PATHS.normal: {
-        return (
-          <LoginMode
-            site={site}
-          />
-        )
-      }
-
-      case LOGIN_PATHS.email: {
-        return (
-          <EmailMode
-            site={site}
-          />
-        )
-      }
-
-      case LOGIN_PATHS.password: {
-        return (
-          <PasswordMode
-            site={site}
-          />
-        )
-      }
-
-      default: {
-        return (
-          <LoginMode
-            site={site}
-          />
-        )
-      }
+  const [current, send] = useMachine(LocalState, {
+    context: {
+      notifications: { enqueueSnackbar }
     }
-  }, [location.pathname])
+    
+  })
+
+  console.log(current.value)
+
+  // The form and its validation
+  const { register, handleSubmit, errors, reset } = useForm({
+    resolver: yupResolver(FormModel)
+  })
+
+  // Shows user is submitting the form
+  const submitting = current.matches('loading')
+
+
+  async function _handleSubmit(data) {
+    // console.log('SEND_EVENT')
+    send('LOGIN', {
+      identifier: data.email,
+      password: data.password,
+      shouldRemember: data.remember
+    })
+  }
+
+  function toggleShowPassword() {
+    send('TOGGLE_PASSWORD')
+  }
+
+  const showPassword = current.context.showPassword
 
   return (
     <>
@@ -87,7 +87,133 @@ const LoginSection = () => {
         className={styles['loginSection']}
       >
         
-        <LoginModeComponents />
+        <div
+          className={styles['loginContainer']}
+        >
+          {
+            submitting ? (
+              <div>
+                <LinearProgress
+                  color='secondary'
+                />
+                <br />
+              </div>
+            ) : null
+          }
+
+          <AuthTitle
+            title='Login'
+          />
+
+          <form
+            noValidate
+            className={styles['form']}
+            onSubmit={handleSubmit(_handleSubmit)}
+          >
+            <div
+              className={styles['input']}
+            >
+              <TextField
+                inputRef={register}
+                type='email'
+                label='Email'
+                name='email'
+                variant='outlined'
+                color='secondary'
+                disabled={submitting}
+                error={errors.email}
+                helperText={errors.email?.message}
+                required
+              />
+            </div>
+
+            <div
+              className={styles['input']}
+            >
+              <TextField
+                inputRef={register}
+                type={showPassword ? 'text' : 'password'}
+                label='Password'
+                name='password'
+                variant='outlined'
+                color='secondary'
+                disabled={submitting}
+                error={errors.password}
+                helperText={errors.password?.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment
+                      position='end'
+                    >
+                      <IconButton
+                        onClick={toggleShowPassword}
+                      >
+                        {
+                          showPassword ? <VisibilityOutlined /> : <VisibilityOffOutlined />
+                        }
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+                required
+              />
+            </div>
+
+            <div
+              className={styles['inputAlt']}
+            >
+              <FormControlLabel
+                disabled={submitting}
+                control={(
+                  <Checkbox
+                    color='secondary'
+                    inputRef={register}
+                    name='remember'
+                  />
+                )}
+                label={(
+                  <Typography>
+                    Remember Me
+                  </Typography>
+                )}
+              />
+            </div>
+
+            <div
+              className={styles['input']}
+            >
+              <Button
+                disableElevation
+                type='submit'
+                variant='contained'
+                color='secondary'
+                disabled={submitting}
+              >
+                Login
+              </Button>
+            </div>
+          </form>
+
+          <Divider />
+          
+          <div
+            className={styles['alternate']}
+          >
+            <Typography
+              variant='body1'
+            >
+              Don't have an account? {' '}
+              <Btn
+                color='secondary'
+                component={Link}
+                to='/profile/register'
+              >
+                Register
+              </Btn>
+            </Typography>
+          </div>
+          
+        </div>
       </section>
     </>
 
@@ -101,4 +227,4 @@ const LoginSection = () => {
  * meant for reuse in othe pages
  */
 
-export default LoginSection
+export default RegisterSection

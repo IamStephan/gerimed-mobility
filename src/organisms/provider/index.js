@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { createContext } from 'react'
+
+// Material
 import { ThemeProvider, createMuiTheme } from '@material-ui/core'
+
+// Controller
+import { CartController } from './controller'
+
+// Xstate
+import { interpret } from 'xstate'
 
 // Notifications
 import { SnackbarProvider } from 'notistack'
 
+// Global Theme
 const theme = createMuiTheme({
   palette: {
     type: 'light',
@@ -18,6 +27,7 @@ const theme = createMuiTheme({
   },
 });
 
+// Notification styles
 const notiStyles = {
   success: { zIndex: 999 },
   error: { zIndex: 999 },
@@ -25,28 +35,41 @@ const notiStyles = {
   info: { zIndex: 999 },
 };
 
+const CartControllerService = interpret(CartController).start()
+
+// Global Context
+export const GlobalContext = createContext({
+  CartController: CartControllerService
+})
+
 const Provider = props => {
   return (
-    <ThemeProvider
-      theme={theme}
+    <GlobalContext.Provider
+      value={{
+        CartController: CartControllerService
+      }}
     >
-      <SnackbarProvider
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-
-        classes={{
-          variantSuccess: notiStyles.success,
-          variantError: notiStyles.error,
-          variantWarning: notiStyles.warning,
-          variantInfo: notiStyles.info,
-        }}
-        preventDuplicate
+      <ThemeProvider
+        theme={theme}
       >
-        { props.children }  
-      </SnackbarProvider>
-    </ThemeProvider>
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+
+          classes={{
+            variantSuccess: notiStyles.success,
+            variantError: notiStyles.error,
+            variantWarning: notiStyles.warning,
+            variantInfo: notiStyles.info,
+          }}
+          preventDuplicate
+        >
+          { props.children }  
+        </SnackbarProvider>
+      </ThemeProvider>
+    </GlobalContext.Provider>
   )
 }
 

@@ -1,7 +1,7 @@
 import { Machine, assign } from 'xstate'
 
 // utils
-import { extractStrapiErrors, axiosMutationFactory } from '../../../../utils/js'
+import { extractStrapiErrors, axiosMutationFactory } from '../../utils/js'
 
 // Gatsby
 import { navigate } from 'gatsby'
@@ -10,7 +10,7 @@ import { navigate } from 'gatsby'
 import { LoginMutation } from './model'
 
 // Constants
-import { TOKEN_KEY } from '../../../../constants/profile'
+import { TOKEN_KEY } from '../../constants/profile'
 
 // Specific strapi error
 const emailNeedsVerify = 'Auth.form.error.confirmed' // <== For some reason, this is allowed through graphQL, WT actual 🤬
@@ -51,7 +51,7 @@ const LocalState = new Machine({
   },
   on: {
     // Global event for ui toggle
-    TOGGLEPASSWORD: {
+    'TOGGLE_PASSWORD': {
       actions: 'togglePassword'
     }
   }

@@ -6,7 +6,7 @@ import { axiosQueryFactory } from '../utils/js'
 const RETRY_LIMIT = 3
 const REQUEST_TIMEOUT = 10000
 
-const FetchGraphqlData = new Machine({
+const FetchGraphqlData = Machine({
   initial: 'idle',
   context: {
     data: null,

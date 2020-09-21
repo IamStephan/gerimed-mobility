@@ -1,6 +1,6 @@
 import { Machine, assign } from 'xstate'
 
-const CarouselController = new Machine({
+const CarouselController = Machine({
   id: 'ProductCarouselController',
   initial: 'ready',
   context: {

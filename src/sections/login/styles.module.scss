@@ -1,12 +1,13 @@
 @import '../../utils/colors';
+@import '../../utils/sizes';
 
 // AuthShowcase Styles
 @import '../authShowcase/styles.module';
 
-$login-width: 450;
+$register-width: 450;
 
 .loginSection {
-  flex-basis: #{$login-width}px;
+  flex-basis: #{$register-width}px;
   background-color: $light;
   display: flex;
   justify-content: center;
@@ -14,10 +15,61 @@ $login-width: 450;
 
   // offset center
   margin-bottom: 100px;
+
+  .loginContainer {
+    padding: #{$padding * 2}px;
+    flex: 1;
+    max-width: 400px;
+
+    .logoContainer {
+      padding-left: #{$padding * 5}px;
+      padding-right: #{$padding * 5}px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: #{$margin * 2}px;
+    }
+
+    .titleContainer {
+      padding: #{$padding * 1.5}px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .iconButton {
+        border: 1px solid $secondary;
+      }
+
+      .title {
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+
+      .input {
+        padding: #{$padding * 1.5}px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .inputAlt {
+        padding-left: #{$padding * 1.5}px;
+        padding-right: #{$padding * 1.5}px;
+      }
+    }
+
+    .alternate {
+      padding: #{$padding * 1.5}px;
+    }
+  }
 }
 
 @media screen and (max-width: #{$breakpoint-1}px) {
-  .loginSection {
+  .registerSection {
     flex: 1;
   }
 }

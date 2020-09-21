@@ -14,9 +14,7 @@ const ProfileTemplate = () => {
   return (
     <Layout
       page={PAGES.profile}
-      enableTransMode={true}
     >
-      <Showcase />
       <User />
     </Layout>
   )

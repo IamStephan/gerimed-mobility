@@ -16,12 +16,12 @@ const Profile = () => {
     <Router
       basepath='/profile'
     >
-      {/* <PrivateRoute
+      <PrivateRoute
         component={ProfileTemplate}
         path='/'
       />
       <Register path='/register' />
-      <Login path='/login/*' /> */}
+      <Login path='/login' />
     </Router>
   )
 }

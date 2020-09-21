@@ -121,7 +121,7 @@ const Navbar = props => {
 
   const isTrans = current.matches('trans')
 
-  const { info: { token } } = useToken(KEYS.jwt)
+  const token = false
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const breakpointTwo = useMedia(`(max-width: ${BREAKPOINT_TWO}px)`)
