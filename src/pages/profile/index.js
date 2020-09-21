@@ -12,6 +12,8 @@ import ProfileTemplate from '../../client_pages/profile'
 import PrivateRoute from '../../organisms/private_route'
 
 const Profile = () => {
+  if(!window) return null
+  
   return (
     <Router
       basepath='/profile'

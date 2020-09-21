@@ -25,7 +25,7 @@ const LocalController = new Machine({
 }, {
   guards: {
     hasToken: () => {
-      if(!window?.sessionStorage || !window?.localStorage) return false
+      if(!window) return false
       try {
         return !!sessionStorage.getItem(TOKEN_KEY.jwt) || !!localStorage.getItem(TOKEN_KEY.jwt)
       } catch(e) {
