@@ -26,6 +26,7 @@ const LocalController = new Machine({
   guards: {
     hasToken: () => {
       try {
+        if(!window.sessionStorage || !window.localStorage) return false
         return !!sessionStorage.getItem(TOKEN_KEY.jwt) || !!localStorage.getItem(TOKEN_KEY.jwt)
       } catch(e) {
         alert('Could not get/set token due to browser restrictions. Authenticated pages might not work')
