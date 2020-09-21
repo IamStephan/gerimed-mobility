@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Components
-import Provider from './src/organisms/provider'
+import Provider from './src/organisms/provider_ssr'
 
 // Styles
 import 'sanitize.css'
