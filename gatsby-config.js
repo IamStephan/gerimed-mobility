@@ -8,10 +8,7 @@ module.exports = {
   siteMetadata: {
     title: `Gerimed Moility`,
     description: `Your one stop medical supply shop`,
-    author: `Avvent Studio`,
-    protocol: process.env.PROTOCOL,
-    server: process.env.SERVER,
-    port: process.env.PORT
+    author: `Avvent Studio`
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -78,6 +75,10 @@ module.exports = {
           {
             type: 'Featuredcategories',
             query: require('./strapi_graphql_queries/featured_categories')
+          },
+          {
+            type: 'Categories',
+            query: require('./strapi_graphql_queries/categories')
           }
         ]
       }
