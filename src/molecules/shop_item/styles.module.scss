@@ -1,14 +1,16 @@
 @import '../../utils/colors';
 @import '../../utils/sizes';
 
-$item-width: 250;
+$item-width: 225;
 
 .item {
-  width: #{$item-width}px;
+  // For flex based layouts
+  flex-basis: #{$item-width}px;
+  flex-grow: 0;
+
   margin: #{$margin * 2}px;
   position: relative;
   display: flex;
-  flex: 1;
   flex-direction: column;
 
   .imgContainer {
