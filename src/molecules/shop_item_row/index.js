@@ -62,18 +62,15 @@ const ShopItemRow = props => {
           >
             {
              products.map((product) => (
-                <div
-                  key={product.id}
-                  className={styles['rowItem']}
-                >
+ 
                   <ShopItem
-                    id={product.id  }
+                    key={product.id}
+                    id={product.id}
                     name={product.name}
                     price={product.price}
                     categories={product.categories}
                     showcase={product.showcase}
                   />
-                </div>
               ))
             }
           </div>
