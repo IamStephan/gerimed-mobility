@@ -15,7 +15,10 @@ const FeaturedProducts = `
       id
       name
       price
-      categories {
+      categories(
+        limit: 1,
+        start: 0
+      ) {
         id
         name
       }
