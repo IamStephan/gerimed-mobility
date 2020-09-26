@@ -1,6 +1,52 @@
 @import '../../utils/sizes';
 
 .shopFilterContainer {
-  background-color: pink;
-  padding: #{$padding * 2}px;
+  
+  margin: #{$margin}px;
+
+  .roundedInput {
+    display: flex;
+
+    &.price:first-child {
+      margin-bottom: #{$margin * 1.5}px;
+    }
+
+    // MUI first applies the custom styles then the defaults
+    // This the overrides the custome styles
+    // Override the styles already applied by increasing specificity
+    .inputBox, .inputBox {
+      border-radius: 100px;
+    }
+  }
+
+  .sideTrackFilter {
+    min-width: 200px;
+
+    .sideTrackSection {
+      margin-bottom: #{$margin}px;
+  
+      .sectionHeader {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+  
+        .dropdown {
+          transition: transform 100ms ease-in-out;
+  
+          &.open {
+            transform: rotate(180deg);
+          }
+  
+          &.close {
+            transform: rotate(0deg);
+          }
+        }
+      }
+  
+      .sectionContent {
+        margin-top: #{$margin / 2}px;
+        margin-bottom: #{$margin}px;
+      }
+    }
+  }
 }
