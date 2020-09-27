@@ -1,4 +1,4 @@
-import { Machine, interpret } from 'xstate'
+import { Machine, assign } from 'xstate'
 
 const SHOW_HIDE_TRIGGER_DISTANCE = 150
 
@@ -6,7 +6,8 @@ const LocalState = new Machine({
   id: 'NavbarController',
   initial: 'normal',
   context: {
-    isTransEnabled: false
+    isTransEnabled: false,
+    isDrawerOpen: false
   },
   states: {
     normal: {
@@ -43,8 +44,18 @@ const LocalState = new Machine({
         TRANS: undefined
       }
     }
+  },
+  on: {
+    TOGGLE_DRAWER: {
+      actions: ['toggleDrawer']
+    }
   }
 }, {
+  actions: {
+    toggleDrawer: assign({
+      isDrawerOpen: (context) => !context.isDrawerOpen
+    })
+  },
   services: {
     normalNavbarScroll: (context) => (send) => {
       let prevScrollPos = window.pageYOffset

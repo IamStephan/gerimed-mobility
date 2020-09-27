@@ -59,7 +59,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-nprogress`,
       options: {
-        color: `#FFFF01`,
+        color: `#008835`,
       },
     },
     '@bumped-inc/gatsby-plugin-optional-chaining',

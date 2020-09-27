@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 // Hooks
-import { useToken } from '../../hooks/useToken'
 import { useMedia } from 'react-use'
 import { useMachine } from '@xstate/react'
 
@@ -21,8 +20,6 @@ import { ShoppingCartOutlined, AccountCircleOutlined, Menu } from '@material-ui/
 
 // Constants
 import { PAGES } from '../../constants/pages'
-import { MODE } from '../../constants/navbar'
-import { KEYS } from '../../constants/localStorage'
 
 // Styles
 import styles from './styles.module.scss'
@@ -78,7 +75,7 @@ const Navbar = props => {
   } = props
 
   const data = useStaticQuery(STATIC_QUERY)
-  const [current] = useMachine(LocalState, {
+  const [current, send] = useMachine(LocalState, {
     context: {
       isTransEnabled: enableTransMode
     }
@@ -121,9 +118,10 @@ const Navbar = props => {
 
   const isTrans = current.matches('trans')
 
-  const token = false
+  function _toggleDrawer() {
+    send('TOGGLE_DRAWER')
+  }
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const breakpointTwo = useMedia(`(max-width: ${BREAKPOINT_TWO}px)`)
 
   return (
@@ -220,7 +218,7 @@ const Navbar = props => {
                     className={styles['iconButton']}
                     disableElevation
                     color='primary'
-                    onClick={() => setIsDrawerOpen(true)}
+                    onClick={_toggleDrawer}
                   >
                     <Menu />
                   </IconButton>
@@ -235,10 +233,9 @@ const Navbar = props => {
       {
         breakpointTwo ? (
           <Drawer
-            open={isDrawerOpen}
-            setOpen={setIsDrawerOpen}
+            open={current.context.isDrawerOpen}
+            toggleDrawer={_toggleDrawer}
             page={page}
-            token={token}
           />
         ) : null
       }

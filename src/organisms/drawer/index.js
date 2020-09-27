@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 // Gatsby
 import { Link } from 'gatsby'
@@ -8,6 +8,12 @@ import Logo from '../../svg/logo_green.svg'
 
 // Constants
 import { PAGES } from '../../constants/pages'
+
+// Controller
+import { LocalContoller } from './controller'
+
+// Hooks
+import { useMachine } from '@xstate/react'
 
 // Material
 import {
@@ -75,26 +81,37 @@ const MenuItem = props => {
 const Drawer = props => {
   const {
     open,
-    setOpen,
-    token,
+    toggleDrawer,
     page
   } = props
 
+  const dimmerRef = useRef(null)
+  const [current, send] = useMachine(LocalContoller)
+
   const [accountOpen, setAccountOpen] = useState(false)
 
-  function toggleAccount() {
+  const hideDrawer = current.context.shouldBeHidden
+
+  useEffect(() => {
+    if(!dimmerRef) return
+
+    send('SET_DIMMER_REF', {
+      dimmerRef
+    })
+  }, [dimmerRef])
+
+  function _toggleAccount() {
     accountOpen ? setAccountOpen(false) : setAccountOpen(true)
   }
 
   return (
     <nav
-      className={`${styles['drawer']} ${styles[open ? 'open' : 'closed']}`}
+      className={`${styles['drawer']} ${styles[open ? 'open' : 'closed']} ${styles[hideDrawer ? 'hide' : 'show']}`}
     >
       <div
         className={styles['dimmer']}
-        onClick={() => {
-          setOpen(false)
-        }}
+        onClick={toggleDrawer}
+        ref={dimmerRef}
       />
 
       <div
@@ -149,7 +166,7 @@ const Drawer = props => {
         <List>
           <ListItem
             button
-            onClick={toggleAccount}
+            onClick={_toggleAccount}
           >
             <ListItemIcon>
               <AccountCircleOutlined />
@@ -173,7 +190,7 @@ const Drawer = props => {
               disablePadding
             >
               {
-                token ? (
+                false ? (
                   <>
                     <MenuItem
                       label='My Account'

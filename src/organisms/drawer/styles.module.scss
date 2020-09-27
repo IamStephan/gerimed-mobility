@@ -12,6 +12,14 @@ $logo-size: 40;
   width: 100%;
   height: 100%;
 
+  &.hide {
+    z-index: -9999;
+  }
+
+  &.show {
+    z-index: 998;
+  }
+
   &.open {
     .dimmer {
       opacity: 1;
