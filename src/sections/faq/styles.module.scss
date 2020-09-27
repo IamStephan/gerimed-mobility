@@ -1,16 +1,51 @@
 @import '../../utils/sizes';
+@import '../../utils/colors';
 
 .faqSection {
   .title {
-    font-weight: bold;
-    margin-bottom: #{$margin * 2}px;
+    margin-bottom: #{$margin * 3}px;
   }
 
-  .questions {
-    margin-bottom: #{$section-space / 2}px;
+  .questionSection {
+    margin-bottom: #{$margin * 5}px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
 
     .header {
-      font-weight: bold;
+      margin-bottom: #{$margin}px;
+    }
+
+    .questionsContent {
+      margin-top: #{$margin}px;
+      display: grid;
+      grid-row-gap: #{$margin * 2}px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+      .question {
+        display: flex;
+
+        .left {
+          padding: #{$padding}px;
+
+          .questionAvatar {
+            background-color: $secondary;
+          }
+        }
+
+        .right {
+          padding: #{$padding}px;
+
+          .questionHeader {
+            margin-bottom: #{$margin}px;
+          }
+
+          .questionContent {
+
+          }
+        }
+      }
     }
   }
 }

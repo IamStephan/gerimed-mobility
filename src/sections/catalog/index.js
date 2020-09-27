@@ -215,7 +215,7 @@ const Catalog = () => {
         description={category_four.description}
       >
         <Link
-          to={category_four.category.name}
+          to={navigateCatelog(category_four.category.name)}
         >
           <Img
             fluid={category_four.showcase.remoteImage.childImageSharp.fluid}

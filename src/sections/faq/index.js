@@ -1,8 +1,8 @@
 import React from 'react'
 
 // Material
-import { Typography, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core'
-import { ExpandMore } from '@material-ui/icons'
+import { Typography, Avatar, Divider } from '@material-ui/core'
+import { HelpOutline } from '@material-ui/icons'
 
 // Templates
 import { Section } from '../../templates/content_layout'
@@ -10,6 +10,55 @@ import { Section } from '../../templates/content_layout'
 // Styles
 import styles from './styles.module.scss'
 
+
+const questions = {
+  sections: [
+    {
+      title: 'Support',
+      questions: [
+        {
+          title: 'My cart does not work?',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis. '
+        },{
+          title: 'I canno log into my account?',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis. '
+        },{
+          title: 'Do I need an account to buy items?',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis. '
+        },{
+          title: 'Can I return my items?',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis. '
+        },
+      ]
+    },
+    {
+      title: 'Shipping',
+      questions: [
+        {
+          title: 'How are shipping costs calculated?',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis.'
+        },
+        {
+          title: 'How long does shipping take?',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis.'
+        },
+        {
+          title: 'Can i track my order?',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis.'
+        }
+      ]
+    },
+    {
+      title: 'Returns',
+      questions: [
+        {
+          title: 'Can I return my items?',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis.'
+        }
+      ]
+    }
+  ]
+}
 
 /**
  * TODO:
@@ -25,73 +74,65 @@ const FAQ = () => {
       <Typography
         variant='h4'
         className={styles['title']}
+        color='secondary'
       >
-        Frequently Asked Questions
+        <b>Frequently Asked Questions</b>
       </Typography>
 
-      <div
-        className={styles['questions']}
-      >
-        <Accordion
-          expanded
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMore />}
+      {
+        questions.sections.map((section, i) => (
+          <section
+            className={styles['questionSection']}
           >
             <Typography
+              variant='h5'
               className={styles['header']}
+              color='secondary'
             >
-              How does shipping work?
+              <b>{section.title}</b>
             </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-              sit amet blandit leo lobortis eget.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
 
-        <Accordion
-          expanded
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMore />}
-          >
-            <Typography
-              className={styles['header']}
-            >
-              Can i make refunds?
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-              sit amet blandit leo lobortis eget.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+            <Divider />
 
-        <Accordion
-          expanded
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMore />}
-          >
-            <Typography
-              className={styles['header']}
+            <div
+              className={styles['questionsContent']}
             >
-              What Payment gateway do you use?
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-              sit amet blandit leo lobortis eget.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      </div>
+              {
+                section.questions.map((question, i) => (
+                  <div
+                    className={styles['question']}
+                  >
+                    <div className={styles['left']}>
+                      <Avatar
+                        className={styles['questionAvatar']}
+                      >
+                        <HelpOutline />
+                      </Avatar>
+                    </div>
+
+                    <div
+                      className={styles['right']}
+                    >
+                      <Typography
+                        className={styles['questionHeader']}
+                        variant='h6'
+                      >
+                        <b>{question.title}</b>
+                      </Typography>
+                      <Typography
+                        className={styles['questionContent']}
+                      >
+                        {question.content}
+                      </Typography>
+                    </div>
+                    
+                  </div>
+                ))
+              }
+            </div>
+          </section>
+        ))
+      }
     </Section>
   )
 }

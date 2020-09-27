@@ -123,7 +123,7 @@ const Footer = props => {
               variant='contained'
               color='primary'
               component={Link}
-              to='https://gerimed.co.za'
+              to='https://gerimed.co.za/langebaan'
               target='_blank'
             >
               Visit Gerimed
@@ -156,7 +156,7 @@ const Footer = props => {
               variant='contained'
               color='primary'
               component={Link}
-              to='https://gerimed.co.za'
+              to='https://gerimed.co.za/kleinmond'
               target='_blank'
             >
               Visit Gerimed
