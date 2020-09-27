@@ -4,23 +4,22 @@ import React from 'react'
 import { Section } from '../../templates/content_layout'
 
 // Molecules
+import ShopItemGrid from '../../molecules/shop_item_grid'
 import ShopFilter from '../../molecules/shop_filter'
 
-const ShopItems = () => {
+// Styles
+import styles from './styles.module.scss'
+
+const ShopGrid = () => {
   return (
     <Section
+      className={styles['shopGrid']}
       isClamped={false}
-      isPadded={false}
     >
-      <ShopFilter
-      
-      />
-
-      <Section>
-        asdasd
-      </Section>
+      <ShopFilter/>
+      <ShopItemGrid/>
     </Section>
   )
 }
 
-export default ShopItems
+export default ShopGrid

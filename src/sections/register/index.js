@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers'
 import * as yup from 'yup'
 
 // Gatsby
-import { Link, useStaticQuery, graphql, navigate } from 'gatsby'
+import { Link } from 'gatsby'
 
 // Material
 import {
@@ -54,21 +54,6 @@ const registerShema = yup.object().shape({
  * for now just use alert to show the errors
  */
 const RegisterSection = () => {
-  // Meta info
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            protocol
-            server
-            port
-          }
-        }
-      }
-    `
-  )
-
   const { enqueueSnackbar } = useSnackbar()
 
   // The form and its validation

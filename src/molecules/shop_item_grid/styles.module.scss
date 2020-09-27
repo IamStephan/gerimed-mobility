@@ -1,0 +1,47 @@
+@import '../../utils/sizes';
+
+// Molecule
+@import '../shop_item/styles.module';
+
+$breakpoint-1: 555;
+
+.shopItemGrid {
+  padding: #{$padding}px;
+  flex: 1;
+
+  .shopItems {
+    // For unsuported devices
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+
+    .placeholderItem {
+      flex-basis: #{$item-width}px;
+      margin-left: #{$margin * 2}px;
+      margin-right: #{$margin * 2}px;
+      width: #{$item-width}px;
+      flex-grow: 0;
+      position: relative;
+    }
+  }
+
+  .pagination {
+    padding-top: #{$padding * 2}px;
+    display: flex;
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .shopItemGrid {
+    .shopItems {
+      justify-content: center;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

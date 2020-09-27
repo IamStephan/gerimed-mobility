@@ -7,17 +7,17 @@ import Layout from '../../templates/content_layout'
 import { PAGES } from '../../constants/pages'
 
 // Sections
-import FeaturedProducts from '../../sections/featured'
-import ShopItems from '../../sections/shopItems'
+import LatestProducts from '../../sections/lastestProducts'
+import ShopGrid from '../../sections/shopGrid'
 
 const Shop = () => {
   return (
     <Layout
       page={PAGES.shop}
     >
-      <ShopItems />
+      <ShopGrid />
 
-      <FeaturedProducts />
+      <LatestProducts />
     </Layout>
   )
 }

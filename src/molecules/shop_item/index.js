@@ -4,7 +4,10 @@ import React, { useCallback } from 'react'
 import { Typography, Chip, Link as Btn } from '@material-ui/core'
 
 // Gatsby
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
+
+// URL
+import { stringify } from 'qs'
 
 // Text
 import TruncateText from 'react-text-truncate'
@@ -41,6 +44,14 @@ const Title = props => {
   )
 }
 
+/**
+ * TODO:
+ * ======
+ *  - show when an item is depleted
+ *  - show when an item is on sale
+ *  - Show add to cart on hover
+ */
+
 const ShopItem = props => {
   const {
     id,
@@ -49,6 +60,17 @@ const ShopItem = props => {
     showcase,
     categories
   } = props
+
+  function _categoryFilter(category) {
+    let filter = {
+      categories: [category]
+    }
+
+    let queryString = stringify(filter)
+    console.log(queryString)
+
+    navigate(`/shop?${queryString}`)
+  }
 
   const formatPrice = useCallback(() => {
     const currency = new Intl.NumberFormat('en-UK', {
@@ -103,6 +125,7 @@ const ShopItem = props => {
               label={category.name}
               color='secondary'
               variant='outlined'
+              onClick={() => _categoryFilter(category.name)}
               size='small'
               clickable
             />

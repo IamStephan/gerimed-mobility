@@ -3,12 +3,12 @@
  * by update date
  */
 
-const FeaturedProducts = `
+const LatestProducts = `
   query(
     $limit: Int!
   ) {
     products(
-      sort: "updatedAt:desc",
+      sort: "createdAt:desc",
       limit: $limit,
       start: 0
     ) {
@@ -31,5 +31,5 @@ const FeaturedProducts = `
 `
 
 export {
-  FeaturedProducts
+  LatestProducts
 }

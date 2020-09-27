@@ -5,7 +5,7 @@ import { navigate } from 'gatsby'
 
 // URL
 import { stringify, parse } from 'qs'
-import { isEqual, set } from 'lodash'
+import { isEqual, get } from 'lodash'
 
 const { pure } = actions
 
@@ -159,23 +159,16 @@ const LocalController = Machine({
         if(isEqual(context.filters, filtersBuilt)) return
 
         // Search
-        if(formData.search !== filtersBuilt.search) {
-          setValue('search', filtersBuilt.search, {
-            isDirty: true
-          })
-        }
+        setValue('search', get(filtersBuilt, 'search', ''), {
+          isDirty: true
+        })
 
         // Price
-        if(formData.min_price !== filtersBuilt.min_price) {
-          setValue('min_price', filtersBuilt.min_price, {
-            isDirty: true
-          })
-        }
-        if(formData.max_price !== filtersBuilt.max_price) {
-          setValue('max_price', filtersBuilt.max_price, {
-            isDirty: true
-          })
-        }
+        setValue('min_price', get(filtersBuilt, 'min_price', ''), {
+          isDirty: true
+        })
+      
+        setValue('max_price', get(filtersBuilt, 'max_price', ''))
 
         // Categories
         categories.forEach((category) => {

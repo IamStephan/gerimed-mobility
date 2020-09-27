@@ -1,7 +1,10 @@
 @import '../../utils/sizes';
 
+$sideTrackMinWidth: 200;
+
 .shopFilterContainer {
-  
+  flex-basis: #{$sideTrackMinWidth}px;
+  flex-grow: 0;
   margin: #{$margin}px;
 
   .roundedInput {
@@ -20,7 +23,7 @@
   }
 
   .sideTrackFilter {
-    min-width: 200px;
+    min-width: #{$sideTrackMinWidth}px;
 
     .sideTrackSection {
       margin-bottom: #{$margin}px;

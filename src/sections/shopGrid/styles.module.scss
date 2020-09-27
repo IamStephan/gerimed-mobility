@@ -1,0 +1,18 @@
+@import '../../utils/sizes';
+
+$custom-clamp-width: 1400;
+
+$breakpoint-1: 780;
+
+.shopGrid {
+  display: flex;
+  padding: #{$padding}px;
+  max-width: #{$custom-clamp-width}px;
+  margin: auto;
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .shopGrid {
+    flex-direction: column;
+  }
+}

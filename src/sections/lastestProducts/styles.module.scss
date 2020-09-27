@@ -1,0 +1,63 @@
+@import '../../utils/sizes';
+@import '../../utils/border';
+@import '../../utils/colors';
+
+// Breakpoints
+$breakpoint-1: 1075;
+$breakpoint-2: 575;
+
+.latestSection {
+  position: relative;
+  margin-bottom: #{$section-space / 2}px;
+
+  .latestContainer {
+    // max-width: #{$clamp-width}px;
+    // margin: auto;
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .latestSection {
+    .latestContainer {
+      .title {
+        font-weight: bold;
+        margin-bottom: #{$margin * 3}px;
+      }
+  
+      .showcase {
+        justify-content: flex-start;
+
+        &::-webkit-scrollbar {
+          width: 11px;
+        }
+        & {
+          scrollbar-width: thin;
+          scrollbar-color: $secondary $grey;
+        }
+        &::-webkit-scrollbar-track {
+          background: $grey;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: $secondary ;
+          border-radius: 6px;
+          border: 3px solid $grey;
+        }
+
+        .product {
+          flex-basis: 300px;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-2}px) {
+  .latestSection {
+    .latestContainer {
+      .title {
+        text-align: center;
+      }
+    }
+  }
+}
