@@ -45,7 +45,7 @@ const ShopItem = () => {
               className={styles['category']}
             >
               <Chip
-                label={'Dummy Data'}
+                label='Dummy Data'
                 color='secondary'
                 variant='outlined'
                 size='small'

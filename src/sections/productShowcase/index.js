@@ -5,7 +5,13 @@ import { Section } from '../../templates/content_layout'
 
 // Material
 import { Typography, Divider, Button, Tab, Chip, TextField } from '@material-ui/core'
-import { Rating, TabContext, TabList, TabPanel, Alert } from '@material-ui/lab'
+import { Rating, TabContext, TabList, TabPanel, Alert, Skeleton } from '@material-ui/lab'
+
+// Gatsby
+import { navigate } from 'gatsby'
+
+// URL
+import { stringify } from 'qs'
 
 // Hooks
 import { useMachine } from '@xstate/react'
@@ -40,6 +46,17 @@ const ProductShowcase = () => {
   const qsParams = parse(location.search, {
     ignoreQueryPrefix: true
   })
+
+  function _categoryFilter(category) {
+    let filter = {
+      categories: [category]
+    }
+
+    let queryString = stringify(filter)
+    console.log(queryString)
+
+    navigate(`/shop?${queryString}`)
+  }
 
   // Data Controller
   const [currentData, sendDataEvent] = useMachine(FetchGraphqlData, {
@@ -103,15 +120,19 @@ const ProductShowcase = () => {
     switch(true) {
       case loading: {
         return (
-          <>
+          <div
+            className={styles['carousel']}
+          >
             <ProductCarouselSkeleton />
             <ProductCarouselThumbSkeleton />
-          </>
+          </div>
         )
       }
       case success: {
         return (
-          <>
+          <div
+            className={styles['carousel']}
+          >
             <ProductCarousel
               images={images}
               index={index}
@@ -127,7 +148,7 @@ const ProductShowcase = () => {
             />
 
             <Divider />
-          </>
+          </div>
         )
       }
 
@@ -150,7 +171,141 @@ const ProductShowcase = () => {
       case loading: {
         return (
           <>
+            <Skeleton>
+              <Typography
+                className={styles['title']}
+                variant='h4'
+              >
+                <b>Dummy Name</b>
+              </Typography>
+            </Skeleton>
 
+            <div
+              className={styles['categoryContainer']}
+            >
+              <Skeleton
+                className={styles['category']}
+              >
+                <Chip
+                  className={styles['category']}
+                  label='Dummy Data'
+                  size='small'
+                />
+              </Skeleton>
+
+              <Skeleton
+                className={styles['category']}
+              >
+                <Chip
+                  className={styles['category']}
+                  label='Dummy Data'
+                  size='small'
+                />
+              </Skeleton>
+            </div>
+
+            <div
+              className={styles['priceContainer']}
+            >
+              <Skeleton>
+                <Typography
+                  className={styles['price']}
+                  variant='h5'
+                >
+                  <b>R 70000</b>
+                </Typography>
+              </Skeleton>
+              
+
+              <Skeleton>
+                <Chip
+                  variant='default'
+                  color='secondary'
+                  size='small'
+                  label='Available'
+                />
+              </Skeleton>
+            </div>
+
+            <Divider
+              className={styles['divider']}
+            />
+
+            <div
+              className={styles['cartActions']}
+            >
+              <Skeleton
+                className={styles['input']}
+              >
+                <TextField
+                  label='Quantity'
+                  variant='outlined'
+                  size='small'
+                  className={styles['input']}
+                />
+              </Skeleton>
+              
+              <Skeleton
+                className={styles['button']}
+              >
+                <Button
+                  variant='contained'
+                  color='secondary'
+                  disableElevation
+                  className={styles['button']}
+                >
+                  Add To Cart
+                </Button>
+              </Skeleton>
+            </div>
+
+            <TabContext
+              value='desc'
+            >
+              <TabList
+              >
+                <Tab label='Details' value='desc' />
+              </TabList>
+              <Divider />
+
+              <TabPanel value='desc'>
+                <Skeleton>
+                  <Typography>
+                    Lorem ipsum dolor sit aman commodo ligula eget do
+                  </Typography>
+                </Skeleton>
+                <Skeleton>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget do
+                  </Typography>
+                </Skeleton>
+                <Skeleton>
+                  <Typography>ctetuer adipiscing elit. Aenean commodo ligula eget do
+                  </Typography>
+                </Skeleton>
+                <Skeleton>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget do
+                  </Typography>
+                </Skeleton>
+                <Skeleton>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit.enean commodo ligula eget do
+                  </Typography>
+                </Skeleton>
+                <Skeleton>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean cot do
+                  </Typography>
+                </Skeleton>
+                <Skeleton>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo l
+                  </Typography>
+                </Skeleton>
+              </TabPanel>
+            </TabContext>
+            
           </>
         )
       }
@@ -178,6 +333,7 @@ const ProductShowcase = () => {
                     variant='outlined'
                     size='small'
                     clickable
+                    onClick={() => _categoryFilter(category.name)}
                   />
                 )) : (
                   <Chip
@@ -265,7 +421,7 @@ const ProductShowcase = () => {
               <Divider />
 
               <TabPanel value='desc'>
-                <div dangerouslySetInnerHTML={{
+                <section dangerouslySetInnerHTML={{
                   __html: product.details
                 }} />
               </TabPanel>

@@ -9,7 +9,8 @@
   position: relative;
 
   .skeleton {
-    width: #{$carousal_size}px;
+    width: 100%;
+    max-width: #{$carousal_size}px;
     height: #{$carousal_size}px;
     border-radius: #{$border-radius}px;
   }

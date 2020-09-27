@@ -8,7 +8,7 @@ import { PAGES } from '../../constants/pages'
 
 // Sections
 import ProductShowcase from '../../sections/productShowcase'
-import FeaturedProducts from '../../sections/featured'
+import LatestProducts from '../../sections/lastestProducts'
 
 const Product = () => {
   return (
@@ -16,7 +16,7 @@ const Product = () => {
       page={PAGES.product}
     >
       <ProductShowcase />
-      <FeaturedProducts />
+      <LatestProducts />
     </Layout>
   )
 }
