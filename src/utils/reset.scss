@@ -1,3 +1,5 @@
+@import './sizes';
+
 body {
   overscroll-behavior-y: contain;
   background-color: #FAFAFA;
@@ -29,4 +31,58 @@ ol {
 
 ul {
   list-style: circle inside;
+}
+
+p, li {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+}
+
+p {
+  margin-bottom: #{$margin}px;
+}
+
+/*
+For contetn that do not use the typography component
+
+*/
+h1, h2, h3, h4, h5 {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  margin-bottom: #{$margin * 2}px;
+}
+
+h1 {
+  font-weight: 400;
+  font-size: 2.125rem;
+  line-height: 1.235;
+  letter-spacing: -0.01562em;
+}
+
+h2 {
+  font-weight: 300;
+  font-size: 3.75rem;
+  line-height: 1.2;
+  letter-spacing: -0.00833em;
+}
+
+h3 {
+  font-weight: 400;
+  font-size: 3rem;
+  line-height: 1.167;
+  letter-spacing: 0em;
+}
+
+h4 {
+  font-weight: 400;
+  font-size: 2.125rem;
+  line-height: 1.235;
+  letter-spacing: 0.00735em;
+}
+
+ol, ul {
+  margin-bottom: #{$margin}px;
+  margin-top: #{$margin}px;
 }

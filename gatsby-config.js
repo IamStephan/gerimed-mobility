@@ -79,6 +79,10 @@ module.exports = {
           {
             type: 'Categories',
             query: require('./strapi_graphql_queries/categories')
+          },
+          {
+            type: 'Legal',
+            query: require('./strapi_graphql_queries/legal')
           }
         ]
       }

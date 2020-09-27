@@ -188,6 +188,21 @@ const Footer = props => {
               </Btn>
             </Typography>
           </section>
+
+          <section
+            className={styles['section']}
+          >
+            <Typography
+              color='primary'
+            >
+              <Btn
+                component={Link}
+                to='/return'
+              >
+                Return Policy
+              </Btn>
+            </Typography>
+          </section>
         </div>
 
         <div

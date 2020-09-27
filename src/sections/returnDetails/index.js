@@ -16,7 +16,7 @@ import styles from './styles.module.scss';
 const STATIC_QUERY = graphql`
   query {
     strapiLegal {
-      termsAndCondition {
+      returnPolicy {
         content
         updatedAt
       }
@@ -40,10 +40,10 @@ const Title = props => {
   )
 }
 
-const TermsDetails = () => {
+const ReturnDetails = () => {
   const {
     strapiLegal: {
-      termsAndCondition: {
+      returnPolicy: {
         content,
         updatedAt
       }
@@ -63,11 +63,11 @@ const TermsDetails = () => {
 
   return (
     <Section
-      className={styles['termsSection']}
+      className={styles['returnSection']}
     >
       <section>
         <Title>
-          Terms of use
+          Return Policy
         </Title>
 
         <Chip
@@ -87,4 +87,4 @@ const TermsDetails = () => {
   )
 }
 
-export default TermsDetails
+export default ReturnDetails

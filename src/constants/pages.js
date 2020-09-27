@@ -14,6 +14,7 @@ const PAGES = {
   // Legal
   terms: 'TERMS',
   policies: 'POLICIES',
+  returnPolicy: 'RETURN',
 
   // Dynamic Pages
   login: 'LOGIN',

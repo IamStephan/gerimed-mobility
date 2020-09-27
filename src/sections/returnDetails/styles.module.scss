@@ -1,9 +1,9 @@
 @import '../../utils/sizes';
 
-.termsSection {
+.returnSection {
 
   // Increase specifity
-  &.termsSection {
+  &.returnSection {
     padding: #{$padding * 2}px;
   }
   

@@ -1,5 +1,4 @@
 import { Machine, assign } from 'xstate'
-import { send } from 'xstate/lib/actionTypes'
 
 const LocalContoller = Machine({
   id: 'DrawerConroller',
@@ -44,7 +43,20 @@ const LocalContoller = Machine({
     }),
   },
   services: {
-    transitionDetection: (context, event) => (send) => {
+    /**
+     * NOTE:
+     * =====
+     * This is super frustrating. React and xstate are not
+     * two way data binding. This means one has to be the source of truth
+     * or the both should be. I want xstate to be the controller therefore
+     * I cannot be reactive to prop changes unless the view layer gets
+     * overly complicated.
+     * 
+     * What i ended up doing is look at the dimmers opacity to see what the intent
+     * of the view is. Then set the zindex on the view layer BECAUSE the slider component
+     * completely ignores the css pointer events property. 😠
+     */
+    transitionDetection: (context) => (send) => {
       // Gatsby SSR
       if(typeof window === 'undefined') return
 
@@ -52,9 +64,6 @@ const LocalContoller = Machine({
         const opacity = Number(window.getComputedStyle(context.dimmerRef.current).getPropertyValue("opacity"))
 
         if(opacity < 0.5) {
-          /**
-           * The transition started and is about to open
-           */
           console.log('SHOW')
           send('SET_SHOULD_UNHIDE')
         }
@@ -64,9 +73,6 @@ const LocalContoller = Machine({
         const opacity = Number(window.getComputedStyle(context.dimmerRef.current).getPropertyValue("opacity"))
 
         if(opacity < 0.5) {
-          /**
-           * The transition ended and is closed
-           */
           console.log('HIDE')
           send('SET_SHOULD_HIDE')
         }
