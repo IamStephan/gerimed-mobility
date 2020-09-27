@@ -3,6 +3,9 @@ import React from 'react'
 // Templates
 import { Section } from '../../templates/content_layout'
 
+// Gatsby
+import { Link } from 'gatsby'
+
 // Material
 import { Button, Typography } from '@material-ui/core'
 
@@ -53,6 +56,8 @@ const CTA = () => {
           variant='contained'
           color='primary'
           size='large'
+          component={Link}
+          to='/shop'
         >
           Shop Now
         </Button>

@@ -7,7 +7,7 @@ import { Section } from '../../templates/content_layout'
 import { Typography, Button } from '@material-ui/core'
 
 // Gatsby
-import { useStaticQuery, graphql } from 'gatsby'
+import { useStaticQuery, graphql, Link } from 'gatsby'
 import Img from 'gatsby-image/withIEPolyfill' // <= Required for the position to work
 
 // Styles
@@ -98,6 +98,9 @@ const Hero = () => {
                 variant='contained'
                 color='primary'
                 size='large'
+                component={Link}
+                className={styles['button']}
+                to='/shop'
               >
                 Our Shop
               </Button>
@@ -105,6 +108,9 @@ const Hero = () => {
                 variant='outlined'
                 color='primary'
                 size='large'
+                component={Link}
+                className={styles['button']}
+                to='/about'
               >
                 Learn More
               </Button>

@@ -1,11 +1,14 @@
 import React from 'react'
 
 // Gatsby
-import { useStaticQuery, graphql } from 'gatsby'
+import { useStaticQuery, graphql, Link, navigate } from 'gatsby'
 import Img from 'gatsby-image'
 
 // Templates
 import { Section } from '../../templates/content_layout'
+
+// URL
+import { stringify } from 'qs'
 
 // Material
 import { Typography } from '@material-ui/core'
@@ -148,6 +151,16 @@ const Catalog = () => {
     }
   } = useStaticQuery(STATIC_QUERY)
 
+  function navigateCatelog(name) {
+    let filter = {
+      categories: [name]
+    }
+
+    let queryString = stringify(filter)
+
+    return `/shop?${queryString}`
+  }
+
   return (
     <Section
       className={styles['catalogSection']}
@@ -156,50 +169,75 @@ const Catalog = () => {
         title={category_one.category.name}
         description={category_one.description}
       >
-        <Img
-          fluid={category_one.showcase.remoteImage.childImageSharp.fluid}
-          className={styles['img']}
-        />
+        <Link
+          to={navigateCatelog(category_one.category.name)}
+        >
+          <Img
+            fluid={category_one.showcase.remoteImage.childImageSharp.fluid}
+            className={styles['img']}
+          />
+        </Link>
+        
       </GridItem>
 
       <GridItem
         title={category_two.category.name}
         description={category_two.description}
       >
-        <Img
-          fluid={category_two.showcase.remoteImage.childImageSharp.fluid}
-          className={styles['img']}
-        />
+        <Link
+          to={navigateCatelog(category_two.category.name)}
+        >
+          <Img
+            fluid={category_two.showcase.remoteImage.childImageSharp.fluid}
+            className={styles['img']}
+          />
+        </Link>
+        
       </GridItem>
 
       <GridItem
         title={category_three.category.name}
         description={category_three.description}
       >
-        <Img
-          fluid={category_three.showcase.remoteImage.childImageSharp.fluid}
-          className={styles['img']}
-        />
+        <Link
+          to={navigateCatelog(category_three.category.name)}
+        >
+          <Img
+            fluid={category_three.showcase.remoteImage.childImageSharp.fluid}
+            className={styles['img']}
+          />
+        </Link>
+        
       </GridItem>
 
       <GridItem
         title={category_four.category.name}
         description={category_four.description}
       >
-        <Img
-          fluid={category_four.showcase.remoteImage.childImageSharp.fluid}
-          className={styles['img']}
-        />
+        <Link
+          to={category_four.category.name}
+        >
+          <Img
+            fluid={category_four.showcase.remoteImage.childImageSharp.fluid}
+            className={styles['img']}
+          />
+        </Link>
+        
       </GridItem>
 
       <GridItem
         title={category_five.category.name}
         description={category_five.description}
       >
-        <Img
-          fluid={category_five.showcase.remoteImage.childImageSharp.fluid}
-          className={styles['img']}
-        />
+        <Link
+          to={navigateCatelog(category_five.category.name)}
+        >
+          <Img
+            fluid={category_five.showcase.remoteImage.childImageSharp.fluid}
+            className={styles['img']}
+          />
+        </Link>
+        
       </GridItem>
     </Section>
   )

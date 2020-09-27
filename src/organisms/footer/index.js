@@ -90,6 +90,8 @@ const Footer = props => {
               disableElevation
               variant='contained'
               color='primary'
+              component={Link}
+              to='/about'
             >
               Learn More
             </Button>
@@ -120,6 +122,9 @@ const Footer = props => {
               disableElevation
               variant='contained'
               color='primary'
+              component={Link}
+              to='https://gerimed.co.za'
+              target='_blank'
             >
               Visit Gerimed
             </Button>
@@ -150,6 +155,9 @@ const Footer = props => {
               disableElevation
               variant='contained'
               color='primary'
+              component={Link}
+              to='https://gerimed.co.za'
+              target='_blank'
             >
               Visit Gerimed
             </Button>
