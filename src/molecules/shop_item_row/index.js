@@ -62,7 +62,7 @@ const ShopItemRow = props => {
           >
             {
              products.map((product) => (
- 
+               <div>
                   <ShopItem
                     key={product.id}
                     id={product.id}
@@ -71,6 +71,7 @@ const ShopItemRow = props => {
                     categories={product.categories}
                     showcase={product.showcase}
                   />
+                </div>
               ))
             }
           </div>
