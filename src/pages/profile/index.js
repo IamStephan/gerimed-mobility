@@ -6,6 +6,8 @@ import { Router } from '@reach/router'
 // Templates
 import Register from '../../client_pages/register'
 import Login from '../../client_pages/login'
+import ForgotPassword from '../../client_pages/password_forgot'
+import ResetPassword from '../../client_pages/password_reset'
 import ProfileTemplate from '../../client_pages/profile'
 
 // Components
@@ -18,12 +20,15 @@ const Profile = () => {
     <Router
       basepath='/profile'
     >
-      <PrivateRoute
-        component={ProfileTemplate}
-        path='/'
-      />
       <Register path='/register' />
       <Login path='/login' />
+      <ForgotPassword path='/forgot' />
+      <ResetPassword path='/reset' />
+
+      <PrivateRoute
+        component={ProfileTemplate}
+        path='/*'
+      />
     </Router>
   )
 }

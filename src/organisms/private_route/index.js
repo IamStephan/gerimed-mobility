@@ -1,36 +1,44 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useLayoutEffect } from "react"
 
-// Controller
-import { LocalController } from './controller'
+// Gatsby
+import { navigate } from 'gatsby'
+
+// Auth Controller
+import { AuthService } from '../../organisms/provider'
 
 // Hooks
-import { useMachine } from '@xstate/react'
+import { useService } from '@xstate/react'
 
-// Pages
-import Loader from '../../pages/loader'
-
-/**
- * Used only for the profile page
- */
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const [current, send] = useMachine(LocalController)
+  const [current, send] = useService(AuthService)
 
-  const show = current.matches('authorized')
-
-  switch(true) {
-    case show: {
-      return  (
-        <Component
-          send={send}
-          {...rest}
-        />
-      )
+  useEffect(() => {
+    if(current.matches({ idle: 'guest' })) {
+      navigate('/profile/login', {
+        replace: true
+      })
     }
+  }, [current.value])
 
-    default: {
-      return null
+  useEffect(() => {
+    if(current.matches({ idle: 'user' }) && !current.context.user) {
+      send('GET_ME')
     }
+  }, [current.value])
+
+  const isGuest = current.matches({ idle: 'guest' })
+
+  if(isGuest) {
+    return null
   }
+
+  return  (
+    <Component
+      send={send}
+      {...rest}
+    />
+  )
+    
 }
 
 export default PrivateRoute

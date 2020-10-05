@@ -1,18 +1,21 @@
 import React from 'react'
 
 // Gatsby
-import { useStaticQuery, graphql } from 'gatsby'
+import { useStaticQuery, graphql, Link } from 'gatsby'
 import Img from 'gatsby-image/withIEPolyfill'
 
 // Provider
 import StyleProvider from '../../organisms/provider'
+
+// Constants
+import { PAGES } from '../../constants/pages'
 
 // Styles
 import styles from './styles.module.scss'
 
 const AuthShowcase = props => {
   const {
-    showcase
+    page
   } = props
 
   const images = useStaticQuery(graphql`
@@ -42,6 +45,24 @@ const AuthShowcase = props => {
       }
     }
   `)
+
+  let imageToLoad = ''
+
+  switch(page) {
+    case PAGES.login: {
+      imageToLoad = 'login'
+      break
+    }
+
+    case PAGES.register: {
+      imageToLoad = 'register'
+      break
+    }
+
+    default: {
+      imageToLoad = 'login'
+    }
+  }
 
   return (
     <StyleProvider>
@@ -74,7 +95,7 @@ const AuthShowcase = props => {
               className={styles['img']}
               objectPosition='center center'
               objectFit='cover'
-              fluid={images[props.page].childImageSharp.fluid}
+              fluid={images[imageToLoad].childImageSharp.fluid}
               alt='Gerimed Mobility'
             />
           </div>
@@ -82,15 +103,21 @@ const AuthShowcase = props => {
           <div
             className={styles['infoContainer']}
           >
-            <div
-              className={styles['logoContainer']}
-            >
-              <Img
-                fluid={images.logo.childImageSharp.fluid}
-                alt='Gerimed Mobility'
+              <div
+                className={styles['logoContainer']}
+              >
+                <Link
+                  to='/'
+                >
+                  <Img
+                    fluid={images.logo.childImageSharp.fluid}
+                    alt='Gerimed Mobility'
+                    
+                  />
+                </Link>
                 
-              />
-            </div>
+              </div>
+
           </div>
         </div>
       </section>

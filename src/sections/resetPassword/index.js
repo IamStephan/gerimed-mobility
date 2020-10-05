@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react'
 import { useService } from '@xstate/react'
 import { useForm } from 'react-hook-form'
 
-// Form Resolver
+// Resolvers
 import { yupResolver } from '@hookform/resolvers'
 
 // Auth Controller
 import { AuthService } from '../../organisms/provider'
 
 // Model
-import { registerShema } from './model'
+import { resetPasswordSchema } from './model'
 
 // Gatsby
 import { Link, navigate } from 'gatsby'
@@ -25,50 +25,47 @@ import {
   Typography,
   LinearProgress,
   Link as Btn,
-  FormControl,
   FormControlLabel,
   Checkbox,
-  IconButton,
+  IconButton
 } from '@material-ui/core'
 import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
 
-// Molecules
+// Components
 import AuthTitle from '../../molecules/auth_title'
-
-// Notifications
-import { useSnackbar } from 'notistack'
 
 // Styles
 import styles from './styles.module.scss'
 
-
-const RegisterSection = () => {
-  const { enqueueSnackbar } = useSnackbar()
-
+/**
+ * NOTE:
+ * =====
+ * for now just use alert to show the errors
+ */
+const ResetPasswordSection = () => {
   const [current, send] = useService(AuthService)
+
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const loading = current.matches('loading')
 
   // The form and its validation
-  const { register, handleSubmit, errors } = useForm({
-    resolver: yupResolver(registerShema)
+  const { register, handleSubmit, errors, reset } = useForm({
+    resolver: yupResolver(resetPasswordSchema)
   })
 
-  const [showPassword, setShowPassword] = useState(false)
-
   useEffect(() => {
-    if(current.matches({ idle: 'user' })) {
-      navigate('/profile')
+    if(current.event.type === 'done.invoke.loading.reset_password') {
+      navigate('/profile/login')
     }
-  }, [current.value])
+  }, [current.event.type])
 
-  function _handleSubmit(data) {
-    send('REGISTER', {
-      'firstName': data.firstName,
-      'lastName': data.lastName,
-      'email': data.email,
-      'username': data.email,
-      'password': data.password
+  async function _handleSubmit(data) {
+    // console.log('SEND_EVENT')
+    send('RESET_PASSWORD', {
+      password: data.password,
+      confirmPassword: data.confirmPassword
     })
   }
 
@@ -76,14 +73,18 @@ const RegisterSection = () => {
     setShowPassword(prev => !prev)
   }
 
+  function toggleShowConfimPassword() {
+    setShowConfirmPassword(prev => !prev)
+  }
+
   return (
     <>
       <section
-        className={styles['registerSection']}
+        className={styles['resetPasswordSection']}
       >
         
         <div
-          className={styles['registerContainer']}
+          className={styles['resetPasswordContainer']}
         >
           {
             loading ? (
@@ -97,7 +98,7 @@ const RegisterSection = () => {
           }
 
           <AuthTitle
-            title='Register'
+            title='Reset Password'
           />
 
           <form
@@ -105,55 +106,6 @@ const RegisterSection = () => {
             className={styles['form']}
             onSubmit={handleSubmit(_handleSubmit)}
           >
-            <div
-              className={styles['input']}
-            >
-              <TextField
-                inputRef={register}
-                label='First Name'
-                name='firstName'
-                variant='outlined'
-                color='secondary'
-                disabled={loading}
-                error={errors.firstName}
-                helperText={errors.firstName?.message}
-                required
-              />
-            </div>
-
-            <div
-              className={styles['input']}
-            >
-              <TextField
-                inputRef={register}
-                label='Last Name'
-                name='lastName'
-                variant='outlined'
-                color='secondary'
-                disabled={loading}
-                error={errors.lastName}
-                helperText={errors.lastName?.message}
-                required
-              />
-            </div>
-
-            <div
-              className={styles['input']}
-            >
-              <TextField
-                inputRef={register}
-                type='email'
-                label='Email'
-                name='email'
-                variant='outlined'
-                color='secondary'
-                disabled={loading}
-                error={errors.email}
-                helperText={errors.email?.message}
-                required
-              />
-            </div>
-
             <div
               className={styles['input']}
             >
@@ -187,45 +139,34 @@ const RegisterSection = () => {
             </div>
 
             <div
-              className={styles['inputAlt']}
+              className={styles['input']}
             >
-              <FormControlLabel
+              <TextField
+                inputRef={register}
+                type={showConfirmPassword ? 'text' : 'password'}
+                label='Confirm Password'
+                name='confirmPassword'
+                variant='outlined'
+                color='secondary'
                 disabled={loading}
-                control={(
-                  <Checkbox
-                    color='secondary'
-                    inputRef={register}
-                    name='terms'
-                    
-                  />
-                )}
-                label={(
-                  <Typography>
-                    I hereby agree to the {' '}
-                    <Btn
-                      component={Link}
-                      to='/terms'
-                      color='secondary'
+                error={errors.confirmPassword}
+                helperText={errors.confirmPassword?.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment
+                      position='end'
                     >
-                      terms of use, {' '}
-                    </Btn>
-                    <Btn
-                      component={Link}
-                      to='/return'
-                      color='secondary'
-                    >
-                      return policy {' '}
-                    </Btn>
-                    and {' '}
-                    <Btn
-                      component={Link}
-                      to='/policies'
-                      color='secondary'
-                    >
-                      privacy policy.
-                    </Btn>
-                  </Typography>
-                )}
+                      <IconButton
+                        onClick={toggleShowConfimPassword}
+                      >
+                        {
+                          showConfirmPassword ? <VisibilityOutlined /> : <VisibilityOffOutlined />
+                        }
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+                required
               />
             </div>
 
@@ -239,7 +180,7 @@ const RegisterSection = () => {
                 color='secondary'
                 disabled={loading}
               >
-                Register
+                Reset Password
               </Button>
             </div>
           </form>
@@ -252,7 +193,7 @@ const RegisterSection = () => {
             <Typography
               variant='body1'
             >
-              Already have an account? {' '}
+              Remember your password? {' '}
               <Btn
                 color='secondary'
                 component={Link}
@@ -277,4 +218,4 @@ const RegisterSection = () => {
  * meant for reuse in othe pages
  */
 
-export default RegisterSection
+export default ResetPasswordSection

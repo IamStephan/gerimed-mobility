@@ -6,7 +6,7 @@
 
 $register-width: 450;
 
-.loginSection {
+.forgotSection {
   flex-basis: #{$register-width}px;
   background-color: $light;
   display: flex;
@@ -16,7 +16,7 @@ $register-width: 450;
   // offset center
   margin-bottom: 100px;
 
-  .loginContainer {
+  .forgotContainer {
     padding: #{$padding * 2}px;
     flex: 1;
     max-width: 400px;
@@ -55,19 +55,6 @@ $register-width: 450;
         flex-direction: column;
         align-items: stretch;
       }
-
-      .forgot {
-        padding: #{$padding * 1.5}px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-        display: flex;
-        justify-content: flex-end;
-      }
-
-      .inputAlt {
-        padding-left: #{$padding * 1.5}px;
-        padding-right: #{$padding * 1.5}px;
-      }
     }
 
     .alternate {
@@ -77,7 +64,7 @@ $register-width: 450;
 }
 
 @media screen and (max-width: #{$breakpoint-1}px) {
-  .loginSection {
+  .registerSection {
     flex: 1;
   }
 }

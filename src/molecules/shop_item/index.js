@@ -27,6 +27,7 @@ const Title = props => {
   return (
     <Typography
       className={styles['titleContainer']}
+      component='div'
     >
       <Btn
         color='inherit'

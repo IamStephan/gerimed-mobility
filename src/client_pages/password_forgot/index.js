@@ -4,19 +4,18 @@ import React from 'react'
 import styles from './styles.module.scss'
 
 // Sections
-import LoginSection from '../../sections/login'
+import ForgotSection from '../../sections/forgot'
 import AuthShowcase from '../../sections/authShowcase'
 
 // Constants
 import { PAGES } from '../../constants/pages'
 
-
 const Login = () => {
   return (
     <div
-      className={styles['login']}
+      className={styles['forgot']}
     >
-      <LoginSection />
+      <ForgotSection />
       <AuthShowcase page={PAGES.login} />
     </div>
   )

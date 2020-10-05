@@ -1,24 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Template
 import TabTemplate from '../../components/tabTemplate'
 
-// Constants
-import { PROFILE_ACTIONS } from '../../../../constants/state'
-
-// State
-import { dispatch, useGlobalState } from '../../../../state/profile'
-
 // Hooks
 import { useForm } from 'react-hook-form'
-import { useSnackbar } from 'notistack'
+import { useService } from '@xstate/react'
 
-// // API
-// import { UpdateUser } from '../../../../api/user'
+// Auth Controller
+import { AuthService } from '../../../../organisms/provider'
 
-// Schema
+// Form
 import { yupResolver } from '@hookform/resolvers'
-import * as yup from 'yup'
+
+// Model
+import {
+  provinces,
+  provincesSemantic,
+  countries,
+  countriesSemantic,
+  shippingSchema
+} from './model'
 
 // Material
 import { Typography, ButtonGroup, Button, TextField, Select, LinearProgress } from '@material-ui/core'
@@ -26,125 +28,84 @@ import { Typography, ButtonGroup, Button, TextField, Select, LinearProgress } fr
 // Styles
 import styles from './styles.module.scss'
 
-const provinces = ['EC', 'FS', 'GP', 'KZN', 'LP', 'MP', 'NC', 'NW', 'WC']
-const provincesSemantic = ['Eastern Cape', 'Free State', 'Gauteng', 'Kwazulu Natal', 'Limpopo', 'Mpumlanga', 'Northern Cape', 'North West', 'Western Cape']
 
-const countries = ['ZA']
-const countriesSemantic = ['South Africa']
+const Shipping = () => {
+  const [current, send] = useService(AuthService)
 
-// Schema Definition
-const shippingSchema = yup.object().shape({
-  street: yup.string().required('Street is required.'),
-  suburb: yup.string().required('Suburb is required.'),
-  postCode: yup.number().required('Postal Code is required.'),
-  province: yup.string().oneOf([...provinces]).required('Province is required.'),
-  country: yup.string().oneOf([...countries]).required('Country is required.')
-})
+  useEffect(() => {
+    function listenSuccessLoad(state) {
+      if(state.changed && state.event.type === 'done.invoke.loading.update') {
+        setIsEditing(false)
+      }
+    }
+    AuthService.onTransition(listenSuccessLoad)
 
-/**
- * TODO: validate fields more rigid
- */
+    return () => {
+      AuthService.off(listenSuccessLoad)
+    }
+  }, [])
 
-const Shipping = props => {
-  const {
-    site
-  } = props
+  const [isEditing, setIsEditing] = useState(false)
 
-  const { enqueueSnackbar } = useSnackbar()
+  const shipping = {
+    addressLineOne: current.context.user?.address?.addressLineOne || '',
+    addressLineTwo: current.context.user?.address?.addressLineTwo || '',
+    suburb: current.context.user?.address?.suburb || '',
+    postCode: current.context.user?.address?.['post_code'] || '',
+    province: current.context.user?.address?.province || '',
+    country: current.context.user?.address?.country || '',
+  }
 
-  const [shipping] = useGlobalState('shipping')
-  const [auth] = useGlobalState('auth')
-
-  const [editMode, setEditMode] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
+  const defaultValues = shipping
 
   // The form and its validation
   const { register, handleSubmit, errors, reset } = useForm({
     resolver: yupResolver(shippingSchema),
-
-    // Values are not always present
-    defaultValues: {
-      street: shipping?.street,
-      suburb: shipping?.suburb,
-      postCode: shipping?.postCode,
-      province: shipping?.province,
-      country: shipping?.country,
-    }
+    defaultValues
   })
 
-  async function _handleSubmit(data) {
-    // const {
-    //   street,
-    //   suburb,
-    //   postCode,
-    //   province,
-    //   country
-    // } = data
+  const loading = current.matches('loading') || !current.context.user
 
-    // const { token } = auth
+  useEffect(() => {
+    if(isEditing) {
+      reset(defaultValues)
+    }
+  }, [current.context.user, isEditing])
 
-    // setSubmitting(true)
-
-    // const submitData = {
-    //   'address': {
-    //     'street': street,
-    //     'suburb': suburb,
-    //     'post_code': postCode,
-    //     'province': province,
-    //     'country': country
-    //   }
-    // }
-
-    // const results = await UpdateUser({
-    //   protocol: site.siteMetadata.protocol,
-    //   server: site.siteMetadata.server,
-    //   port: site.siteMetadata.port
-    // }, { token }, {
-    //   dataToSubmit: submitData
-    // })
-
-    // results.notis.forEach(({ message }) => {
-    //   enqueueSnackbar(message, {
-    //     variant: results.type
-    //   })
-    // })
-
-    // if(results.type === 'success') {
-    //   const { data } = results
-
-    //   const newData = {
-    //     street: data.address.street,
-    //     suburb: data.address.suburb,
-    //     postCode: data.address['post_code'],
-    //     province: data.address.province,
-    //     country: data.address.country
-    //   }
-    //   reset(newData)
-
-    //   dispatch({
-    //     type: PROFILE_ACTIONS.updateShipping,
-    //     ...newData
-    //   })
-
-    //   setEditMode(false)
-    // }
-
-    // setSubmitting(false)
+  function _handleSubmit(data) {
+    const {
+      suburb,
+      country,
+      province,
+      postCode,
+      addressLineOne,
+      addressLineTwo
+    } = data
+    
+    send("UPDATE_ME", {
+      data: {
+        address: {
+          suburb,
+          country,
+          province,
+          post_code: postCode,
+          addressLineOne,
+          addressLineTwo
+        }
+      }
+    })
   }
 
-  function OpenEditMode() {
-    setEditMode(true)
+  function _toggleEditMode() {
+    setIsEditing(prev => !prev)
   }
 
-  function CloseEditMode() {
-    setEditMode(false)
-  }
   return (
     <TabTemplate
       title='Shipping Information'
     >
       {
-        submitting ? (
+        loading ? (
           <LinearProgress
             color='secondary'
           />
@@ -164,7 +125,7 @@ const Shipping = props => {
             <Typography
               className={styles['caption']}
             >
-              Street
+              Address Line One
             </Typography>
           </div>
 
@@ -172,20 +133,58 @@ const Shipping = props => {
             className={styles['right']}
           >
             {
-              editMode ? (
+              isEditing ? (
                 <TextField
                   color='secondary'
                   variant='outlined'
-                  name='street'
+                  name='addressLineOne'
                   inputRef={register}
-                  disabled={submitting}
+                  disabled={loading}
+                  error={errors.addressLineOne}
+                  helperText={errors.addressLineOne?.message}
+                />
+              ) : (
+                <Typography>
+                  {
+                    shipping?.addressLineOne || '-'
+                  }
+                </Typography>
+              )
+            }
+          </div>
+        </div>
+
+        <div
+          className={styles['row']}
+        >
+          <div
+            className={styles['left']}
+          >
+            <Typography
+              className={styles['caption']}
+            >
+              Address Line Two
+            </Typography>
+          </div>
+
+          <div
+            className={styles['right']}
+          >
+            {
+              isEditing ? (
+                <TextField
+                  color='secondary'
+                  variant='outlined'
+                  name='addressLineTwo'
+                  inputRef={register}
+                  disabled={loading}
                   error={errors.street}
                   helperText={errors.street?.message}
                 />
               ) : (
                 <Typography>
                   {
-                    shipping?.street || '-'
+                    shipping?.addressLineTwo || '-'
                   }
                 </Typography>
               )
@@ -210,13 +209,13 @@ const Shipping = props => {
             className={styles['right']}
           >
             {
-              editMode ? (
+              isEditing ? (
                 <TextField
                   color='secondary'
                   variant='outlined'
                   name='suburb'
                   inputRef={register}
-                  disabled={submitting}
+                  disabled={loading}
                   error={errors.suburb}
                   helperText={errors.suburb?.message}
                 />
@@ -248,14 +247,14 @@ const Shipping = props => {
             className={styles['right']}
           >
             {
-              editMode ? (
+              isEditing ? (
                 <TextField
                   color='secondary'
                   type='number'
                   variant='outlined'
                   name='postCode'
                   inputRef={register}
-                  disabled={submitting}
+                  disabled={loading}
                   error={errors.postCode}
                   helperText={errors.postCode?.message}
                 />
@@ -287,14 +286,14 @@ const Shipping = props => {
             className={styles['right']}
           >
             {
-              editMode ? (
+              isEditing ? (
                 <Select
                   native
                   color='secondary'
                   variant='outlined'
                   name='province'
                   inputRef={register}
-                  disabled={submitting}
+                  disabled={loading}
                   error={errors.province}
                   helperText={errors.province?.message}
                 >
@@ -337,14 +336,14 @@ const Shipping = props => {
             className={styles['right']}
           >
             {
-              editMode ? (
+              isEditing ? (
                 <Select
                   native
                   color='secondary'
                   variant='outlined'
                   name='country'
                   inputRef={register}
-                  disabled={submitting}
+                  disabled={loading}
                   error={errors.country}
                   helperText={errors.country?.message}
                 >
@@ -375,9 +374,9 @@ const Shipping = props => {
         >
 
           {
-            editMode ? (
+            isEditing ? (
               <ButtonGroup
-                disabled={submitting}
+                disabled={loading}
                 disableElevation
                 color='secondary'
               >
@@ -389,7 +388,7 @@ const Shipping = props => {
                 </Button>
                 <Button
                   variant='outlined'
-                  onClick={CloseEditMode}
+                  onClick={_toggleEditMode}
                 >
                   Cancel
                 </Button>
@@ -398,7 +397,7 @@ const Shipping = props => {
               <Button
                 variant='outlined'
                 color='secondary'
-                onClick={OpenEditMode}
+                onClick={_toggleEditMode}
               >
                 Edit
               </Button>

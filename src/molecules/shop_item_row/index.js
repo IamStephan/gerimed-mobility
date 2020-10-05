@@ -61,10 +61,12 @@ const ShopItemRow = props => {
             className={styles['rowContainer']}
           >
             {
-             products.map((product) => (
-               <div>
+              products.map((product) => (
+                <div
+                  key={product.id}
+                  
+                >
                   <ShopItem
-                    key={product.id}
                     id={product.id}
                     name={product.name}
                     price={product.price}

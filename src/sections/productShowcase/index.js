@@ -139,7 +139,10 @@ const ProductShowcase = () => {
               setIndex={setIndex}
             />
 
-            <Divider />
+            <div>
+              <Divider />
+            </div>
+            
 
             <ProductCarouselThumb
               images={images}
@@ -147,7 +150,9 @@ const ProductShowcase = () => {
               setIndex={setIndex}
             />
 
-            <Divider />
+            <div>
+              <Divider />
+            </div>
           </div>
         )
       }
@@ -166,7 +171,7 @@ const ProductShowcase = () => {
     }
   }, [currentData.value, currentData.matches, index])
 
-  const Details = useCallback(() => {
+  const Details = () => {
     switch(true) {
       case loading: {
         return (
@@ -227,9 +232,12 @@ const ProductShowcase = () => {
               </Skeleton>
             </div>
 
-            <Divider
-              className={styles['divider']}
-            />
+            <div>
+              <Divider
+                className={styles['divider']}
+              />
+            </div>
+            
 
             <div
               className={styles['cartActions']}
@@ -266,7 +274,11 @@ const ProductShowcase = () => {
               >
                 <Tab label='Details' value='desc' />
               </TabList>
-              <Divider />
+
+              <div>
+                <Divider />
+              </div>
+              
 
               <TabPanel value='desc'>
                 <Skeleton>
@@ -383,9 +395,11 @@ const ProductShowcase = () => {
               )
             }
 
-            <Divider
-              className={styles['divider']}
-            />
+            <div>
+              <Divider
+                className={styles['divider']}
+              />
+            </div>
 
             <div
               className={styles['cartActions']}
@@ -418,7 +432,11 @@ const ProductShowcase = () => {
                 <Tab label='Details' value='desc' />
                 {/* <Tab label='Reviews' value='review' /> */}
               </TabList>
-              <Divider />
+
+              <div>
+                <Divider />
+              </div>
+              
 
               <TabPanel value='desc'>
                 <section dangerouslySetInnerHTML={{
@@ -444,7 +462,7 @@ const ProductShowcase = () => {
         return <div />
       }
     }
-  }, [currentData.value, currentData.matches])
+  }
 
   return (
     <Section

@@ -12,7 +12,7 @@ import axios from 'axios'
  * specifically made to deal with this 
  */ 
 
-function axiosMutationFactory(url, data, options = {}) {
+function axiosMutationFactory(url, data, options = {}, carryData = {}) {
   return new Promise((resolve, reject) => {
     axios.post(url, data, options).then(({ data }) => {
       if(data.errors) {
@@ -23,7 +23,7 @@ function axiosMutationFactory(url, data, options = {}) {
         })
       } else {
         // You know, just to keep with the consistency of idiocy 👍
-        resolve({ data })
+        resolve({ data, carryData })
       }
     }).catch((err) => {
       reject(err)

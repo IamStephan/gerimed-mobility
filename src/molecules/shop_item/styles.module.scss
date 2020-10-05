@@ -31,6 +31,7 @@ $item-width: 225;
 
   .titleContainer {
     flex: 1;
+    max-width: #{$item-width}px;
     
     .title {
       font-weight: bold;

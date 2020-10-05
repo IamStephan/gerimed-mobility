@@ -1,16 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Template
 import TabTemplate from '../../components/tabTemplate'
 
 // Hooks
-import { useUser } from '../../../../hooks/useUser'
-import { useMachine } from '@xstate/react'
+import { useService } from '@xstate/react'
 import { useForm } from 'react-hook-form'
-import { useSnackbar } from 'notistack'
 
-// Controller
-import { LocalState } from './controller'
+// Auth Controller
+import { AuthService } from '../../../../organisms/provider'
 
 // Model
 import { InfoSchema } from './model'
@@ -25,36 +23,71 @@ import { Typography, ButtonGroup, Button, TextField, LinearProgress } from '@mat
 import styles from './styles.module.scss'
 
 const Info = () => {
-  const { enqueueSnackbar } = useSnackbar()
+  const [current, send] = useService(AuthService)
 
-  const [current] = useMachine(LocalState, {
-    context: {
-      notifications: {
-        enqueueSnackbar
-      }
-    }
-  })
+  const [isEditing, setIsEditing] = useState(false)
 
-  const { info } = useUser()
+  const info = {
+    first_name: current.context.user?.first_name || '',
+    last_name: current.context.user?.last_name || '',
+    email: current.context.user?.email || '',
+    phone: current.context.user?.phone || '',
+  }
+
+  const defaultValues = {
+    firstName: info.first_name,
+    lastName: info.last_name,
+    phone: info.phone
+  }
 
   // The form and its validation
   const { register, handleSubmit, errors, reset } = useForm({
     resolver: yupResolver(InfoSchema),
-    defaultValues: {
-      firstName: info['first_name'],
-      lastName: info['last_name'],
-      phone: info['phone'],
-    }
+    defaultValues
   })
 
+  const loading = current.matches('loading') || !current.context.user
+
   async function _handleSubmit(data) {
-    
+    const {
+      firstName,
+      lastName,
+      phone
+    } = data
+
+    send('UPDATE_ME', {
+      data: {
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+      }
+    })
   }
 
-  function OpenEditMode() {
-  }
+  /**
+   * Used to update the form values
+   */
+  useEffect(() => {
+    if(isEditing) {
+      reset(defaultValues)
+    }
+  }, [current.context.user, isEditing])
 
-  function CloseEditMode() {
+  useEffect(() => {
+    function listenSuccessLoad(state) {
+      if(state.changed && state.event.type === 'done.invoke.loading.update') {
+        setIsEditing(false)
+      }
+    }
+    AuthService.onTransition(listenSuccessLoad)
+
+    return () => {
+      AuthService.off(listenSuccessLoad)
+    }
+  }, [])
+
+  function _toggleEditMode() {
+    setIsEditing(prev => !prev)
   }
 
   return (
@@ -62,13 +95,13 @@ const Info = () => {
       title='Account Information'
     >
       {
-        false ? (
+        loading ? (
           <LinearProgress
             color='secondary'
           />
         ) : null
       }
-      
+
       <form
         noValidate
         className={styles['container']}
@@ -91,13 +124,13 @@ const Info = () => {
             className={styles['right']}
           >
             {
-              false ? (
+              isEditing ? (
                 <TextField
                   color='secondary'
                   variant='outlined'
                   name='firstName'
                   inputRef={register}
-                  disabled={false}
+                  disabled={loading}
                   error={errors.firstName}
                   helperText={errors.firstName?.message}
                 />
@@ -129,13 +162,13 @@ const Info = () => {
             className={styles['right']}
           >
             {
-              false ? (
+              isEditing ? (
                 <TextField
                   color='secondary'
                   variant='outlined'
                   name='lastName'
                   inputRef={register}
-                  disabled={false}
+                  disabled={loading}
                   error={errors.lastName}
                   helperText={errors.lastName?.message}
                 />
@@ -191,14 +224,14 @@ const Info = () => {
             className={styles['right']}
           >
             {
-              false ? (
+              isEditing ? (
                 <TextField
                   color='secondary'
                   variant='outlined'
                   name='phone'
                   inputRef={register}
                   error={errors.phone}
-                  disabled={false}
+                  disabled={loading}
                   helperText={errors.phone?.message}
                 />
               ) : (
@@ -217,9 +250,9 @@ const Info = () => {
         >
 
           {
-            false ? (
+            isEditing ? (
               <ButtonGroup
-                disabled={false}
+                disabled={loading}
                 disableElevation
                 color='secondary'
               >
@@ -231,7 +264,7 @@ const Info = () => {
                 </Button>
                 <Button
                   variant='outlined'
-                  onClick={CloseEditMode}
+                  onClick={_toggleEditMode}
                 >
                   Cancel
                 </Button>
@@ -240,7 +273,8 @@ const Info = () => {
               <Button
                 variant='outlined'
                 color='secondary'
-                onClick={OpenEditMode}
+                onClick={_toggleEditMode}
+                disabled={loading}
               >
                 Edit
               </Button>

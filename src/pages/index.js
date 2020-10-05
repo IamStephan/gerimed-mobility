@@ -31,7 +31,7 @@ const IndexPage = () => {
         description='Gerimed Mobility Home'
       />
       <Hero />
-      <AlertSec />
+      {/* <AlertSec /> */}
       <Catalog />
       <Featured />
       <Benefit />

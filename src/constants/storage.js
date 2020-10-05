@@ -1,5 +1,5 @@
 const KEYS = {
-  jwt: 'JWT_TOKEN'
+  auth: 'JWT_AUTH_TOKEN'
 }
 
 export {

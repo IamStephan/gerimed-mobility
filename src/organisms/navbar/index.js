@@ -190,7 +190,7 @@ const Navbar = props => {
                   <li>
                     <IconButton
                       className={styles['iconButton']}
-                      isableElevation
+                      disableElevation
                       color='primary'
                       component={Link}
                       to='/profile'

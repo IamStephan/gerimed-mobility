@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Hooks
-import { useMachine } from '@xstate/react'
+import { useService } from '@xstate/react'
 import { useForm } from 'react-hook-form'
 
 // Resolvers
 import { yupResolver } from '@hookform/resolvers'
 
-// Model
-import { FormModel } from './model'
+// Auth Controller
+import { AuthService } from '../../organisms/provider'
 
-// Controller
-import { LocalState } from './controller'
+// Model
+import { loginSchema } from './model'
 
 // Gatsby
 import { Link, navigate } from 'gatsby'
@@ -34,9 +34,6 @@ import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
 // Components
 import AuthTitle from '../../molecules/auth_title'
 
-// Notifications
-import { useSnackbar } from 'notistack'
-
 // Styles
 import styles from './styles.module.scss'
 
@@ -45,41 +42,38 @@ import styles from './styles.module.scss'
  * =====
  * for now just use alert to show the errors
  */
-const RegisterSection = () => {
-  const { enqueueSnackbar } = useSnackbar()
+const LoginSection = () => {
+  const [current, send] = useService(AuthService)
 
-  const [current, send] = useMachine(LocalState, {
-    context: {
-      notifications: { enqueueSnackbar }
-    }
-    
-  })
+  const [showPassword, setShowPassword] = useState(false)
 
-  console.log(current.value)
+  const loading = current.matches('loading')
 
   // The form and its validation
-  const { register, handleSubmit, errors, reset } = useForm({
-    resolver: yupResolver(FormModel)
+  const { register, handleSubmit, errors } = useForm({
+    resolver: yupResolver(loginSchema)
   })
 
-  // Shows user is submitting the form
-  const submitting = current.matches('loading')
+  console.log(current)
 
+  useEffect(() => {
+    if(current.event.type === 'done.invoke.loading.login') {
+      navigate('/profile')
+    }
+  }, [current.event.type])
 
   async function _handleSubmit(data) {
     // console.log('SEND_EVENT')
     send('LOGIN', {
-      identifier: data.email,
+      email: data.email,
       password: data.password,
       shouldRemember: data.remember
     })
   }
 
   function toggleShowPassword() {
-    send('TOGGLE_PASSWORD')
+    setShowPassword(prev => !prev)
   }
-
-  const showPassword = current.context.showPassword
 
   return (
     <>
@@ -91,7 +85,7 @@ const RegisterSection = () => {
           className={styles['loginContainer']}
         >
           {
-            submitting ? (
+            loading ? (
               <div>
                 <LinearProgress
                   color='secondary'
@@ -120,7 +114,7 @@ const RegisterSection = () => {
                 name='email'
                 variant='outlined'
                 color='secondary'
-                disabled={submitting}
+                disabled={loading}
                 error={errors.email}
                 helperText={errors.email?.message}
                 required
@@ -137,7 +131,7 @@ const RegisterSection = () => {
                 name='password'
                 variant='outlined'
                 color='secondary'
-                disabled={submitting}
+                disabled={loading}
                 error={errors.password}
                 helperText={errors.password?.message}
                 InputProps={{
@@ -160,10 +154,26 @@ const RegisterSection = () => {
             </div>
 
             <div
+              className={styles['forgot']}
+            >
+              <Typography
+                variant='body1'
+              >
+                <Btn
+                  color='secondary'
+                  component={Link}
+                  to='/profile/forgot'
+                >
+                  Forgot password?
+                </Btn>
+              </Typography>
+            </div>
+
+            <div
               className={styles['inputAlt']}
             >
               <FormControlLabel
-                disabled={submitting}
+                disabled={loading}
                 control={(
                   <Checkbox
                     color='secondary'
@@ -187,7 +197,7 @@ const RegisterSection = () => {
                 type='submit'
                 variant='contained'
                 color='secondary'
-                disabled={submitting}
+                disabled={loading}
               >
                 Login
               </Button>
@@ -227,4 +237,4 @@ const RegisterSection = () => {
  * meant for reuse in othe pages
  */
 
-export default RegisterSection
+export default LoginSection

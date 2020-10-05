@@ -4,22 +4,22 @@ import React from 'react'
 import styles from './styles.module.scss'
 
 // Sections
-import LoginSection from '../../sections/login'
+import ResetPasswordSection from '../../sections/resetPassword'
 import AuthShowcase from '../../sections/authShowcase'
 
 // Constants
 import { PAGES } from '../../constants/pages'
 
 
-const Login = () => {
+const ResetPassword = () => {
   return (
     <div
-      className={styles['login']}
+      className={styles['passwordReset']}
     >
-      <LoginSection />
-      <AuthShowcase page={PAGES.login} />
+      <ResetPasswordSection />
+      <AuthShowcase page={PAGES.passwordReset} />
     </div>
   )
 }
 
-export default Login
+export default ResetPassword

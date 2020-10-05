@@ -108,32 +108,39 @@ const GridItem = props => {
   const {
     children,
     title,
-    description
+    description,
+    to
   } = props
 
   return (
     <div
       className={styles['catalogItem']}
+      
     >
-      {children}
-
-      <div
-        className={styles['content']}
+      <Link
+        to={to}
       >
-        <Typography
-          className={styles['title']}
-          variant='h4'
-          color='primary'
+        {children}
+              
+        <div
+          className={styles['content']}
         >
-          {title}
-        </Typography>
+          <Typography
+            className={styles['title']}
+            variant='h4'
+            color='primary'
+          >
+            {title}
+          </Typography>
 
-        <Typography
-          className={styles['description']}
-        >
-          {description}
-        </Typography>
-      </div>
+          <Typography
+            className={styles['description']}
+          >
+            {description}
+          </Typography>
+        </div>
+      </Link>
+
     </div>
   )
 }
@@ -168,76 +175,59 @@ const Catalog = () => {
       <GridItem
         title={category_one.category.name}
         description={category_one.description}
+        to={navigateCatelog(category_one.category.name)}
       >
-        <Link
-          to={navigateCatelog(category_one.category.name)}
-        >
-          <Img
-            fluid={category_one.showcase.remoteImage.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </Link>
-        
+        <Img
+          fluid={category_one.showcase.remoteImage.childImageSharp.fluid}
+          className={styles['img']}
+        />
       </GridItem>
+      
 
       <GridItem
         title={category_two.category.name}
         description={category_two.description}
+        to={navigateCatelog(category_two.category.name)}
       >
-        <Link
-          to={navigateCatelog(category_two.category.name)}
-        >
-          <Img
-            fluid={category_two.showcase.remoteImage.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </Link>
+        <Img
+          fluid={category_two.showcase.remoteImage.childImageSharp.fluid}
+          className={styles['img']}
+        />
         
       </GridItem>
 
       <GridItem
         title={category_three.category.name}
         description={category_three.description}
+        to={navigateCatelog(category_three.category.name)}
       >
-        <Link
-          to={navigateCatelog(category_three.category.name)}
-        >
-          <Img
-            fluid={category_three.showcase.remoteImage.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </Link>
+        <Img
+          fluid={category_three.showcase.remoteImage.childImageSharp.fluid}
+          className={styles['img']}
+        />
         
       </GridItem>
 
       <GridItem
         title={category_four.category.name}
         description={category_four.description}
+        to={navigateCatelog(category_four.category.name)}
       >
-        <Link
-          to={navigateCatelog(category_four.category.name)}
-        >
-          <Img
-            fluid={category_four.showcase.remoteImage.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </Link>
-        
+        <Img
+          fluid={category_four.showcase.remoteImage.childImageSharp.fluid}
+          className={styles['img']}
+        />
       </GridItem>
 
       <GridItem
         title={category_five.category.name}
         description={category_five.description}
+        to={navigateCatelog(category_five.category.name)}
       >
-        <Link
-          to={navigateCatelog(category_five.category.name)}
-        >
-          <Img
-            fluid={category_five.showcase.remoteImage.childImageSharp.fluid}
-            className={styles['img']}
-          />
-        </Link>
-        
+        <Img
+          fluid={category_five.showcase.remoteImage.childImageSharp.fluid}
+          className={styles['img']}
+        />
       </GridItem>
     </Section>
   )

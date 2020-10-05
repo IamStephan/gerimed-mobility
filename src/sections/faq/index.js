@@ -82,6 +82,7 @@ const FAQ = () => {
       {
         questions.sections.map((section, i) => (
           <section
+            key={section.title}
             className={styles['questionSection']}
           >
             <Typography
@@ -100,6 +101,7 @@ const FAQ = () => {
               {
                 section.questions.map((question, i) => (
                   <div
+                    key={question.title}
                     className={styles['question']}
                   >
                     <div className={styles['left']}>

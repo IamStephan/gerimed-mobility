@@ -1,16 +1,19 @@
-import React, { createContext } from 'react'
+import React, { useEffect } from 'react'
 
 // Material
 import { ThemeProvider, createMuiTheme } from '@material-ui/core'
 
-// Controller
-import { CartController } from './controller'
+// Controllers
+import { AuthController } from './controllers/auth_controller'
 
 // Xstate
 import { interpret } from 'xstate'
 
+// Hooks
+import { useService } from '@xstate/react'
+
 // Notifications
-import { SnackbarProvider } from 'notistack'
+import { SnackbarProvider, useSnackbar } from 'notistack'
 
 // Global Theme
 const theme = createMuiTheme({
@@ -35,41 +38,83 @@ const notiStyles = {
   info: { zIndex: 999 },
 };
 
-const CartControllerService = interpret(CartController).start()
 
-// Global Context
-export const GlobalContext = createContext({
-  CartController: CartControllerService
-})
+// Create an event for token detections
+if(typeof window !== 'undefined') {
+  const eventSet = new Event('storageSet')
+  const eventRemove = new Event('storageRemove')
+  // Add
+  const originalSetItemLocal = window.localStorage.setItem;
+  const originalSetItemSession = window.sessionStorage.setItem;
+
+  // Remove
+  const originalRemoveItemLocal = window.localStorage.removeItem
+  const originalRemoveItemSession = window.sessionStorage.removeItem
+
+  // Add
+  window.localStorage.setItem = function (...args) {
+    window.dispatchEvent(eventSet)
+    originalSetItemLocal.apply(this, args);
+  }
+
+  window.sessionStorage.setItem = function (...args) {
+    window.dispatchEvent(eventSet)
+    originalSetItemSession.apply(this, args);
+  }
+
+  // Remove
+  window.localStorage.removeItem = function (...args) {
+    window.dispatchEvent(eventRemove)
+    originalRemoveItemLocal.apply(this, args);
+  }
+
+  window.sessionStorage.removeItem = function (...args) {
+    window.dispatchEvent(eventRemove)
+    originalRemoveItemSession.apply(this, args);
+  }
+}
+
+
+
+export const AuthService = interpret(AuthController).start()
+
+const AuthNotifications = () => {
+  const { enqueueSnackbar } = useSnackbar()
+  const [, send] = useService(AuthService)
+
+  useEffect(() => {
+    send('SET_NOTIFICATIONS_HANDLER', {
+      enqueueSnackbar
+    })
+  }, [])
+
+  return null
+}
 
 const Provider = props => {
   return (
-    <GlobalContext.Provider
-      value={{
-        CartController: CartControllerService
-      }}
+    <ThemeProvider
+      theme={theme}
     >
-      <ThemeProvider
-        theme={theme}
-      >
-        <SnackbarProvider
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
 
-          classes={{
-            variantSuccess: notiStyles.success,
-            variantError: notiStyles.error,
-            variantWarning: notiStyles.warning,
-            variantInfo: notiStyles.info,
-          }}
-          preventDuplicate
-        >
-          { props.children }  
-        </SnackbarProvider>
-      </ThemeProvider>
-    </GlobalContext.Provider>
+        classes={{
+          variantSuccess: notiStyles.success,
+          variantError: notiStyles.error,
+          variantWarning: notiStyles.warning,
+          variantInfo: notiStyles.info,
+        }}
+        preventDuplicate
+      >
+        <AuthNotifications />
+
+        { props.children }  
+      </SnackbarProvider>
+    </ThemeProvider>
   )
 }
 

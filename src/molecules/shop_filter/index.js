@@ -244,6 +244,7 @@ const ShopFilter = (props) => {
               {
                 categories.map((category) => (
                   <Controller
+                    key={category.id}
                     control={control}
                     defaultValue={false}
                     name={'categories.' + category.name}

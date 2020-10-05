@@ -7,6 +7,8 @@ import styles from './styles.module.scss'
 import RegisterSection from '../../sections/register'
 import AuthShowcase from '../../sections/authShowcase'
 
+// Constants
+import { PAGES } from '../../constants/pages'
 
 const Register = () => {
   return (
@@ -14,7 +16,7 @@ const Register = () => {
       className={styles['register']}
     >
       <RegisterSection />
-      <AuthShowcase page='register' />
+      <AuthShowcase page={PAGES.register} />
     </div>
   )
 }

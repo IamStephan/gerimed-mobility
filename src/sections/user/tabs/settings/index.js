@@ -3,21 +3,11 @@ import React, { useState } from 'react'
 // Material
 import { Typography, Button, LinearProgress } from '@material-ui/core'
 
-// Gatsby
-import { navigate } from 'gatsby'
-
 // Hooks
-import { useToken } from '../../../../hooks/useToken'
-import { useSnackbar } from 'notistack'
+import { useService } from '@xstate/react'
 
-// Constants
-import { KEYS } from '../../../../constants/localStorage'
-
-// State
-import { useGlobalState } from '../../../../state/profile'
-
-// API
-// import { RequestPasswordReset } from '../../../../api/auth'
+// Auth Controller
+import { AuthService } from '../../../../organisms/provider'
 
 // Template
 import TabTemplate from '../../components/tabTemplate'
@@ -25,46 +15,13 @@ import TabTemplate from '../../components/tabTemplate'
 // Styles
 import styles from './styles.module.scss'
 
-const Settings = props => {
-  const {
-    site
-  } = props
+const Settings = () => {
+  const [current, send] = useService(AuthService)
 
-  const [submitting, setSubmitting] = useState(false)
-  const { deleteToken } = useToken(KEYS.jwt)
-  const [info] = useGlobalState('info')
+  const loading = current.matches('loading') || !current.context.user
 
-  const { enqueueSnackbar } = useSnackbar()
-
-  /**
-   * NOTE:
-   * =====
-   * I honestly feel like i need to implement this on my
-   * own in strapi
-   */
-  function logout() {
-    deleteToken()
-    navigate('/')
-  }
-
-  async function resetPass() {
-    // setSubmitting(true)
-
-    // const results = await RequestPasswordReset({
-    //   protocol: site.siteMetadata.protocol,
-    //   server: site.siteMetadata.server,
-    //   port: site.siteMetadata.port
-    // }, {
-    //   email: info.email
-    // })
-
-    // results.notis.forEach(({ message }) => {
-    //   enqueueSnackbar(message, {
-    //     variant: results.type
-    //   })
-    // })
-
-    // setSubmitting(false)
+  function _handleLogout() {
+    send('LOGOUT')
   }
 
   return (
@@ -72,7 +29,7 @@ const Settings = props => {
       title='Settings'
     >
       {
-        submitting ? (
+        loading ? (
           <LinearProgress
             color='secondary'
           />
@@ -102,15 +59,22 @@ const Settings = props => {
               variant='contained'
               color='inherit'
               className={styles['CButton']}
-              onClick={logout}
-              disabled={submitting}
+              onClick={_handleLogout}
+              disabled={loading}
             >
               Logout
             </Button>
           </div>
         </div>
 
-        <div
+        {/**
+         * NOTE:
+         * =====
+         * I do not know what the demand for a reset password is
+         * and its probably best to see the demand for it and update
+         * the website if the demand increases
+         */}
+        {/* <div
           className={styles['row']}
         >
           <div
@@ -125,13 +89,13 @@ const Settings = props => {
               variant='outlined'
               color='inherit'
               className={styles['OButton']}
-              onClick={resetPass}
-              disabled={submitting}
+              onClick={_handleResetPassword}
+              disabled={loading}
             >
               Reset Password
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
     </TabTemplate>
   )
