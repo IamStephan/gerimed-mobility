@@ -34,6 +34,9 @@ import { GET_PRODUCT } from './model'
 // Query String
 import { parse } from 'qs'
 
+// Utils
+import { Rand } from '../../utils/js'
+
 // Router
 import { useLocation } from '@reach/router'
 
@@ -92,17 +95,6 @@ const ProductShowcase = () => {
 
     sendCarouselEvent('RESET_INDEX')
   }, [qsParams.id])
-
-  const formatPrice = useCallback((price) => {
-    const currency = new Intl.NumberFormat('en-UK', {
-      style: 'currency',
-      currency: 'ZAR',
-      currencyDisplay: 'narrowSymbol',
-      minimumFractionDigits: 2
-    })
-
-    return currency.format(price)
-  }, [])
 
   // States
   const loading = currentData.matches('loading') || currentData.matches('retry') || currentData.matches('idle')
@@ -374,7 +366,7 @@ const ProductShowcase = () => {
                 className={styles['price']}
                 variant='h5'
               >
-                <b>{ formatPrice(product.price) }</b>
+                <b>{ Rand(product.price).format() }</b>
               </Typography>
 
               <div>

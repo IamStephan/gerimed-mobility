@@ -4,3 +4,5 @@ export { axiosMutationFactory } from './axiosMutationFactory'
 export { axiosQueryFactory } from './axiosQueryFactory.js'
 
 export { strapiImageUrl } from './strapiImageUrl'
+
+export { Rand } from './currency'

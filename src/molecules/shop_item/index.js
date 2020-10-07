@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 // Material
 import { Typography, Chip, Link as Btn } from '@material-ui/core'
@@ -13,7 +13,7 @@ import { stringify } from 'qs'
 import TruncateText from 'react-text-truncate'
 
 // Utils
-import { strapiImageUrl } from '../../utils/js'
+import { strapiImageUrl, Rand } from '../../utils/js'
 
 // Styles
 import styles from './styles.module.scss'
@@ -73,17 +73,6 @@ const ShopItem = props => {
     navigate(`/shop?${queryString}`)
   }
 
-  const formatPrice = useCallback(() => {
-    const currency = new Intl.NumberFormat('en-UK', {
-      style: 'currency',
-      currency: 'ZAR',
-      currencyDisplay: 'narrowSymbol',
-      minimumFractionDigits: 2
-    })
-
-    return currency.format(price)
-  }, [])
-
   const url = useCallback(() => {
     const preferedSize = 'small'
     const baseUrl = process.env.GATSBY_API_URL
@@ -91,6 +80,10 @@ const ShopItem = props => {
     const formats = showcase[0].formats
 
     return strapiImageUrl(preferedSize, baseUrl, url, formats)
+  }, [])
+
+  useEffect(() => {
+    console.log(Rand(5))
   }, [])
 
   return (
@@ -146,7 +139,7 @@ const ShopItem = props => {
       <Typography
         className={styles['price']}
       >
-        {formatPrice(price)}
+        {Rand(price).format()}
       </Typography>
     </div>
   )
