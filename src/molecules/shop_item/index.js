@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 
 // Material
 import { Typography, Chip, Link as Btn } from '@material-ui/core'
@@ -80,10 +80,6 @@ const ShopItem = props => {
     const formats = showcase[0].formats
 
     return strapiImageUrl(preferedSize, baseUrl, url, formats)
-  }, [])
-
-  useEffect(() => {
-    console.log(Rand(5))
   }, [])
 
   return (

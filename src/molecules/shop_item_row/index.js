@@ -64,7 +64,9 @@ const ShopItemRow = props => {
               products.map((product) => (
                 <div
                   key={product.id}
-                  
+                  style={{
+                    display: 'flex'
+                  }}
                 >
                   <ShopItem
                     id={product.id}
