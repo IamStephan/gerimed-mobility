@@ -1,26 +1,26 @@
 const PAGES = {
-  home: 'HOME',
-  shop: 'SHOP',
-  about: 'ABOUT',
-  contact: 'CONTACT',
+  home: 'HOME', // <== Done
+  shop: 'SHOP', // <== Done
+  about: 'ABOUT', // <== Done
+  contact: 'CONTACT', // <== Done
   checkout: 'CHECKOUT',
-  product: 'PRODUCT',
-  productList: 'PRODUCT_LIST',
+  cart: 'CART',
+  product: 'PRODUCT', // <== Done
   checkout: 'CHECKOUT',
   results: 'RESULTS',
   loader: 'LOADER',
   notfound: 'NOTFOUND',
 
   // Legal
-  terms: 'TERMS',
-  policies: 'POLICIES',
-  returnPolicy: 'RETURN',
+  terms: 'TERMS', // <== Done
+  policies: 'POLICIES', // <== Done
+  returnPolicy: 'RETURN', // <== Done
 
   // Dynamic Pages
-  login: 'LOGIN',
-  forgotpassword: 'FORGOT_PASSWORD',
-  passwordReset: 'PASSWORD_RESET',
-  register: 'REGISTER',
+  login: 'LOGIN', // <== Done
+  forgotpassword: 'FORGOT_PASSWORD', // <== Done
+  passwordReset: 'PASSWORD_RESET', // <== Done
+  register: 'REGISTER', // <== Done
   profile: 'PROFILE',
 }
 
