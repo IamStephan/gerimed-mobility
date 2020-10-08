@@ -4,40 +4,8 @@ function storageFactory(getStorage) {
   /**
    * Storage Change Detection
    */
-
-  if(typeof window !== 'undefined') {
-    const eventSet = new Event('storageSet')
-    const eventRemove = new Event('storageRemove')
-    // Add
-    const originalSetItemLocal = window.localStorage.setItem;
-    const originalSetItemSession = window.sessionStorage.setItem;
-  
-    // Remove
-    const originalRemoveItemLocal = window.localStorage.removeItem
-    const originalRemoveItemSession = window.sessionStorage.removeItem
-  
-    // Add
-    window.localStorage.setItem = function (...args) {
-      window.dispatchEvent(eventSet)
-      originalSetItemLocal.apply(this, args);
-    }
-  
-    window.sessionStorage.setItem = function (...args) {
-      window.dispatchEvent(eventSet)
-      originalSetItemSession.apply(this, args);
-    }
-  
-    // Remove
-    window.localStorage.removeItem = function (...args) {
-      window.dispatchEvent(eventRemove)
-      originalRemoveItemLocal.apply(this, args);
-    }
-  
-    window.sessionStorage.removeItem = function (...args) {
-      window.dispatchEvent(eventRemove)
-      originalRemoveItemSession.apply(this, args);
-    }
-  }
+  const eventSet = new Event('storageSet')
+  const eventRemove = new Event('storageRemove')
 
   function isSupported() {
     try {
@@ -82,6 +50,7 @@ function storageFactory(getStorage) {
     } else {
       delete inMemoryStorage[name];
     }
+    window.dispatchEvent(eventRemove)
   }
 
   function setItem(name, value) {
@@ -90,6 +59,7 @@ function storageFactory(getStorage) {
     } else {
       inMemoryStorage[name] = String(value); // not everyone uses TypeScript
     }
+    window.dispatchEvent(eventSet)
   }
 
   function length() {
