@@ -1,4 +1,4 @@
-import { Machine, assign, send } from 'xstate'
+import { Machine, assign } from 'xstate'
 
 // URL
 import { parse } from 'qs'
@@ -153,9 +153,6 @@ const AuthController = new Machine({
       }
     }
   },
-  invoke: {
-    src: 'tokenDetection'
-  },
   on: {
     SET_NOTIFICATIONS_HANDLER: {
       actions: 'setNotificationsHandler'
@@ -163,15 +160,6 @@ const AuthController = new Machine({
   }
 }, {
   services: {
-    tokenDetection: () => (send) => {
-      if(typeof window === 'undefined') return
-
-      function _onStorageSet() {}
-
-      window.addEventListener('storageSet', _onStorageSet)
-
-      return () => window.removeEventListener('storageSet', _onStorageSet)
-    },
     'loading.user': (_context) => {
       const token = getAuthToken()
 
