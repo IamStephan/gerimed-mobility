@@ -5,6 +5,10 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core'
 
 // Controllers
 import { AuthController } from './controllers/auth_controller'
+import { CartController } from './controllers/cart_controller'
+
+// Storage
+import { storageFactory } from '../../utils/js/storageFactory'
 
 // Xstate
 import { interpret } from 'xstate'
@@ -38,52 +42,23 @@ const notiStyles = {
   info: { zIndex: 999 },
 };
 
-
-// Create an event for token detections
-if(typeof window !== 'undefined') {
-  const eventSet = new Event('storageSet')
-  const eventRemove = new Event('storageRemove')
-  // Add
-  const originalSetItemLocal = window.localStorage.setItem;
-  const originalSetItemSession = window.sessionStorage.setItem;
-
-  // Remove
-  const originalRemoveItemLocal = window.localStorage.removeItem
-  const originalRemoveItemSession = window.sessionStorage.removeItem
-
-  // Add
-  window.localStorage.setItem = function (...args) {
-    window.dispatchEvent(eventSet)
-    originalSetItemLocal.apply(this, args);
-  }
-
-  window.sessionStorage.setItem = function (...args) {
-    window.dispatchEvent(eventSet)
-    originalSetItemSession.apply(this, args);
-  }
-
-  // Remove
-  window.localStorage.removeItem = function (...args) {
-    window.dispatchEvent(eventRemove)
-    originalRemoveItemLocal.apply(this, args);
-  }
-
-  window.sessionStorage.removeItem = function (...args) {
-    window.dispatchEvent(eventRemove)
-    originalRemoveItemSession.apply(this, args);
-  }
-}
-
-
+// Storage Mechanism
+export const LocalStorage = storageFactory(() => window.localStorage)
+export const SessionStorage = storageFactory(() => window.sessionStorage)
 
 export const AuthService = interpret(AuthController).start()
+export const CartService = interpret(CartController).start()
 
 const AuthNotifications = () => {
   const { enqueueSnackbar } = useSnackbar()
-  const [, send] = useService(AuthService)
+  const [, sendAuth] = useService(AuthService)
+  const [, sendCart] = useService(CartService)
 
   useEffect(() => {
-    send('SET_NOTIFICATIONS_HANDLER', {
+    sendAuth('SET_NOTIFICATIONS_HANDLER', {
+      enqueueSnackbar
+    })
+    sendCart('SET_NOTIFICATIONS_HANDLER', {
       enqueueSnackbar
     })
   }, [])
