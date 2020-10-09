@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useMedia } from 'react-use'
 
 // Material
-import { Tab } from '@material-ui/core'
+import { Tab, Typography, Divider } from '@material-ui/core'
 import { TabList, TabPanel, TabContext } from '@material-ui/lab'
 import { 
   InfoOutlined,
@@ -22,6 +22,9 @@ import Shipping from './tabs/shipping'
 import Settings from './tabs/settings'
 import Purchases from './tabs/purchases'
 
+// Templates
+import { Section } from '../../templates/content_layout'
+
 // Constants
 import { USER_TABS } from '../../constants/profile'
 
@@ -38,9 +41,19 @@ const User = () => {
   }
 
   return (
-    <section
+    <Section
       className={styles['userSection']}
     >
+      <Typography
+        gutterBottom
+        variant='h3'
+        color='secondary'
+      >
+        <b>Your Profile</b>
+      </Typography>
+
+      <Divider />
+
       <div
         className={styles['userContainer']}
       >
@@ -102,7 +115,7 @@ const User = () => {
           </TabPanel>
         </TabContext>
       </div>
-    </section>
+    </Section>
   )
 }
 

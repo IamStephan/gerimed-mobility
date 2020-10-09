@@ -228,7 +228,8 @@ const Drawer = props => {
           <MenuItem
             label='Cart'
             Icon={ShoppingCartOutlined}
-            selected={page === PAGES.checkout}
+            selected={page === PAGES.cart}
+            to='/cart'
           />
         </List>
       </div>

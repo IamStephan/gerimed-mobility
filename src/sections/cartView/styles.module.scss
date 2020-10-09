@@ -1,0 +1,41 @@
+@import '../../utils/sizes';
+
+.cartContainer {
+  .cartView {
+    display: flex;
+
+    .left {
+      padding: #{$padding}px;
+      flex: 1;
+
+      .cartItem {
+        display: flex;
+        align-items: center;
+
+        .img, .data, .input, .remove {
+          padding: #{$padding}px;
+        }
+
+        .img {
+          .imgShowcase {
+            width: 75px;
+            height: 75px;
+          }
+        }
+
+        .data {
+          align-self: stretch;
+        }
+
+        .data {
+          flex: 1;
+        }
+      }
+    }
+
+    .right {
+      padding: #{$padding}px;
+      width: 300px;
+    }
+  }
+}

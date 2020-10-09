@@ -17,16 +17,9 @@ $animDur: 250;
     align-items: flex-start;
 
     .tabHeader {
-      position: sticky;
-      top: #{$navbarHeightNormal}px;
       border-right: 1px solid rgba($dark, 0.25);
       background-color: $light;
       z-index: 996;
-      transition: top #{$animDur}ms ease-in-out;
-
-      &.pushHeader {
-        top: 0px;
-      }
     }
 
     .tabPanel {

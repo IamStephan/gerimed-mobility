@@ -203,6 +203,8 @@ const Navbar = props => {
                       className={styles['iconButton']}
                       disableElevation
                       color='primary'
+                      component={Link}
+                      to='/cart'
                     >
                       <ShoppingCartOutlined />
                     </IconButton>
