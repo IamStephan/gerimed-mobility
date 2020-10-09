@@ -5,10 +5,14 @@ import { KEYS } from '../../constants/storage'
 import { LocalStorage, SessionStorage } from '../../organisms/provider'
 
 function getAuthToken() {
+  if(typeof window === 'undefined') return
+
   return LocalStorage.getItem(KEYS.auth) || SessionStorage.getItem(KEYS.auth) || ''
 }
 
 function setAuthToken(jwt, persist = false) {
+  if(typeof window === 'undefined') return
+
   if(persist) {
     LocalStorage.setItem(KEYS.auth, jwt)
   } else {
@@ -19,6 +23,8 @@ function setAuthToken(jwt, persist = false) {
 }
 
 function removeAuthToken() {
+  if(typeof window === 'undefined') return
+  
   // Remove Token from both places
   LocalStorage.removeItem(KEYS.auth)
   SessionStorage.removeItem(KEYS.auth)

@@ -52,11 +52,15 @@ const CartController = new Machine({
 }, {
   services: {
     tokenDetection: () => (send) => {
+      if(typeof window === 'undefined') return
+      
       window.addEventListener('storageChange', () => {
         send('USER_CHANGE')
       })
     },
     cartStartup: () => async (send) => {
+      if(typeof window === 'undefined') return
+
       let userToken = getAuthToken()
       let cartToken = LocalStorage.getItem(KEYS.cartToken)
 
