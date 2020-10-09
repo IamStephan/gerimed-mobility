@@ -4,6 +4,8 @@ function storageFactory(getStorage) {
   /**
    * Storage Change Detection
    */
+  if(typeof window === 'undefined') return
+  
   const storageChange = new Event('storageChange')
 
   function isSupported() {
