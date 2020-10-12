@@ -1,10 +1,11 @@
 function storageFactory(getStorage) {
   let inMemoryStorage = {};
+  if(typeof window === 'undefined') return
 
   /**
    * Storage Change Detection
    */
-  if(typeof window === 'undefined') return
+  
   
   const storageChange = new Event('storageChange')
 
@@ -20,6 +21,7 @@ function storageFactory(getStorage) {
   }
 
   function clear() {
+    if(typeof window === 'undefined') return
     if (isSupported()) {
       getStorage().clear();
     } else {
@@ -29,6 +31,7 @@ function storageFactory(getStorage) {
   }
 
   function getItem(name) {
+    if(typeof window === 'undefined') return
     if (isSupported()) {
       return getStorage().getItem(name);
     }
@@ -39,6 +42,7 @@ function storageFactory(getStorage) {
   }
 
   function key(index) {
+    if(typeof window === 'undefined') return
     if (isSupported()) {
       return getStorage().key(index);
     } else {
@@ -56,6 +60,7 @@ function storageFactory(getStorage) {
   }
 
   function setItem(name, value) {
+    if(typeof window === 'undefined') return
     if (isSupported()) {
       getStorage().setItem(name, value);
     } else {
@@ -65,6 +70,7 @@ function storageFactory(getStorage) {
   }
 
   function length() {
+    if(typeof window === 'undefined') return
     if (isSupported()) {
       return getStorage().length;
     } else {

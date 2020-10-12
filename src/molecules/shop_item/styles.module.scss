@@ -43,7 +43,8 @@ $item-width: 225;
   .categoryContainer {
     overflow: hidden;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    max-width: calc(#{$item-width}px - #{$margin * 4}px);
 
     .category {
       margin-right: #{$margin}px;

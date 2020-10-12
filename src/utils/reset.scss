@@ -1,4 +1,8 @@
 @import './sizes';
+@import './colors';
+
+$medium-screen: 992px !default;
+$medium-and-down: "only screen and (max-width : #{$medium-screen})" !default;
 
 body {
   overscroll-behavior-y: contain;
@@ -85,4 +89,101 @@ h4 {
 ol, ul {
   margin-bottom: #{$margin}px;
   margin-top: #{$margin}px;
+}
+
+table {
+  width:100%;
+  display: table;
+  border-collapse: collapse;
+  border-spacing: 0;
+  * {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+
+  &.centered {
+    thead tr th, tbody tr td {
+      text-align: center;
+    }
+  }
+}
+
+tr {
+  border-bottom: 1px solid rgba($dark, 0.25)
+}
+
+td, th{
+  padding: 15px 5px;
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
+// Responsive Table
+@media #{$medium-and-down} {
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: block;
+    position: relative;
+
+    td:empty:before {
+      content: '\00a0';
+    }
+
+    th,
+    td {
+      margin: 0;
+      vertical-align: top;
+    }
+
+    th { text-align: left; }
+    thead {
+      display: block;
+      float: left;
+
+      tr {
+        display: block;
+        padding: 0 10px 0 0;
+
+        th::before {
+          content: "\00a0";
+        }
+      }
+    }
+    tbody {
+      display: block;
+      width: auto;
+      position: relative;
+      overflow-x: auto;
+      white-space: nowrap;
+
+      tr {
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
+    th {
+      display: block;
+      text-align: right;
+    }
+    td {
+      display: block;
+      min-height: 1.25em;
+      text-align: left;
+    }
+    tr {
+      border-bottom: none;
+      padding: 0 10px;
+    }
+
+    /* sort out borders */
+    thead {
+      border: 0;
+      border-right: 1px solid rgba($dark, 0.25);
+    }
+  }
+
 }

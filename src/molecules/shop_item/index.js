@@ -9,7 +9,7 @@ import { Link, navigate } from 'gatsby'
 // URL
 import { stringify } from 'qs'
 
-// Text
+// Truncate
 import TruncateText from 'react-text-truncate'
 
 // Utils

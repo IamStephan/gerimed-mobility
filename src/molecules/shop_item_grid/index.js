@@ -71,8 +71,8 @@ const ShopItemGrid = () => {
   }
 
   function ProductMeta() {
-    const startProduct = current.context?.page
-    const startProductOffset = current.context?.products?.length + Number(current.context?.page) - 1
+    const startProductOffset = (PAGE_ITEM_LIMIT * Number(current.context?.page)) - (PAGE_ITEM_LIMIT - current.context?.products?.length)
+    const startProduct = startProductOffset - current.context?.products?.length + 1
     const totalProducts = current.context?.productCount
     const multipleProducts = current.context?.productCount > 1 ? 's' : ''
 
