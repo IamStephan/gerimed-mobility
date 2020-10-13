@@ -12,7 +12,7 @@ import { MODE as FOOTERMODE } from '../constants/footer'
 
 // Sections
 import Hero from '../sections/hero'
-import AlertSec from '../sections/alert'
+import BrandShowcase from '../sections/brandsShowcase'
 import Catalog from '../sections/catalog'
 import Featured from '../sections/featured'
 import CTA from '../sections/cta'
@@ -31,7 +31,7 @@ const IndexPage = () => {
         description='Gerimed Mobility Home'
       />
       <Hero />
-      {/* <AlertSec /> */}
+      <BrandShowcase />
       <Catalog />
       <Featured />
       <Benefit />
