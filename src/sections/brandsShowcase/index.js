@@ -72,6 +72,62 @@ const STATIC_QUERY = graphql`
         } 
       }
     }
+
+    brandEight: file(relativePath: {eq: "gallery/brands/brand8.png"}) {
+      childImageSharp {
+        fluid(maxWidth: 1440, grayscale: true) {
+          ...GatsbyImageSharpFluid
+        } 
+      }
+    }
+
+    brandNine: file(relativePath: {eq: "gallery/brands/brand9.png"}) {
+      childImageSharp {
+        fluid(maxWidth: 1440, grayscale: true) {
+          ...GatsbyImageSharpFluid
+        } 
+      }
+    }
+
+    brandTen: file(relativePath: {eq: "gallery/brands/brand10.png"}) {
+      childImageSharp {
+        fluid(maxWidth: 1440, grayscale: true) {
+          ...GatsbyImageSharpFluid
+        } 
+      }
+    }
+
+    brandEleven: file(relativePath: {eq: "gallery/brands/brand11.png"}) {
+      childImageSharp {
+        fluid(maxWidth: 1440, grayscale: true) {
+          ...GatsbyImageSharpFluid
+        } 
+      }
+    }
+
+    brandTwelve: file(relativePath: {eq: "gallery/brands/brand12.png"}) {
+      childImageSharp {
+        fluid(maxWidth: 1440, grayscale: true) {
+          ...GatsbyImageSharpFluid
+        } 
+      }
+    }
+
+    brandThirdteen: file(relativePath: {eq: "gallery/brands/brand13.png"}) {
+      childImageSharp {
+        fluid(maxWidth: 1440, grayscale: true) {
+          ...GatsbyImageSharpFluid
+        } 
+      }
+    }
+
+    brandFourteen: file(relativePath: {eq: "gallery/brands/brand14.png"}) {
+      childImageSharp {
+        fluid(maxWidth: 1440, grayscale: true) {
+          ...GatsbyImageSharpFluid
+        } 
+      }
+    }
   }
 `
 
@@ -84,6 +140,13 @@ const BrandShowcase = () => {
     brandFive,
     brandSix,
     brandSeven,
+    brandEight,
+    brandNine,
+    brandTen,
+    brandEleven,
+    brandTwelve,
+    brandThirdteen,
+    brandFourteen,
   } = useStaticQuery(STATIC_QUERY)
 
   const images = [
@@ -94,6 +157,13 @@ const BrandShowcase = () => {
     brandFive,
     brandSix,
     brandSeven,
+    brandEight,
+    brandNine,
+    brandTen,
+    brandEleven,
+    brandTwelve,
+    brandThirdteen,
+    brandFourteen,
     brandOne,
     brandTwo,
     brandThree,
@@ -101,12 +171,13 @@ const BrandShowcase = () => {
     brandFive,
     brandSix,
     brandSeven,
-    brandTwo,
-    brandThree,
-    brandFour,
-    brandFive,
-    brandSix,
-    brandSeven,
+    brandEight,
+    brandNine,
+    brandTen,
+    brandEleven,
+    brandTwelve,
+    brandThirdteen,
+    brandFourteen,
   ]
 
   // console.log(brandFive)
@@ -119,12 +190,16 @@ const BrandShowcase = () => {
   useEffect(() => {
     if(!embla) return
 
-    const intervals = setInterval(() => {
+    let id = 0
+    const tick = () => {
       embla.scrollNext()
-    }, 1500)
+      requestAnimationFrame(() => (id = setTimeout(tick, 1500)));
+    }
+
+    requestAnimationFrame(() => (id = setTimeout(tick, 1500)));
 
     return () => {
-      clearInterval(intervals)
+      if (id) clearTimeout(id);
     }
   }, [embla])
 
