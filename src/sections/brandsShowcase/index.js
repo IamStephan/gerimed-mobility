@@ -14,7 +14,6 @@ import { useEmblaCarousel } from 'embla-carousel/react'
 import styles from './styles.module.scss'
 
 // Static query
-
 const STATIC_QUERY = graphql`
   query {
     brandOne: file(relativePath: {eq: "gallery/brands/brand1.png"}) {
@@ -132,55 +131,26 @@ const STATIC_QUERY = graphql`
 `
 
 const BrandShowcase = () => {
-  const {
-    brandOne,
-    brandTwo,
-    brandThree,
-    brandFour,
-    brandFive,
-    brandSix,
-    brandSeven,
-    brandEight,
-    brandNine,
-    brandTen,
-    brandEleven,
-    brandTwelve,
-    brandThirdteen,
-    brandFourteen,
-  } = useStaticQuery(STATIC_QUERY)
+  const data = useStaticQuery(STATIC_QUERY)
 
-  const images = [
-    brandOne,
-    brandTwo,
-    brandThree,
-    brandFour,
-    brandFive,
-    brandSix,
-    brandSeven,
-    brandEight,
-    brandNine,
-    brandTen,
-    brandEleven,
-    brandTwelve,
-    brandThirdteen,
-    brandFourteen,
-    brandOne,
-    brandTwo,
-    brandThree,
-    brandFour,
-    brandFive,
-    brandSix,
-    brandSeven,
-    brandEight,
-    brandNine,
-    brandTen,
-    brandEleven,
-    brandTwelve,
-    brandThirdteen,
-    brandFourteen,
+  const baseImages = [
+    data.brandOne,
+    data.brandTwo,
+    data.brandThree,
+    data.brandFour,
+    data.brandFive,
+    data.brandSix,
+    data.brandSeven,
+    data.brandEight,
+    data.brandNine,
+    data.brandTen,
+    data.brandEleven,
+    data.brandTwelve,
+    data.brandThirdteen,
+    data.brandFourteen
   ]
 
-  // console.log(brandFive)
+  const images = baseImages.concat(baseImages)
 
   const [emblaRef, embla] = useEmblaCarousel({
     align: 'center',
