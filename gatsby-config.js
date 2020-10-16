@@ -2,13 +2,11 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 
-const FEATURED_CATEGORIES = require('./strapi_graphql_queries/featured_categories')
-
 module.exports = {
   siteMetadata: {
-    title: `Gerimed Moility`,
+    title: `Gerimed Mobility`,
     description: `Your one stop medical supply shop`,
-    author: `Avvent Studio`
+    author: `Stephan Burger`
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -36,12 +34,6 @@ module.exports = {
         rule: {
           include: /svg/
         }
-      }
-    },
-    {
-      resolve: 'gatsby-plugin-load-script',
-      options: {
-        src: 'https://checkout.flutterwave.com/v3.js',
       }
     },
     {
@@ -74,15 +66,99 @@ module.exports = {
         graphqlTypes: [
           {
             type: 'Featuredcategories',
-            query: require('./strapi_graphql_queries/featured_categories')
+            query: `
+              query {
+                featuredCategory {
+                  category_one {
+                    category {
+                      name
+                    }
+                    description
+                    showcase {
+                      url
+                    }
+                  }
+                  
+                  category_two {
+                    category {
+                      name
+                    }
+                    description
+                    showcase {
+                      url
+                    }
+                  }
+                  
+                  category_three {
+                    category {
+                      name
+                    }
+                    description
+                    showcase {
+                      url
+                    }
+                  }
+                  
+                  category_four {
+                    category {
+                      name
+                    }
+                    description
+                    showcase {
+                      url
+                    }
+                  }
+                  
+                  category_five {
+                    category {
+                      name
+                    }
+                    description
+                    showcase {
+                      url
+                    }
+                  }
+                }
+              }
+            `
           },
           {
             type: 'Categories',
-            query: require('./strapi_graphql_queries/categories')
+            query: `
+              query {
+                categories(
+                  sort: "name:asc"
+                ) {
+                  name
+                  id
+                  parent {
+                    name
+                    id
+                  }
+                }
+              }
+            `
           },
           {
             type: 'Legal',
-            query: require('./strapi_graphql_queries/legal')
+            query: `
+              query {
+                termsAndCondition {
+                  content
+                  updatedAt
+                }
+                
+                privacyPolicy {
+                  content
+                  updatedAt
+                }
+                
+                returnPolicy {
+                  content
+                  updatedAt
+                }
+              }
+            `
           }
         ]
       }
