@@ -159,6 +159,22 @@ module.exports = {
                 }
               }
             `
+          },
+          {
+            type: 'FAQ',
+            query: `
+              query {
+                frequentlyAskedQuestion {
+                  faq_section {
+                    section_name
+                    questions {
+                      question
+                      answer
+                    }
+                  }
+                }
+              }
+            `
           }
         ]
       }
