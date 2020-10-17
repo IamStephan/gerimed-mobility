@@ -14,6 +14,7 @@ const MapSmall = () => {
     <Section
       className={styles['mapSmallSection']}
       isClamped={false}
+      isPadded={false}
       gutter='none'
     >
       <div
