@@ -175,6 +175,22 @@ module.exports = {
                 }
               }
             `
+          },
+          {
+            type: `Testimonials`,
+            query: `
+              query {
+                testimonial {
+                  testimonials {
+                    title
+                    statement
+                    profile {
+                      url
+                    }
+                  }
+                }
+              }
+            `
           }
         ]
       }

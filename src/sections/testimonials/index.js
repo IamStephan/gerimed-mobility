@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 // Templates
 import { Section } from '../../templates/content_layout'
@@ -6,8 +6,38 @@ import { Section } from '../../templates/content_layout'
 // Material
 import { Avatar, Typography } from '@material-ui/core'
 
+// Gatbsy
+import { useStaticQuery, graphql } from 'gatsby'
+import Img from 'gatsby-image'
+
+// Carousel
+import { useEmblaCarousel } from 'embla-carousel/react'
+
 // Styles
 import styles from './styles.module.scss'
+
+// Static Queries
+const STATIC_QUERY = graphql`
+  query {
+    Testimonials: strapiTestimonials {
+      data: testimonial {
+        testimonials {
+          statement
+          title
+          profile {
+            remoteImage {
+              childImageSharp {
+                fluid(maxWidth: 1440) {
+                  ...GatsbyImageSharpFluid
+                } 
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
 
 const CustomerItem = props => {
   return (
@@ -35,6 +65,36 @@ const CustomerItem = props => {
 }
 
 const Testimonials = () => {
+  const { Testimonials: { data: { testimonials } } } = useStaticQuery(STATIC_QUERY)
+
+  console.log(testimonials)
+
+  const allTestimonies = [
+    ...testimonials,
+    ...testimonials,
+  ]
+
+  const [emblaRef, embla] = useEmblaCarousel({
+    align: 'center',
+    loop: true,
+  })
+
+  useEffect(() => {
+    if(!embla) return
+
+    let id = 0
+    const tick = () => {
+      embla.scrollNext()
+      requestAnimationFrame(() => (id = setTimeout(tick, 6000)));
+    }
+
+    requestAnimationFrame(() => (id = setTimeout(tick, 6000)));
+
+    return () => {
+      if (id) clearTimeout(id);
+    }
+  }, [embla])
+
   return (
     <Section
       className={styles['testimonialSection']}
@@ -46,34 +106,57 @@ const Testimonials = () => {
       >
         Customer Satisfaction
       </Typography>
-      <div className={styles['items']}>
-        <CustomerItem
-          testimonial='Gerimed Mobility, provided me with all my mobility needs at the fraction of the price. The staff members are alsways there to help and very friendly.'
-          person='Stephan Burger, Avvent Studio'
-        >
-          <Avatar
-            className={styles['avatar']}
-          />
-        </CustomerItem>
 
-        <CustomerItem
-          testimonial='Once you buy from them you can fully relax. They handle everything and make sure the product gets to you. They are the only place I buy medical supplies from'
-          person='Armin Nel, Avvent Studio'
-        >
-          <Avatar
-            className={styles['avatar']}
-          />
-        </CustomerItem>
+      <div
+        className={styles['container']}
+      >
+        <div
+          className={styles['leftFade']}
+        />
 
-        <CustomerItem
-          testimonial='Once you buy from them you can fully relax. They handle everything and make sure the product gets to you. They are the only place I buy medical supplies from'
-          person='John Doe, LifeWorx'
+        <div
+          className={styles['itemsViewport']}
+          ref={emblaRef}
         >
-          <Avatar
-            className={styles['avatar']}
-          />
-        </CustomerItem>
+          <div
+            className={styles['itemsRow']}
+          >
+            {allTestimonies.map((person, i) => (
+              <div
+                className={styles['slide']}
+                key={i}
+              >
+                <CustomerItem
+                  testimonial={person.statement}
+                  person={person.title}
+                >
+                  {
+                    person.profile ? (
+                      <Avatar
+                        className={styles['avatar']}>
+                        <Img
+                          fluid={person.profile.remoteImage.childImageSharp.fluid}
+                          className={styles['img']}
+                        />
+                      </Avatar>
+                    ) : (
+                      <Avatar
+                        className={styles['avatar']}
+                      />
+                    )
+                  }
+                </CustomerItem>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div
+          className={styles['rightFade']}
+        />
       </div>
+
+      
     </Section>
   )
 }

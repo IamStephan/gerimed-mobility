@@ -3,9 +3,6 @@
 
 $avatar-size: 75;
 
-// Breakpoints
-$breakpoint-1: 700;
-
 .testimonialSection {
   .title {
     text-align: center;
@@ -14,73 +11,86 @@ $breakpoint-1: 700;
     padding: #{$padding * 2}px;
   }
 
-  .items {
-    display: flex;
-    justify-content: space-evenly;
-
-    .customer {
-      flex: 1;
-      max-width: 300px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: #{$padding * 2}px;
-
-      .avatar {
-        background-color: $secondary;
-        width: #{$avatar-size}px;
-        height: #{$avatar-size}px;
-        margin-bottom: #{$margin * 4}px;
-      }
-
-      .text {
-        text-align: center;
-        margin-bottom: #{$margin * 4}px;
-        flex: 1;
-      }
-
-      .person {
-        font-weight: bold;
-      }
+  .container {
+    position: relative;
+    .leftFade {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: 50px;
+      z-index: 2;
+      background: linear-gradient(90deg, $light 0%, rgba(255,255,255,0) 100%);
     }
-  }
-}
-
-@media screen and (max-width: #{$breakpoint-1}px) {
-  .testimonialSection {
-    .title {
-      text-align: center;
-      margin-bottom: #{$margin * 6}px;
-      font-weight: bold;
+  
+    .rightFade {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      height: 100%;
+      width: 50px;
+      z-index: 2;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, $light 100%);
     }
 
-    .items {
-      flex-direction: column;
-      align-items: center;
-
-      .customer {
-        flex: 1;
-        max-width: 300px;
+    .itemsViewport {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+  
+      .itemsRow {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: #{$padding * 2}px;
+        align-items: stretch;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -khtml-user-select: none;
+        -webkit-tap-highlight-color: transparent;
   
-        .avatar {
-          background-color: $secondary;
-          width: #{$avatar-size}px;
-          height: #{$avatar-size}px;
-          margin-bottom: #{$margin * 4}px;
-        }
+        .slide {
+          position: relative;
+          min-width: 300px;
+          //background-color: red;
+          display: flex;
+          justify-content: stretch;
+          align-items: stretch;
+          padding-left: 10px;
+          padding-right: 10px;
   
-        .text {
-          text-align: center;
-          margin-bottom: #{$margin * 4}px;
-          flex: 1;
-        }
-  
-        .person {
-          font-weight: bold;
+          .customer {
+            flex: 1;
+            max-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: #{$padding * 2}px;
+      
+            .avatar {
+              background-color: $secondary;
+              width: #{$avatar-size}px;
+              height: #{$avatar-size}px;
+              margin-bottom: #{$margin * 4}px;
+              position: relative;
+              overflow: hidden;
+
+              .img {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                height: 100%;
+                width: 100%;
+              }
+            }
+      
+            .text {
+              text-align: center;
+              margin-bottom: #{$margin * 4}px;
+              flex: 1;
+            }
+      
+            .person {
+              font-weight: bold;
+            }
+          }
         }
       }
     }
