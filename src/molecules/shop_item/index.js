@@ -46,6 +46,38 @@ const Title = props => {
 }
 
 /**
+ * BADGES
+ */
+
+const ShopOnlyBadge = () => (
+  <Chip
+    className={`${styles['badge']} ${styles['danger']}`}
+    label='Shop Only'
+    size='small'
+  />
+)
+
+const OutOfStockBadge = () => (
+  <Chip
+    className={`${styles['badge']} ${styles['danger']}`}
+    label='Out of Stock'
+    size='small'
+  />
+)
+
+const OnSaleBadge = ({ discountAmount=30 }) => (
+  <div
+    className={styles['salesBadge']}
+  >
+    <Typography
+      className={styles['text']}
+    >
+      -<b>{discountAmount}%</b>
+    </Typography>
+  </div>
+)
+
+/**
  * TODO:
  * ======
  *  - show when an item is depleted
@@ -59,6 +91,10 @@ const ShopItem = props => {
     name,
     price,
     showcase,
+    quantity = -10,
+    isLimited = false,
+    shopOnly = false,
+    sale = false,
     categories
   } = props
 
@@ -82,6 +118,38 @@ const ShopItem = props => {
     return strapiImageUrl(preferedSize, baseUrl, url, formats)
   }, [])
 
+  /**
+   * This is based on props and the data is not realtime
+   * 
+   * therefore it makes sense to run this only once
+   */
+  const badgeDisplay = useCallback(() => {
+    const shopOnlyI = shopOnly
+    const isLimitedI = isLimited
+    const outOfStockI = (Number(quantity) < 1)
+    const onSaleI = false
+
+    if(shopOnlyI) {
+      return <ShopOnlyBadge />
+    } else {
+      if(isLimitedI) {
+        if(outOfStockI) {
+          return <OutOfStockBadge />
+        } else if(onSaleI) {
+          return <OnSaleBadge />
+        } else {
+          return null
+        }
+      } else {
+        if(onSaleI) {
+          return <OnSaleBadge />
+        } else {
+          return null
+        }
+      }
+    }
+  }, [])
+
   return (
     <div
       className={styles['item']}
@@ -89,6 +157,13 @@ const ShopItem = props => {
       <div
         className={styles['imgContainer']}
       >
+        {
+          /**
+           * Badges to display
+           */
+
+          badgeDisplay()
+        }
         <Link
           to={`/product?id=${id}`}
         >

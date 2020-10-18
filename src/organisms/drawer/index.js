@@ -13,7 +13,10 @@ import { PAGES } from '../../constants/pages'
 import { LocalContoller } from './controller'
 
 // Hooks
-import { useMachine } from '@xstate/react'
+import { useMachine, useService } from '@xstate/react'
+
+// Global Controllers
+import { CartService, AuthService } from '../provider'
 
 // Material
 import {
@@ -24,7 +27,8 @@ import {
   ListItemAvatar,
   Avatar,
   Collapse,
-  Divider
+  Divider,
+  Badge
 } from '@material-ui/core'
 import {
   StorefrontOutlined,
@@ -42,6 +46,51 @@ import {
 
 // Styles
 import styles from './styles.module.scss'
+
+const CartWithBadge = () => {
+  const [currentGlobal, sendGlobal] = useService(CartService)
+
+  const products = currentGlobal.context.cartData?.cart?.products || []
+
+  return (
+    <Badge badgeContent={products ? products.length : null} color="secondary">
+      <ShoppingCartOutlined />
+    </Badge>
+  )
+}
+
+const MenuItemButton = props => {
+  const {
+    label,
+    Icon,
+    indent,
+    selected
+  } = props
+
+  return (
+    <ListItem
+      button
+      selected={selected}
+      style={{
+        paddingLeft: indent ? 48 : 16
+      }}
+      {...props}
+    >
+      {
+        Icon ? (
+          <ListItemIcon>
+            <Icon />
+          </ListItemIcon>
+        ) : null
+      }
+
+      <ListItemText
+        inset={!Icon}
+        primary={label}
+      />
+    </ListItem>
+  )
+}
 
 const MenuItem = props => {
   const {
@@ -84,6 +133,9 @@ const Drawer = props => {
     toggleDrawer,
     page
   } = props
+
+  const [currentGlobal, sendGlobal] = useService(AuthService)
+  const isLoggedIn = currentGlobal.matches({ idle: 'user' })
 
   const dimmerRef = useRef(null)
   const [current, send] = useMachine(LocalContoller)
@@ -190,7 +242,7 @@ const Drawer = props => {
               disablePadding
             >
               {
-                false ? (
+                isLoggedIn ? (
                   <>
                     <MenuItem
                       label='My Account'
@@ -199,10 +251,15 @@ const Drawer = props => {
                       selected={page === PAGES.profile}
                       to='/profile'
                     />
-                    <MenuItem
+                    <MenuItemButton
                       label='Logout'
                       Icon={ExitToAppOutlined}
                       indent={true}
+                      onClick={() => {
+                        console.log('AWEEE')
+                        sendGlobal('LOGOUT')
+                        toggleDrawer()
+                      }}
                     />
                   </>
                 ) : (
@@ -224,10 +281,9 @@ const Drawer = props => {
               }
             </List>
           </Collapse>
-
           <MenuItem
             label='Cart'
-            Icon={ShoppingCartOutlined}
+            Icon={CartWithBadge}
             selected={page === PAGES.cart}
             to='/cart'
           />

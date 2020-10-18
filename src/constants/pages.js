@@ -6,7 +6,6 @@ const PAGES = {
   checkout: 'CHECKOUT',
   cart: 'CART',
   product: 'PRODUCT', // <== Done
-  checkout: 'CHECKOUT',
   results: 'RESULTS',
   loader: 'LOADER',
   notfound: 'NOTFOUND',

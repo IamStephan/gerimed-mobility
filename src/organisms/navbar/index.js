@@ -2,7 +2,10 @@ import React from 'react'
 
 // Hooks
 import { useMedia } from 'react-use'
-import { useMachine } from '@xstate/react'
+import { useMachine, useService } from '@xstate/react'
+
+// Global Controller
+import { CartService } from '../provider'
 
 // Controller
 import { LocalState } from './controller'
@@ -15,7 +18,7 @@ import Img from 'gatsby-image/withIEPolyfill'
 import Drawer from '../drawer'
 
 // Material
-import { Button, IconButton } from '@material-ui/core'
+import { Button, IconButton, Badge } from '@material-ui/core'
 import { ShoppingCartOutlined, AccountCircleOutlined, Menu } from '@material-ui/icons'
 
 // Constants
@@ -73,6 +76,10 @@ const Navbar = props => {
     page,
     enableTransMode = false
   } = props
+
+  const [currentGlobal, sendGlobal] = useService(CartService)
+
+  const products = currentGlobal.context.cartData?.cart?.products || []
 
   const data = useStaticQuery(STATIC_QUERY)
   const [current, send] = useMachine(LocalState, {
@@ -206,7 +213,10 @@ const Navbar = props => {
                       component={Link}
                       to='/cart'
                     >
-                      <ShoppingCartOutlined />
+                      <Badge badgeContent={products ? products.length : null} color="secondary">
+                        <ShoppingCartOutlined />
+                      </Badge>
+                      
                     </IconButton>
                   </li>
                 </ol>

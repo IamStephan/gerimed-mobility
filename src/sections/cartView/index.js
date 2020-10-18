@@ -1,76 +1,73 @@
-import React from 'react'
+import React, { useState } from 'react'
+
+// Hooks
+import { useService } from '@xstate/react'
+
+// Global Controller
+import { CartService } from '../../organisms/provider'
 
 // Material
 import {
   Divider,
-  Typography,
-  Avatar,
-  IconButton
+  Typography
 } from '@material-ui/core'
-import {
-  CloseOutlined
-} from '@material-ui/icons'
 
 // Templates
 import { Section } from '../../templates/content_layout'
 
+// Views
+import Loading from './views/loading'
+import Empty from './views/empty'
+import ReadyView from './views/ready'
+import EditView from './views/edit'
+
 // Styles
 import styles from './styles.module.scss'
 
-const CartItem = props => {
-  const {
-    name,
-    categories,
-    url,
-    quantity,
-    id
-  } = props
-
-  return (
-    <div
-      className={styles['cartItem']}
-    >
-      <div
-        className={styles['img']}
-      >
-        <Avatar
-          variant='square'
-          className={styles['imgShowcase']}
-        >
-          Item
-        </Avatar>
-      </div>
-
-      <div
-        className={styles['data']}
-      >
-        <div>
-          Product Name
-        </div>
-
-        <div>
-          Categories
-        </div>
-      </div>
-
-      <div
-        className={styles['input']}
-      >
-        Quantity
-      </div>
-
-      <div
-        className={styles['remove']}
-      >
-        <IconButton>
-          <CloseOutlined />
-        </IconButton>
-      </div>
-    </div>
-  )
-}
-
 const CartView = () => {
+  const [current, send] = useService(CartService)
+
+  const [isEditing, setIsEditing] = useState(false)
+
+  const products = current.context.cartData?.cart?.products || []
+
+  function CartStateView() {
+    const loading = current.matches('loading') || current.matches('ready')
+    const ready = current.matches('idle') && !!products.length && !isEditing
+    const editMode = current.matches('idle') && !!products.length && isEditing
+    const empty = current.matches('idle') && !products.length
+
+
+    switch(true) {
+      case loading: {
+        return <Loading />
+      }
+
+      case ready: {
+        return (
+          <ReadyView
+            products={products}
+            setIsEditing={setIsEditing}
+          />
+        )
+      }
+
+      case editMode: {
+        return (
+          <EditView
+            products={products}
+            setIsEditing={setIsEditing}
+          />
+        )
+      }
+
+      case empty:
+      default: {
+        return <Empty />
+      }
+    }
+  }
+
   return (
     <Section
       className={styles['cartContainer']}    
@@ -85,33 +82,7 @@ const CartView = () => {
 
       <Divider />
 
-      <div
-        className={styles['cartView']}
-      >
-        <div
-          className={styles['left']}
-        >
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-        </div>
-
-        <Divider
-          orientation='vertical'
-          flexItem
-        />
-
-        <div
-          className={styles['right']}
-        >
-          tyghbj
-        </div>
-      </div>
-
+      { CartStateView() }
     </Section>
   )
 }

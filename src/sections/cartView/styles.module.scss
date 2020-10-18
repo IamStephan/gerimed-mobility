@@ -5,31 +5,71 @@
     display: flex;
 
     .left {
-      padding: #{$padding}px;
       flex: 1;
 
-      .cartItem {
-        display: flex;
-        align-items: center;
+      .content {
+        padding: #{$padding}px;
 
-        .img, .data, .input, .remove {
-          padding: #{$padding}px;
-        }
-
-        .img {
-          .imgShowcase {
-            width: 75px;
-            height: 75px;
+        .cartItem {
+          display: flex;
+          align-items: center;
+  
+          .img, .data, .input, .remove {
+            padding: #{$padding}px;
+          }
+  
+          .img {
+            .imgShowcase {
+              width: 75px;
+              height: 75px;
+              background-color: transparent;
+            }
+          }
+  
+          .data {
+            align-self: stretch;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+  
+            .title {
+              font-size: 1.2rem;
+            }
+  
+            .price {
+              margin-bottom: #{$margin}px;
+            }
+  
+            .categoryContainer {
+              overflow: hidden;
+              display: flex;
+              flex-wrap: wrap;
+              overflow: hidden;
+          
+              .category {
+                margin-right: #{$margin}px;
+                margin-bottom: #{$margin}px;
+          
+                &:last-child {
+                  margin-right: 0px;
+                }
+              }
+            }
+          }
+  
+          .input {
+            flex-basis: 100px;
+            flex-shrink: 0;
+            flex-grow: 0;
           }
         }
+      }
 
-        .data {
-          align-self: stretch;
-        }
-
-        .data {
-          flex: 1;
-        }
+      .actions {
+        padding: #{$padding}px;
+        display: flex;
+        justify-content: flex-end;
       }
     }
 

@@ -70,7 +70,7 @@ const Shipping = () => {
     if(isEditing) {
       reset(defaultValues)
     }
-  }, [current.context.user, isEditing])
+  }, [current.context.user, isEditing, reset, defaultValues])
 
   function _handleSubmit(data) {
     const {

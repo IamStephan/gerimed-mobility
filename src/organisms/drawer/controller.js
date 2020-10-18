@@ -64,7 +64,6 @@ const LocalContoller = Machine({
         const opacity = Number(window.getComputedStyle(context.dimmerRef.current).getPropertyValue("opacity"))
 
         if(opacity < 0.5) {
-          console.log('SHOW')
           send('SET_SHOULD_UNHIDE')
         }
       }
@@ -73,7 +72,6 @@ const LocalContoller = Machine({
         const opacity = Number(window.getComputedStyle(context.dimmerRef.current).getPropertyValue("opacity"))
 
         if(opacity < 0.5) {
-          console.log('HIDE')
           send('SET_SHOULD_HIDE')
         }
       }

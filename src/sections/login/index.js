@@ -54,8 +54,6 @@ const LoginSection = () => {
     resolver: yupResolver(loginSchema)
   })
 
-  console.log(current)
-
   useEffect(() => {
     if(current.event.type === 'done.invoke.loading.login') {
       navigate('/profile')

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 // Material
 import { Typography, Button, LinearProgress } from '@material-ui/core'
@@ -11,6 +11,9 @@ import { AuthService } from '../../../../organisms/provider'
 
 // Template
 import TabTemplate from '../../components/tabTemplate'
+
+// Gatsby
+import { navigate } from 'gatsby'
 
 // Styles
 import styles from './styles.module.scss'
