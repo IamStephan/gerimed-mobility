@@ -188,138 +188,138 @@ const ShopFilter = () => {
   const [showAvailability, setShowAvailability] = useState(false)
   const [categoryList, setCategoryList] = useState([])
 
-  const categoriesBuilder = useCallback(() => {
+  // const categoriesBuilder = useCallback(() => {
     
-    // The categories are static and do not rerun when called again since the data will NOT change
-    if(categoryList.length) return
+  //   // The categories are static and do not rerun when called again since the data will NOT change
+  //   if(categoryList.length) return
 
-    function swap(input, index_A, index_B) {
-      let temp = input[index_A];
+  //   function swap(input, index_A, index_B) {
+  //     let temp = input[index_A];
   
-      input[index_A] = input[index_B];
-      input[index_B] = temp;
-    }
+  //     input[index_A] = input[index_B];
+  //     input[index_B] = temp;
+  //   }
 
-    // Mutation array of all the nodes that have not been worked on
-    let categoryHistory = [...categories]
+  //   // Mutation array of all the nodes that have not been worked on
+  //   let categoryHistory = [...categories]
 
-    // Used for path lookup on nodes that have been handled
-    let categoriesLookUp = {
-      /**
-       * id: path: String
-       */
-    }
+  //   // Used for path lookup on nodes that have been handled
+  //   let categoriesLookUp = {
+  //     /**
+  //      * id: path: String
+  //      */
+  //   }
 
-    // The actual list to use
-    let categoryListMap = []
+  //   // The actual list to use
+  //   let categoryListMap = []
 
-    /**
-     * NOTE:
-     * ====
-     * This confused me at first but when setting a path
-     * for the lookup an then placing it according to that
-     * path in the list works with just specifying the length
-     * 
-     * This is because the length represents one index above
-     * an index that does not exist. Therefore when setting the
-     * node to that index it creates a new entry. When subtracting 1 
-     * from the length the node that exists there will get replaced
-     */
-    let limit = 0
-    while (categoryHistory.length > 0 || limit > 1000) {
-      limit += 1
+  //   /**
+  //    * NOTE:
+  //    * ====
+  //    * This confused me at first but when setting a path
+  //    * for the lookup an then placing it according to that
+  //    * path in the list works with just specifying the length
+  //    * 
+  //    * This is because the length represents one index above
+  //    * an index that does not exist. Therefore when setting the
+  //    * node to that index it creates a new entry. When subtracting 1 
+  //    * from the length the node that exists there will get replaced
+  //    */
+  //   let limit = 0
+  //   while (categoryHistory.length > 0 || limit > 1000) {
+  //     limit += 1
 
-      for(let i = 0; i < categoryHistory.length; i++) {
-        if(categoryHistory[i].parent) {
-          /**
-           * loop through the lookup to find the path
-           */
-          const entries = Object.entries(categoriesLookUp) || []
+  //     for(let i = 0; i < categoryHistory.length; i++) {
+  //       if(categoryHistory[i].parent) {
+  //         /**
+  //          * loop through the lookup to find the path
+  //          */
+  //         const entries = Object.entries(categoriesLookUp) || []
 
-          let foundParent = false
+  //         let foundParent = false
 
-          // look in the look up if the parent is already added 
-          for (let j = 0; j < entries.length; j++) {
-            const [key] = entries[j]
+  //         // look in the look up if the parent is already added 
+  //         for (let j = 0; j < entries.length; j++) {
+  //           const [key] = entries[j]
             
-            if(key === categoryHistory[i].parent.id) {
-              /**
-               * Found a match
-               */
-              foundParent = true
-              // Get the array path based on the length
-              const index = get(categoryListMap, `${categoriesLookUp[categoryHistory[i].parent.id]}.children.length`, 0)
+  //           if(key === categoryHistory[i].parent.id) {
+  //             /**
+  //              * Found a match
+  //              */
+  //             foundParent = true
+  //             // Get the array path based on the length
+  //             const index = get(categoryListMap, `${categoriesLookUp[categoryHistory[i].parent.id]}.children.length`, 0)
               
-              const path = `${categoriesLookUp[categoryHistory[i].parent.id]}.children[${index}]`
+  //             const path = `${categoriesLookUp[categoryHistory[i].parent.id]}.children[${index}]`
 
-              // Set the look up path
-              categoriesLookUp[categoryHistory[i].id] = path
+  //             // Set the look up path
+  //             categoriesLookUp[categoryHistory[i].id] = path
 
-              // Add it to the list
-              set(categoryListMap, path, {
-                name: categoryHistory[i].name,
-                id: categoryHistory[i].id,
-                children: []
-              })
+  //             // Add it to the list
+  //             set(categoryListMap, path, {
+  //               name: categoryHistory[i].name,
+  //               id: categoryHistory[i].id,
+  //               children: []
+  //             })
 
-              // Remove the item from the history
-              categoryHistory.splice(i, 1)
+  //             // Remove the item from the history
+  //             categoryHistory.splice(i, 1)
 
-              // Break and restart the loop
-              break
-            }
-          }
+  //             // Break and restart the loop
+  //             break
+  //           }
+  //         }
 
-          if(!foundParent) {
-            /**
-             * Swap the item with the next one
-             * 
-             * This is to perserve the sorting of the
-             * original query (alphabetically)
-             * 
-             * This reason i do not have to check for the last
-             * index is because all the items has to be sorted
-             * into an category (The server implicitly forces this data structure)
-             * 
-             * so when the item is swapped to the last index it will allways
-             * have a place to go
-             */
-            swap(categoryHistory, i, i + 1)
-            break
-          }
+  //         if(!foundParent) {
+  //           /**
+  //            * Swap the item with the next one
+  //            * 
+  //            * This is to perserve the sorting of the
+  //            * original query (alphabetically)
+  //            * 
+  //            * This reason i do not have to check for the last
+  //            * index is because all the items has to be sorted
+  //            * into an category (The server implicitly forces this data structure)
+  //            * 
+  //            * so when the item is swapped to the last index it will allways
+  //            * have a place to go
+  //            */
+  //           swap(categoryHistory, i, i + 1)
+  //           break
+  //         }
 
-          break
+  //         break
 
-        } else {
-          /**
-           * These are the roots
-           */
+  //       } else {
+  //         /**
+  //          * These are the roots
+  //          */
 
-          // Set the look up path
-          const path = `[${categoryListMap.length}]`
+  //         // Set the look up path
+  //         const path = `[${categoryListMap.length}]`
 
-          categoriesLookUp[categoryHistory[i].id] = path
+  //         categoriesLookUp[categoryHistory[i].id] = path
 
-          // Add it to the list
-          categoryListMap.push({
-            name: categoryHistory[i].name,
-            id: categoryHistory[i].id,
-            children: []
-          })
+  //         // Add it to the list
+  //         categoryListMap.push({
+  //           name: categoryHistory[i].name,
+  //           id: categoryHistory[i].id,
+  //           children: []
+  //         })
 
-          // Remove the item from the history
-          categoryHistory.splice(i, 1)
+  //         // Remove the item from the history
+  //         categoryHistory.splice(i, 1)
 
-          // Break and restart the loop
-          break
-        }
-      }
-    }
+  //         // Break and restart the loop
+  //         break
+  //       }
+  //     }
+  //   }
 
-    setCategoryList(categoryListMap)
-  }, [])
+  //   setCategoryList(categoryListMap)
+  // }, [])
 
-  useEffect(() => categoriesBuilder(), [categoryList])
+  // useEffect(() => categoriesBuilder(), [categoryList])
 
   function _applyFilters(data) {
     send('APPLY_FILTERS', {
@@ -327,72 +327,31 @@ const ShopFilter = () => {
     })
   }
 
-  const renderTree = (nodes) => {
-    if(Array.isArray(nodes)) {
-      return (
-        <TreeItem
-          key='nodes.id'
-          nodeId='categories'
-          classes={{
-            selected: {
-              backgroundColor: 'none'
-            }
-          }}
-          label={(
-            <Typography
-              variant='overline'
-              color='secondary'
-            >
-              <b>Categories</b>
-            </Typography>
-          )}
-        >
-          {nodes.map((node) => renderTree(node))}
-        </TreeItem>
-      )
-    } else if (Array.isArray(nodes.children)) {
-      return (
-        <TreeItem
-          key={nodes.id}
-          nodeId={nodes.id}
-          label={nodes.name}
-        >
-          {nodes.children.map((node) => renderTree(node))}
-        </TreeItem>
-      )
-    } else {
-      return (
-        <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} />
-      )
-    }
-    
-  };
-
   /**
    * Optimize This
    */
-  function flatCategories(nodes, level) {
-    const data = flatMapDeep(nodes, (value) => {
-      if(value.children.length > 0) {
-        return [
-          {
-            ...value,
-            level: level
-          },
-          flatCategories(value.children, level + 1)
-        ]
-      } else {
-        return {
-          ...value,
-          level: level
-        }
-      }
-    })
+  // function flatCategories(nodes, level) {
+  //   const data = flatMapDeep(nodes, (value) => {
+  //     if(value.children.length > 0) {
+  //       return [
+  //         {
+  //           ...value,
+  //           level: level
+  //         },
+  //         flatCategories(value.children, level + 1)
+  //       ]
+  //     } else {
+  //       return {
+  //         ...value,
+  //         level: level
+  //       }
+  //     }
+  //   })
 
-    return data
-  }
+  //   return data
+  // }
 
-  const categoriesFlat = flatCategories(categoryList, 0)
+  // const categoriesFlat = flatCategories(categoryList, 0)
 
   return (
     <div
