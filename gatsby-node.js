@@ -135,8 +135,6 @@ function categoriesBuilder(categories) {
         // Remove the item from the history
         categoryHistory.splice(i, 1)
 
-        console.log('Parents', JSON.stringify(categoryListMap, null, 2))
-
         // Break and restart the loop
         break
       }
@@ -186,24 +184,12 @@ function flatCategories(nodes, level) {
  * Its meant for a tree component but i have to create a custom tree component, since
  * existing solutions are not satisfactory(relative to the project).
  */
-exports.sourceNodes = ({actions: {createNode}, createNodeId, createContentDigest, getNodesByType, reporter}, options) => {
-  reporter.info('Starting')
+exports.sourceNodes = ({actions: {createNode}, createNodeId, createContentDigest, getNodesByType}) => {
   const nodes = getNodesByType('StrapiCategories')
-
-  if(!nodes) return
-  reporter.info('Got Nodes')
-
   const categories = nodes[0].categories
-
-  //console.log(JSON.stringify(categories, null, 2))
-
-  reporter.info('Starting tree build')
   const categoriesTree = categoriesBuilder(categories)
-
-  reporter.info('Flatten tree')
   const flattenedCategories = flatCategories(categoriesTree, 0)
 
-  reporter.info('Creating node')
   return createNode({
     categoriesMod: flattenedCategories,
     id: createNodeId(`___CategoriesExtended___`),
