@@ -225,7 +225,9 @@ const ShopFilter = () => {
      * node to that index it creates a new entry. When subtracting 1 
      * from the length the node that exists there will get replaced
      */
-    while (categoryHistory.length > 0) {
+    let limit = 0
+    while (categoryHistory.length > 0 || limit > 1000) {
+      limit += 1
 
       for(let i = 0; i < categoryHistory.length; i++) {
         if(categoryHistory[i].parent) {
