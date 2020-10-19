@@ -67,8 +67,6 @@ const CustomerItem = props => {
 const Testimonials = () => {
   const { Testimonials: { data: { testimonials } } } = useStaticQuery(STATIC_QUERY)
 
-  console.log(testimonials)
-
   const allTestimonies = [
     ...testimonials,
     ...testimonials,
