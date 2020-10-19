@@ -118,6 +118,8 @@ function categoriesBuilder(categories) {
         // Remove the item from the history
         categoryHistory.splice(i, 1)
 
+        console.log('Parents', JSON.stringify(categoryListMap, null, 2))
+
         // Break and restart the loop
         break
       }
@@ -165,7 +167,7 @@ exports.sourceNodes = ({actions: {createNode}, createNodeId, createContentDigest
 
   const categories = nodes[0].categories
 
-  console.log(JSON.stringify(categories, null, 2))
+  //console.log(JSON.stringify(categories, null, 2))
 
   reporter.info('Starting tree build')
   const categoriesTree = categoriesBuilder(categories)
