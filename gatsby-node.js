@@ -1,5 +1,6 @@
 const _ = require('lodash')
 
+
 function swap(input, index_A, index_B) {
   let temp = input[index_A];
 
@@ -92,7 +93,22 @@ function categoriesBuilder(categories) {
            * so when the item is swapped to the last index it will allways
            * have a place to go
            */
-          swap(categoryHistory, i, i + 1)
+
+          /**
+           * find the next parent node
+           * 
+           * If I dont do this then this function will go into an infinite loop
+           */
+          let swapIndex = i + 1
+          
+          for(let j = i; j < categoryHistory.length; j++) {
+            if(!categoryHistory[j].parent) {
+              swapIndex = j
+              break
+            }
+          }
+           
+          swap(categoryHistory, i, swapIndex)
           break
         }
 
