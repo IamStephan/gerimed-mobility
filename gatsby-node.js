@@ -156,15 +156,22 @@ function categoriesBuilder(categories) {
     return data
   }
 
-exports.sourceNodes = ({actions: {createNode}, createNodeId, createContentDigest, getNodesByType}, options) => {
+exports.sourceNodes = ({actions: {createNode}, createNodeId, createContentDigest, getNodesByType, reporter}, options) => {
+  reporter.info('Starting')
   const nodes = getNodesByType('StrapiCategories')
+
+  if(!nodes) return
+  reporter.info('Got Nodes')
 
   const categories = nodes[0].categories
 
+  reporter.info('Starting tree build')
   const categoriesTree = categoriesBuilder(categories)
 
+  reporter.info('Flatten tree')
   const flattenedCategories = flatCategories(categoriesTree, 0)
 
+  reporter.info('Creating node')
   return createNode({
     categoriesMod: flattenedCategories,
     id: createNodeId(`___CategoriesExtended___`),
