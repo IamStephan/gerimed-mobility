@@ -29,6 +29,12 @@ $item-width: 225;
         background-color: $danger;
         color: $light;
       }
+
+      &.dangerOutline {
+        border-color: $danger;
+        background-color: transparent;
+        color: $danger;
+      }
     }
 
     .salesBadge {

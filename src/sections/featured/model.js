@@ -15,6 +15,9 @@ const FeaturedProducts = `
       id
       name
       price
+      shopOnly
+      isLimited
+      quantity
       categories {
         id
         name

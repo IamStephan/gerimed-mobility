@@ -392,8 +392,6 @@ const AuthController = new Machine({
 
       const errors = extractStrapiErrors(data) || []
 
-      console.log(event)
-
       errors.forEach((err) => {
         context.enqueueSnackbar(err.message, {
           variant: 'error'

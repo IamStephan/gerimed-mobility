@@ -7,7 +7,7 @@ function storageFactory(getStorage) {
    */
   
   
-  const storageChange = new Event('storageChange')
+  
 
   function isSupported() {
     try {
@@ -27,6 +27,9 @@ function storageFactory(getStorage) {
     } else {
       inMemoryStorage = {};
     }
+    const storageChange = new CustomEvent('storageChange', {
+      detail: '___NONE___'
+    })
     window.dispatchEvent(storageChange)
   }
 
@@ -56,6 +59,10 @@ function storageFactory(getStorage) {
     } else {
       delete inMemoryStorage[name];
     }
+
+    const storageChange = new CustomEvent('storageChange', {
+      detail: name
+    })
     window.dispatchEvent(storageChange)
   }
 
@@ -66,6 +73,9 @@ function storageFactory(getStorage) {
     } else {
       inMemoryStorage[name] = String(value); // not everyone uses TypeScript
     }
+    const storageChange = new CustomEvent('storageChange', {
+      detail: name
+    })
     window.dispatchEvent(storageChange)
   }
 

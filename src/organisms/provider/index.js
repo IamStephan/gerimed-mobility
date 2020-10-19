@@ -3,6 +3,10 @@ import React, { useEffect } from 'react'
 // Material
 import { ThemeProvider, createMuiTheme } from '@material-ui/core'
 
+// Modals
+import ReconcileModal from '../../molecules/reconcile_modal'
+import LogoutModal from '../../molecules/logout_modal'
+
 // Controllers
 import { AuthController } from './controllers/auth_controller'
 import { CartController } from './controllers/cart_controller'
@@ -86,6 +90,9 @@ const Provider = props => {
         preventDuplicate
       >
         <AuthNotifications />
+        <ReconcileModal />
+        <LogoutModal />
+
 
         { props.children }  
       </SnackbarProvider>

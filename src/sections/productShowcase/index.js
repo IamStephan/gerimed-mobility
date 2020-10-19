@@ -1,10 +1,10 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 
 // Template
 import { Section } from '../../templates/content_layout'
 
 // Material
-import { Typography, Divider, Button, Tab, Chip, TextField } from '@material-ui/core'
+import { Typography, Divider, Button, Tab, Chip, TextField, LinearProgress } from '@material-ui/core'
 import { Rating, TabContext, TabList, TabPanel, Alert, Skeleton } from '@material-ui/lab'
 
 // Gatsby
@@ -14,11 +14,14 @@ import { navigate } from 'gatsby'
 import { stringify } from 'qs'
 
 // Hooks
-import { useMachine } from '@xstate/react'
+import { useMachine, useService } from '@xstate/react'
 
-// States
+// Controller
 import { FetchGraphqlData } from '../../controllers/fetchGraphqlData'
 import { CarouselController } from './controller'
+
+// Global Controller
+import { CartService } from '../../organisms/provider'
 
 // Molecules
 import ProductCarousel from '../../molecules/product_carousel'
@@ -43,9 +46,38 @@ import { useLocation } from '@reach/router'
 // Styles
 import styles from './styles.module.scss'
 
+const ShopOnlyBadge = () => (
+  <Chip
+    className={`${styles['badge']} ${styles['dangerOutline']}`}
+    label='Shop Only'
+    size='small'
+    variant='outlined'
+  />
+)
+
+const OutOfStockBadge = () => (
+  <Chip
+    className={`${styles['badge']} ${styles['danger']}`}
+    label='Out of Stock'
+    size='small'
+  />
+)
+
+const OnSaleBadge = ({ discountAmount=30 }) => (
+  <div
+    className={styles['salesBadge']}
+  >
+    <Typography
+      className={styles['text']}
+    >
+      -<b>{discountAmount}%</b>
+    </Typography>
+  </div>
+)
 
 const ProductShowcase = () => {
   const location = useLocation()
+
   const qsParams = parse(location.search, {
     ignoreQueryPrefix: true
   })
@@ -60,6 +92,9 @@ const ProductShowcase = () => {
 
     navigate(`/shop?${queryString}`)
   }
+
+  // Global Controller
+  const [currentGlobal, sendGlobal] = useService(CartService)
 
   // Data Controller
   const [currentData, sendDataEvent] = useMachine(FetchGraphqlData, {
@@ -96,17 +131,153 @@ const ProductShowcase = () => {
     sendCarouselEvent('RESET_INDEX')
   }, [qsParams.id])
 
+  
+
   // States
   const loading = currentData.matches('loading') || currentData.matches('retry') || currentData.matches('idle')
   const error = currentData.matches({fail: 'idle'}) || currentData.matches({fail: 'reset'})
   const success = currentData.matches('success') || currentData.matches('success_final')
+  const addingProduct = currentGlobal.matches({ loading: 'addProduct' })
+
+  // Form Data
+  const [quantity, setQuantity] = useState(1)
 
   // Data
   const product = currentData?.context?.data?.product
   const images = product?.showcase
   const index = currentCarousel.context.index
 
-  //console.log(product)
+  // availability
+  const availability = () => {
+    if (!product) return
+    
+    const {
+      quantity = 0,
+      shopOnly = false,
+      isLimited = false
+    } = product
+
+    let testQuantity = 0
+
+    if(quantity) testQuantity = Number(quantity)
+
+    if(shopOnly) {
+      return 'shopOnly'
+    }
+
+    if(isLimited) {
+      if(testQuantity < 1) {
+        return 'outStock'
+      }
+      return 'inStock'
+    } else {
+      return 'available'
+    }
+
+  }
+
+  const availabilityRes = availability()
+
+  function showAvailibility(availabilityEnum) {
+    switch(availabilityEnum) {
+      case 'shopOnly': {
+        return <ShopOnlyBadge />
+      }
+
+      case 'outStock': {
+        return <OutOfStockBadge />
+      }
+
+      case 'available': {
+        return (
+          <Chip
+            variant='default'
+            color='secondary'
+            size='small'
+            label='Available'
+          />
+        )
+      }
+
+      case 'inStock': {
+        return (
+          <Chip
+            variant='default'
+            color='secondary'
+            size='small'
+            label='In Stock'
+          />
+        )
+      }
+
+      default: {
+        return null
+      }
+    }
+  }
+
+  function showMessage(availabilityEnum) {
+    switch(availabilityEnum) {
+      case 'shopOnly': {
+        return (
+          <Alert severity='error'>
+            This item is only sold on-premise and <b>NOT</b> online.
+          </Alert>
+        )
+      }
+
+      case 'available': {
+        return (
+          <Alert severity='info'>
+            This item is not held on-premise, therefore, shipping might take longer than expected.
+          </Alert>
+        )
+      }
+
+      case 'outStock': {
+        return (
+          <Alert severity='error'>
+            This item is currently <b>OUT OF STOCK</b>
+          </Alert>
+        )
+      }
+
+      default: {
+        return null
+      }
+    }
+  }
+
+  function showCartActions(availabilityEnum) {
+    switch(availabilityEnum) {
+      case 'shopOnly': {
+        return false
+      }
+
+      case 'outStock': {
+        return false
+      }
+
+      default: {
+        return true
+      }
+    }
+  }
+
+  function _handleQuantityChange(event) {
+    const { target: { value } } = event
+
+    if(Number(value) < 1) return
+
+    setQuantity(Number(value))
+  }
+
+  function _handleAddToCart() {
+    sendGlobal('ADD_PRODUCT', {
+      id: product.id,
+      quantity: quantity
+    })
+  }
 
   const Carousel = useCallback(() => {
     switch(true) {
@@ -370,21 +541,14 @@ const ProductShowcase = () => {
               </Typography>
 
               <div>
-                <Chip
-                  variant='default'
-                  color='secondary'
-                  size='small'
-                  label={ !product.isLimited ? 'Available' : product.quantity ? 'In Stock' : 'Out of Stock' }
-                />
+                {
+                  showAvailibility(availabilityRes)
+                }
               </div>
             </div>
 
             {
-              !product.isLimited && (
-                <Alert severity='info'>
-                  This item is not held on-premise, therefore, shipping might take longer than expected.
-                </Alert>
-              )
+              showMessage(availabilityRes)
             }
 
             <div>
@@ -393,28 +557,53 @@ const ProductShowcase = () => {
               />
             </div>
 
-            <div
-              className={styles['cartActions']}
-            >
-              <TextField
-                label='Quantity'
-                color='secondary'
-                variant='outlined'
-                size='small'
-                type='number'
-                value={1}
-                className={styles['input']}
-              />
+            {
+              showCartActions(availabilityRes) && (
+                <div
+                  className={styles['cartActions']}
+                >
+                  {
+                    addingProduct && (
+                      <div
+                        className={`${styles['row']} ${styles['loader']}`}
+                      >
+                        <LinearProgress
+                          color='secondary'
+                        />
+                      </div>
+                    )
+                  }
+                  <div
+                    className={styles['row']}
+                  >
+                    <TextField
+                      label='Quantity'
+                      color='secondary'
+                      variant='outlined'
+                      size='small'
+                      type='number'
+                      value={quantity}
+                      onChange={_handleQuantityChange}
+                      className={styles['input']}
+                    />
 
-              <Button
-                variant='contained'
-                color='secondary'
-                disableElevation
-                className={styles['button']}
-              >
-                Add To Cart
-              </Button>
-            </div>
+                    <Button
+                      variant='contained'
+                      color='secondary'
+                      disableElevation
+                      className={styles['button']}
+                      onClick={_handleAddToCart}
+                      disabled={true}
+                    >
+                      Add To Cart
+                    </Button>
+                  </div>
+                  
+                </div>
+              )
+            }
+
+            
 
             <TabContext
               value='desc'

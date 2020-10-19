@@ -1,0 +1,79 @@
+@import '../../utils/colors';
+@import '../../utils/border';
+@import '../../utils/sizes';
+
+$member-width: 300;
+
+$avatar-size: 100;
+
+$breakpoint-1: 625;
+
+.shopTeamSection {
+  .title {
+    font-weight: bold;
+    margin-bottom: #{$margin * 2}px;
+  }
+
+  .teamContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    .member {
+      width: #{$member-width}px;
+      margin: #{$margin / 2}px;
+
+      .avatarContainer {
+        display: flex;
+        justify-content: center;
+        margin-bottom: #{$margin * 2}px;
+
+        .avatar {
+          background-color: $secondary;
+          width: #{$avatar-size}px;
+          height: #{$avatar-size}px;
+          margin-bottom: #{$margin * 2}px;
+          position: relative;
+          overflow: hidden;
+
+          .img {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            width: 100%;
+          }
+        }
+      }
+
+      .nameContainer {
+        display: flex;
+        justify-content: center;
+
+        .text {
+          flex: 1;
+          text-align: center;
+        }
+      }
+
+      .titleContainer {
+        display: flex;
+        justify-content: center;
+        margin-bottom: #{$margin * 2}px;
+
+        .text {
+          flex: 1;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-1}px) {
+  .shopTeamSection {
+    .title {
+      text-align: center;
+    }
+  }
+}

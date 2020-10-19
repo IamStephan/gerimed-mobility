@@ -36,7 +36,7 @@ import { useLocation } from '@reach/router'
 import { LocalController } from './controller'
 
 // utils
-import { set, get } from 'lodash'
+import { set, get, flatMapDeep } from 'lodash'
 
 // Styles
 import styles from './styles.module.scss'
@@ -325,8 +325,6 @@ const ShopFilter = () => {
     })
   }
 
-  console.log('TEST', categoryList)
-
   const renderTree = (nodes) => {
     if(Array.isArray(nodes)) {
       return (
@@ -355,13 +353,6 @@ const ShopFilter = () => {
         <TreeItem
           key={nodes.id}
           nodeId={nodes.id}
-          // icon={(
-          //   <Checkbox
-              
-          //     size='small'
-          //     name={nodes.name}
-          //   />
-          // )}
           label={nodes.name}
         >
           {nodes.children.map((node) => renderTree(node))}
@@ -374,6 +365,32 @@ const ShopFilter = () => {
     }
     
   };
+
+  /**
+   * Optimize This
+   */
+  function flatCategories(nodes, level) {
+    const data = flatMapDeep(nodes, (value) => {
+      if(value.children.length > 0) {
+        return [
+          {
+            ...value,
+            level: level
+          },
+          flatCategories(value.children, level + 1)
+        ]
+      } else {
+        return {
+          ...value,
+          level: level
+        }
+      }
+    })
+
+    return data
+  }
+
+  const categoriesFlat = flatCategories(categoryList, 0)
 
   return (
     <div
@@ -427,14 +444,14 @@ const ShopFilter = () => {
           />
         </SideTrackSection>
 
-        {/* <SideTrackSection
+        <SideTrackSection
           title='Categories'
           isOpen={showCategories}
           setOpen={() => setShowCategories((prev) => !prev)}
         >
           <FormGroup>
               {
-                categories.map((category) => (
+                categoriesFlat.map((category) => (
                   <Controller
                     key={category.id}
                     control={control}
@@ -443,7 +460,9 @@ const ShopFilter = () => {
                     render={({ onChange, onBlur, value, name }) => (
                       <FormControlLabel
                         key={category.id}
-                        labelPlacement='start'
+                        style={{
+                          marginLeft: category.level * 24
+                        }}
                         control={(
                           <Checkbox
                             onBlur={onBlur}
@@ -460,14 +479,7 @@ const ShopFilter = () => {
                 ))
               }
           </FormGroup>
-        </SideTrackSection> */}
-
-        <TreeView
-          defaultCollapseIcon={<ExpandMoreOutlined />}
-          defaultExpandIcon={<ExpandMoreOutlined />}
-        >
-          {renderTree(categoryList)}
-        </TreeView>
+        </SideTrackSection>
 
         <SideTrackSection
           title='Availability'

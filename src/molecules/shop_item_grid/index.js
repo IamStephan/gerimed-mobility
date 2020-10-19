@@ -136,6 +136,9 @@ const ShopItemGrid = () => {
                   price={product.price}
                   categories={product.categories}
                   showcase={product.showcase}
+                  shopOnly={product.shopOnly}
+                  isLimited={product.isLimited}
+                  quantity={product.quantity}
                 />
               ))
             }

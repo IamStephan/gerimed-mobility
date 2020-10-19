@@ -10,6 +10,7 @@ import { PAGES } from '../../constants/pages'
 import AboutSection from '../../sections/about'
 import PsuedoMap from '../../sections/pseudoMap'
 import ShopGallery from '../../sections/shopGallery'
+import ShopTeam from '../../sections/shopTeam'
 
 const About = () => {
   return (
@@ -18,6 +19,7 @@ const About = () => {
     >
       <PsuedoMap />
       <AboutSection />
+      <ShopTeam />
       <ShopGallery />
     </Layout>
   )

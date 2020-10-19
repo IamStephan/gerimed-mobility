@@ -20,6 +20,7 @@ import Loading from './views/loading'
 import Empty from './views/empty'
 import ReadyView from './views/ready'
 import EditView from './views/edit'
+import CommingSoom from './views/comming_soon'
 
 // Styles
 import styles from './styles.module.scss'
@@ -37,8 +38,12 @@ const CartView = () => {
     const editMode = current.matches('idle') && !!products.length && isEditing
     const empty = current.matches('idle') && !products.length
 
+    console.log(current)
 
     switch(true) {
+      case true: {
+        return <CommingSoom />
+      }
       case loading: {
         return <Loading />
       }

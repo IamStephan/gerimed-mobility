@@ -51,9 +51,10 @@ const Title = props => {
 
 const ShopOnlyBadge = () => (
   <Chip
-    className={`${styles['badge']} ${styles['danger']}`}
+    className={`${styles['badge']} ${styles['dangerOutline']}`}
     label='Shop Only'
     size='small'
+    variant='outlined'
   />
 )
 
@@ -91,10 +92,10 @@ const ShopItem = props => {
     name,
     price,
     showcase,
-    quantity = -10,
-    isLimited = false,
-    shopOnly = false,
-    sale = false,
+    quantity,
+    isLimited,
+    shopOnly,
+    sale,
     categories
   } = props
 

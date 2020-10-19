@@ -15,6 +15,9 @@ const LatestProducts = `
       id
       name
       price
+      shopOnly
+      isLimited
+      quantity
       categories {
         id
         name

@@ -40,6 +40,20 @@ $breakpoint1: 800;
         margin-bottom: #{$margin * 3}px;
       }
 
+      .badge {
+  
+        &.danger {
+          background-color: $danger;
+          color: $light;
+        }
+  
+        &.dangerOutline {
+          border-color: $danger;
+          background-color: transparent;
+          color: $danger;
+        }
+      }
+
       .categoryContainer {
         overflow: hidden;
         display: flex;
@@ -58,12 +72,20 @@ $breakpoint1: 800;
       .cartActions {
         margin-bottom: #{$margin * 3}px;
         display: flex;
-        align-items: center;
+        flex-direction: column;
 
-        .input {
-          max-width: 75px;
-          margin-right: #{$margin}px;
+        .row {
+          &.loader {
+            margin-bottom: #{$margin * 4}px;
+          }
+
+          .input {
+            max-width: 75px;
+            margin-right: #{$margin}px;
+          }
         }
+
+        
       }
     }
   }

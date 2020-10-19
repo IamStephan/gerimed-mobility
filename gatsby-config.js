@@ -191,6 +191,22 @@ module.exports = {
                 }
               }
             `
+          },
+          {
+            type: `Team`,
+            query: `
+              query {
+                shopTeam {
+                  member {
+                    name
+                    title
+                    profile {
+                      url
+                    }
+                  }
+                }
+              }
+            `
           }
         ]
       }

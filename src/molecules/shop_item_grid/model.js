@@ -13,6 +13,9 @@ const ProductsQuery = `
       id
       name
       price
+      isLimited
+      shopOnly
+      quantity
       showcase(
         limit: 1,
         start: 0
