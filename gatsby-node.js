@@ -95,12 +95,13 @@ function categoriesBuilder(categories) {
            */
 
           /**
-           * find the next parent node
+           * find the next parent node (Has no children)
            * 
-           * If I dont do this then this function will go into an infinite loop
+           * if two child nodes appear next to one another the swap function
+           * just swaps those two.
            */
           let swapIndex = i + 1
-          
+
           for(let j = i; j < categoryHistory.length; j++) {
             if(!categoryHistory[j].parent) {
               swapIndex = j
@@ -145,35 +146,46 @@ function categoriesBuilder(categories) {
   return categoryListMap
 }
 
-  function flatCategories(nodes, level) {
-    const data = _.flatMapDeep(nodes, (value) => {
-      /**
-       * Remove the children
-       * 
-       * The value will always have a children key
-       */
-      const valueClone = {...value}
-      delete valueClone.children
+function flatCategories(nodes, level) {
+  const data = _.flatMapDeep(nodes, (value) => {
+    /**
+     * Remove the children
+     * 
+     * The value will always have a children key
+     */
+    const valueClone = {...value}
+    delete valueClone.children
 
-      if(value.children.length > 0) {
-        return [
-          {
-            ...valueClone,
-            level: level
-          },
-          flatCategories(value.children, level + 1)
-        ]
-      } else {
-        return {
+    if(value.children.length > 0) {
+      return [
+        {
           ...valueClone,
           level: level
-        }
+        },
+        flatCategories(value.children, level + 1)
+      ]
+    } else {
+      return {
+        ...valueClone,
+        level: level
       }
-    })
+    }
+  })
 
-    return data
-  }
+  return data
+}
 
+
+/**
+ * Note
+ * =====
+ * It seems kind of stupid creating a tree and then flattening it
+ * 
+ * might end up being much more effecient just loop and swapping the array,
+ * but this works now and the implementation was not designed with flattening in mind
+ * Its meant for a tree component but i have to create a custom tree component, since
+ * existing solutions are not satisfactory(relative to the project).
+ */
 exports.sourceNodes = ({actions: {createNode}, createNodeId, createContentDigest, getNodesByType, reporter}, options) => {
   reporter.info('Starting')
   const nodes = getNodesByType('StrapiCategories')
