@@ -165,6 +165,8 @@ exports.sourceNodes = ({actions: {createNode}, createNodeId, createContentDigest
 
   const categories = nodes[0].categories
 
+  console.log(JSON.stringify(categories, null, 2))
+
   reporter.info('Starting tree build')
   const categoriesTree = categoriesBuilder(categories)
 
