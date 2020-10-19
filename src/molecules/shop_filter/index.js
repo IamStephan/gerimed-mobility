@@ -188,7 +188,7 @@ const ShopFilter = () => {
   const [showAvailability, setShowAvailability] = useState(false)
   const [categoryList, setCategoryList] = useState([])
 
-  const categoriesBuilder = () => {
+  const categoriesBuilder = useCallback(() => {
     
     // The categories are static and do not rerun when called again since the data will NOT change
     if(categoryList.length) return
@@ -317,7 +317,7 @@ const ShopFilter = () => {
     }
 
     setCategoryList(categoryListMap)
-  }
+  }, [])
 
   useEffect(() => categoriesBuilder(), [categoryList])
 
@@ -453,7 +453,7 @@ const ShopFilter = () => {
         >
           <FormGroup>
               {
-                categoriesFlat.map((category) => (
+                categories.map((category) => (
                   <Controller
                     key={category.id}
                     control={control}
