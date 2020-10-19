@@ -421,9 +421,9 @@ const ShopFilter = () => {
                     render={({ onChange, onBlur, value, name }) => (
                       <FormControlLabel
                         key={category.id}
-                        style={{
-                          marginLeft: category.level * 24
-                        }}
+                        // style={{
+                        //   marginLeft: category.level * 24
+                        // }}
                         control={(
                           <Checkbox
                             onBlur={onBlur}
