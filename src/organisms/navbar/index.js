@@ -123,7 +123,7 @@ const Navbar = props => {
     }
   }
 
-  const isTrans = current.matches('trans')
+  const isTrans = current.matches('trans') || enableTransMode
 
   function _toggleDrawer() {
     send('TOGGLE_DRAWER')
