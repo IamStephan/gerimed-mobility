@@ -1,79 +1,98 @@
-@import '../../utils/colors';
-@import '../../utils/border';
 @import '../../utils/sizes';
-
-$member-width: 300;
+@import '../../utils/colors';
 
 $avatar-size: 100;
+$slide-size: 200;
 
-$breakpoint-1: 625;
-
-.shopTeamSection {
+.teamSection {
   .title {
+    text-align: center;
+    margin-bottom: #{$margin * 4}px;
     font-weight: bold;
-    margin-bottom: #{$margin * 2}px;
+    padding: #{$padding * 2}px;
   }
 
-  .teamContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+  .container {
+    position: relative;
 
-    .member {
-      width: #{$member-width}px;
-      margin: #{$margin / 2}px;
+    .leftFade {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: 50px;
+      z-index: 2;
+      background: linear-gradient(90deg, $light 0%, rgba(255,255,255,0) 100%);
+    }
+  
+    .rightFade {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      height: 100%;
+      width: 50px;
+      z-index: 2;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, $light 100%);
+    }
 
-      .avatarContainer {
+    .itemsViewport {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+  
+      .itemsRow {
         display: flex;
-        justify-content: center;
-        margin-bottom: #{$margin * 2}px;
-
-        .avatar {
-          background-color: $secondary;
-          width: #{$avatar-size}px;
-          height: #{$avatar-size}px;
-          margin-bottom: #{$margin * 2}px;
+        align-items: stretch;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -khtml-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+  
+        .slide {
           position: relative;
-          overflow: hidden;
+          min-width: #{$slide-size}px;
+          //background-color: red;
+          display: flex;
+          justify-content: stretch;
+          align-items: stretch;
+          padding-left: 10px;
+          padding-right: 10px;
+  
+          .member {
+            flex: 1;
+            max-width: #{$slide-size}px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: #{$padding * 2}px;
 
-          .img {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            height: 100%;
-            width: 100%;
+            .name {
+              text-align: center;
+            }
+
+            .personTitle {
+              text-align: center;
+            }
+      
+            .avatar {
+              background-color: $secondary;
+              width: #{$avatar-size}px;
+              height: #{$avatar-size}px;
+              margin-bottom: #{$margin * 4}px;
+              position: relative;
+              overflow: hidden;
+
+              .img {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                height: 100%;
+                width: 100%;
+              }
+            }
           }
         }
       }
-
-      .nameContainer {
-        display: flex;
-        justify-content: center;
-
-        .text {
-          flex: 1;
-          text-align: center;
-        }
-      }
-
-      .titleContainer {
-        display: flex;
-        justify-content: center;
-        margin-bottom: #{$margin * 2}px;
-
-        .text {
-          flex: 1;
-          text-align: center;
-        }
-      }
-    }
-  }
-}
-
-@media screen and (max-width: #{$breakpoint-1}px) {
-  .shopTeamSection {
-    .title {
-      text-align: center;
     }
   }
 }

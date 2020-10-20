@@ -75,6 +75,12 @@ const OnSaleBadge = ({ discountAmount=30 }) => (
   </div>
 )
 
+/**
+ * TODO:
+ * =====
+ *  - Split components
+ */
+
 const ProductShowcase = () => {
   const location = useLocation()
 
@@ -593,7 +599,6 @@ const ProductShowcase = () => {
                       disableElevation
                       className={styles['button']}
                       onClick={_handleAddToCart}
-                      disabled={true}
                     >
                       Add To Cart
                     </Button>
@@ -602,8 +607,6 @@ const ProductShowcase = () => {
                 </div>
               )
             }
-
-            
 
             <TabContext
               value='desc'

@@ -2,6 +2,7 @@
 @import '../../utils/colors';
 
 $avatar-size: 75;
+$slide-size: 300;
 
 .testimonialSection {
   .title {
@@ -48,7 +49,7 @@ $avatar-size: 75;
   
         .slide {
           position: relative;
-          min-width: 300px;
+          min-width: #{$slide-size}px;
           //background-color: red;
           display: flex;
           justify-content: stretch;
@@ -58,7 +59,7 @@ $avatar-size: 75;
   
           .customer {
             flex: 1;
-            max-width: 300px;
+            max-width: #{$slide-size}px;
             display: flex;
             flex-direction: column;
             align-items: center;

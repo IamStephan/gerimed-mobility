@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 // Material
 import { Typography, Avatar } from '@material-ui/core'
@@ -6,6 +6,9 @@ import { Typography, Avatar } from '@material-ui/core'
 // Gatbsy
 import { useStaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image'
+
+// Carousel
+import { useEmblaCarousel } from 'embla-carousel/react'
 
 // Templates
 import { Section } from '../../templates/content_layout'
@@ -36,73 +39,120 @@ const STATIC_QUERY = graphql`
   }
 `
 
+const TeamMember = props => {
+  return (
+    <div
+      className={styles['member']}
+    >
+      {
+        props.children
+      }
+
+      <Typography
+        className={styles['name']}
+      >
+        <b>Stephan Burger</b>
+      </Typography>
+
+      <Typography
+        className={styles['personTitle']}
+      >
+        CEO, Avvent Studio
+      </Typography>
+    </div>
+  )
+}
+
 const ShopTeam = () => {
   const { Team: { shopTeam: { member } } } = useStaticQuery(STATIC_QUERY)
 
+  const allMembers = [
+    ...member,
+    ...member,
+  ]
+
+  const [emblaRef, embla] = useEmblaCarousel({
+    align: 'center',
+    loop: true,
+  })
+
+  useEffect(() => {
+    if(!embla) return
+
+    let id = 0
+    const tick = () => {
+      embla.scrollNext()
+      requestAnimationFrame(() => (id = setTimeout(tick, 6000)));
+    }
+
+    requestAnimationFrame(() => (id = setTimeout(tick, 6000)));
+
+    return () => {
+      if (id) clearTimeout(id);
+    }
+  }, [embla])
+
   return (
     <Section
-      className={styles['shopTeamSection']}
+      className={styles['teamSection']}
     >
       <Typography
-        variant='h3'
         className={styles['title']}
+        variant='h3'
       >
-        Meet the team...
+        Meet the team
       </Typography>
 
       <div
-        className={styles['teamContainer']}
+        className={styles['container']}
       >
-        {
-          member.map((member, i) => (
-            <div
-              className={styles['member']}
-              key={i}
-            >
+        <div
+          className={styles['leftFade']}
+        />
+
+        <div
+          className={styles['itemsViewport']}
+          ref={emblaRef}
+        >
+          <div
+            className={styles['itemsRow']}
+          >
+            {allMembers.map((person, i) => (
               <div
-                className={styles['avatarContainer']}
+                className={styles['slide']}
+                key={i}
               >
-                {
-                  member.profile ? (
-                    <Avatar
-                      className={styles['avatar']}>
-                      <Img
-                        fluid={member.profile.remoteImage.childImageSharp.fluid}
-                        className={styles['img']}
+                <TeamMember
+                  name={person.name}
+                  title={person.title}
+                >
+                  {
+                    person.profile ? (
+                      <Avatar
+                        className={styles['avatar']}>
+                        <Img
+                          fluid={person.profile.remoteImage.childImageSharp.fluid}
+                          className={styles['img']}
+                        />
+                      </Avatar>
+                    ) : (
+                      <Avatar
+                        className={styles['avatar']}
                       />
-                    </Avatar>
-                  ) : (
-                    <Avatar
-                      className={styles['avatar']}
-                    />
-                  )
-                }
+                    )
+                  }
+                </TeamMember>
               </div>
+            ))}
+          </div>
+        </div>
 
-              <div
-                className={styles['nameContainer']}
-              >
-                <Typography
-                  className={styles['name']}
-                >
-                  <b>{member.name}</b>
-                </Typography>
-              </div>
-
-              <div
-                className={styles['titleContainer']}
-              >
-                <Typography
-                  className={styles['name']}
-                  variant='caption'
-                >
-                  {member.title}
-                </Typography>
-              </div>
-            </div>
-          ))
-        }
+        <div
+          className={styles['rightFade']}
+        />
       </div>
+
+      
     </Section>
   )
 }

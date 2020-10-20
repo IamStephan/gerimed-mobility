@@ -19,7 +19,8 @@ function axiosMutationFactory(url, data, options = {}, carryData = {}) {
         reject({
           ...data,
           // So i know i should do a deep dive for error messages
-          strapiErrors: true
+          strapiErrors: true,
+          carryData
         })
       } else {
         // You know, just to keep with the consistency of idiocy 👍

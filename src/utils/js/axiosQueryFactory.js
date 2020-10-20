@@ -11,21 +11,22 @@ import axios from 'axios'
  * but im splitting them incase i need to make changes
  */ 
 
-function axiosQueryFactory(url, data, options = {}) {
+function axiosQueryFactory(url, data, options = {}, carryData = {}) {
   return new Promise((resolve, reject) => {
     axios.post(url, data, options).then(({ data }) => {
       if(data.errors) {
         reject({
           ...data,
           // So i know i should do a deep dive for error messages
-          strapiErrors: true
+          strapiErrors: true,
+          carryData
         })
       } else {
         // You know, just to keep with the consistency of idiocy 👍
-        resolve({ data })
+        resolve({ data, carryData })
       }
     }).catch((err) => {
-      reject(err)
+      reject({err})
     })
   })
 }
