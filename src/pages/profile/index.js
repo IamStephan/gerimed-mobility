@@ -13,23 +13,34 @@ import ProfileTemplate from '../../client_pages/profile'
 // Components
 import PrivateRoute from '../../organisms/private_route'
 
+// SEO
+import SEO from '../../molecules/seo'
+
 const Profile = () => {
   if(typeof window === 'undefined') return null
 
   return (
-    <Router
-      basepath='/profile'
-    >
-      <Register path='/register' />
-      <Login path='/login' />
-      <ForgotPassword path='/forgot' />
-      <ResetPassword path='/reset' />
-
-      <PrivateRoute
-        component={ProfileTemplate}
-        path='/*'
+    <>
+      <SEO
+        title='Profile'
+        description='Gerimed Mobility Home'
       />
-    </Router>
+
+      <Router
+        basepath='/profile'
+      >
+        <Register path='/register' />
+        <Login path='/login' />
+        <ForgotPassword path='/forgot' />
+        <ResetPassword path='/reset' />
+
+        <PrivateRoute
+          component={ProfileTemplate}
+          path='/*'
+        />
+      </Router>
+    </>
+    
   )
 }
 

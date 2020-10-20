@@ -10,13 +10,19 @@ import { PAGES } from '../../constants/pages'
 import LatestProducts from '../../sections/lastestProducts'
 import ShopGrid from '../../sections/shopGrid'
 
+// SEO
+import SEO from '../../molecules/seo'
+
 const Shop = () => {
   return (
     <Layout
       page={PAGES.shop}
     >
+      <SEO
+        title='Shop'
+        description='Gerimed Mobility Home'
+      />
       <ShopGrid />
-
       <LatestProducts />
     </Layout>
   )

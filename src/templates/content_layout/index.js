@@ -44,13 +44,15 @@ const ContentLayout = props => {
     children,
     page,
     enableTransMode = false,
-    footerMode
+    footerMode,
+    className
   } = props
 
   let addedStyles = ''
 
   // Builder
   if(!enableTransMode) addedStyles += ' ' + styles['navNormal']
+  if(className) addedStyles += ' ' + className
 
   return (
     <div
