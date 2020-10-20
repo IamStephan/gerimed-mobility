@@ -69,6 +69,11 @@ const ShopTeam = () => {
   const allMembers = [
     ...member,
     ...member,
+    ...member,
+    ...member,
+    ...member,
+    ...member,
+    ...member,
   ]
 
   const [emblaRef, embla] = useEmblaCarousel({

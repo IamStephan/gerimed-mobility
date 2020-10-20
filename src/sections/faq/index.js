@@ -85,7 +85,6 @@ const FAQ = () => {
   return (
     <Section
       className={styles['faqSection']}
-      gutter='none'
     >
       <Typography
         variant='h4'
