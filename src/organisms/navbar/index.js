@@ -118,17 +118,12 @@ const Navbar = props => {
     }
 
     default: {
-      if(enableTransMode && typeof window === 'undefined') {
-        addedStyles += ' ' + styles['trans']
-      } else {
-        addedStyles += ' ' + styles['normal']
-      }
-
+      addedStyles += ' ' + styles['normal']
       addedStyles += ' ' + styles['show']
     }
   }
 
-  const isTrans = (enableTransMode && typeof window === 'undefined') ? current.matches('trans') : enableTransMode
+  const isTrans = current.matches('trans')
 
   function _toggleDrawer() {
     send('TOGGLE_DRAWER')
