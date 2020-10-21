@@ -8,13 +8,13 @@ import { useEmblaCarousel } from 'embla-carousel/react'
 
 // Material
 import { Typography, Divider } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 
 // Styles
 import styles from './styles.module.scss'
 
 const ShopRowItemSkeleton = props => {
   const {
-    title,
     productCount = 5
   } = props
 
@@ -29,13 +29,17 @@ const ShopRowItemSkeleton = props => {
     <div
       className={styles['shopItemRow']}
     >
-      <Typography
-        variant='h3'
-        color='secondary'
-        className={styles['title']}
+      <Skeleton
+        className={styles['titleContainer']}
       >
-        {title}
-      </Typography>
+        <Typography
+          variant='h3'
+          color='secondary'
+          className={styles['title']}
+        >
+          Loading title
+        </Typography>
+      </Skeleton>
 
       <Divider />
 
