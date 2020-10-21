@@ -10,6 +10,9 @@ const GET_PRODUCT = `
       shopOnly
       isLimited
       quantity
+      product_discount {
+        discounted_price
+      }
       categories {
         id
         name

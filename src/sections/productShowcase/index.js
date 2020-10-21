@@ -184,6 +184,108 @@ const ProductShowcase = () => {
 
   const availabilityRes = availability()
 
+  function displaySpecialBadge() {
+    if(!product) return
+
+    const shopOnlyI = product.shopOnly
+    const isLimitedI = product.isLimited
+    const outOfStockI = (Number(quantity) < 1)
+    const onSaleI = !!product.product_discount?.discounted_price
+
+    const SaleBadge = ({ discountedPrice, price }) => {
+      const discount = Math.floor((discountedPrice - price ) / price * 100) + 1
+
+      return (
+        <div
+        className={styles['salesBadge']}
+        >
+          <Typography
+            className={styles['text']}
+          >
+            <b>{discount}%</b>
+          </Typography>
+        </div>
+      )
+    }
+
+    if(shopOnlyI) {
+      return null
+    } else {
+      if(isLimitedI) {
+        if(outOfStockI) {
+          return null
+        } else if(onSaleI) {
+          return (
+            <SaleBadge
+              discountedPrice={product.product_discount.discounted_price}
+              price={product.price}
+            />
+          )
+        } else {
+          return null
+        }
+      } else {
+        if(onSaleI) {
+          return (
+            <SaleBadge
+              discountedPrice={product.product_discount.discounted_price}
+              price={product.price}
+            />
+          )
+        } else {
+          return null
+        }
+      }
+    }
+  }
+
+  function priceToDisplay() {
+    const shopOnlyI = product.shopOnly
+    const isLimitedI = product.isLimited
+    const outOfStockI = (Number(quantity) < 1)
+    const onSaleI = !!product.product_discount?.discounted_price
+
+    const SalePrice = () => (
+      <>
+        <strike
+          className={styles['strike']}
+        >
+          {Rand(product.price).format()}  
+        </strike>
+        {' '}<br className={styles['specialBreak']} />
+        <b>
+          {Rand(product.product_discount?.discounted_price).format()}
+        </b>
+      </>
+    )
+
+    const NormalPrice = () => (
+      <b>
+        {Rand(product.price).format()}
+      </b>
+    )
+
+    if(shopOnlyI) {
+      return '-'
+    } else {
+      if(isLimitedI) {
+        if(outOfStockI) {
+          return <NormalPrice />
+        } else if(onSaleI) {
+          return <SalePrice />
+        } else {
+          return <NormalPrice />
+        }
+      } else {
+        if(onSaleI) {
+          return <SalePrice />
+        } else {
+          return <NormalPrice />
+        }
+      }
+    }
+  }
+
   function showAvailibility(availabilityEnum) {
     switch(availabilityEnum) {
       case 'shopOnly': {
@@ -543,7 +645,7 @@ const ProductShowcase = () => {
                 className={styles['price']}
                 variant='h5'
               >
-                <b>{ product.shopOnly ? '' :  Rand(product.price).format() }</b>
+                {priceToDisplay()}
               </Typography>
 
               <div>
@@ -656,6 +758,7 @@ const ProductShowcase = () => {
       <div
         className={styles['carouselContainer']}
       >
+      { displaySpecialBadge() }
       { Carousel() }
       </div>
 
