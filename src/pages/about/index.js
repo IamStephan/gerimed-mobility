@@ -26,7 +26,7 @@ const About = () => {
       />
       <PsuedoMap />
       <AboutSection />
-      <ShopTeam />
+      {/* <ShopTeam /> */}
       <ShopGallery />
     </Layout>
   )

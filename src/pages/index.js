@@ -18,6 +18,7 @@ import Featured from '../sections/featured'
 import CTA from '../sections/cta'
 import Benefit from '../sections/benefit'
 import Testimonials from '../sections/testimonials'
+import Latest from '../sections/lastestProducts'
 
 const IndexPage = () => {
   return (
@@ -35,7 +36,8 @@ const IndexPage = () => {
       <Catalog />
       <Featured />
       <Benefit />
-      <Testimonials />
+      {/* <Testimonials /> */}
+      <Latest />
       <CTA />
     </Layout>
   )
