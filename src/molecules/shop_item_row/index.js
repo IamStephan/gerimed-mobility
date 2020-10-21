@@ -70,13 +70,7 @@ const ShopItemRow = props => {
                 >
                   <ShopItem
                     id={product.id}
-                    name={product.name}
-                    price={product.price}
-                    categories={product.categories}
-                    showcase={product.showcase}
-                    shopOnly={product.shopOnly}
-                    isLimited={product.isLimited}
-                    quantity={product.quantity}
+                    product={product}
                   />
                 </div>
               ))
