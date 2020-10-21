@@ -65,17 +65,20 @@ const OutOfStockBadge = () => (
   />
 )
 
-const OnSaleBadge = ({ discountAmount=30 }) => (
-  <div
-    className={styles['salesBadge']}
-  >
-    <Typography
-      className={styles['text']}
+const OnSaleBadge = ({ price, discountedPrice }) => {
+  const discount = Math.floor((discountedPrice - price ) / price * 100) + 1
+  return (
+    <div
+      className={styles['salesBadge']}
     >
-      -<b>{discountAmount}%</b>
-    </Typography>
-  </div>
-)
+      <Typography
+        className={styles['text']}
+      >
+        <b>{discount}%</b>
+      </Typography>
+    </div>
+  )
+}
 
 /**
  * TODO:
@@ -85,7 +88,7 @@ const OnSaleBadge = ({ discountAmount=30 }) => (
  *  - Show add to cart on hover
  */
 
-const ShopItem = props => {
+const ShopItem = ({ product }) => {
   const {
     id,
     name,
@@ -94,9 +97,9 @@ const ShopItem = props => {
     quantity,
     isLimited,
     shopOnly,
-    sale,
-    categories
-  } = props
+    categories,
+    product_discount = null
+  } = product
 
   function _categoryFilter(category) {
     let filter = {
@@ -108,6 +111,47 @@ const ShopItem = props => {
 
     navigate(`/shop?${queryString}`)
   }
+
+  const priceToDisplay = useCallback(() => {
+    const shopOnlyI = shopOnly
+    const isLimitedI = isLimited
+    const outOfStockI = (Number(quantity) < 1)
+    const onSaleI = !!product_discount?.discounted_price
+
+    const SalePrice = () => (
+      <>
+        <strike
+          className={styles['strike']}
+        >
+          {Rand(price).format()}  
+        </strike>
+        {' '}
+        <b>
+          {Rand(product_discount?.discounted_price).format()}
+        </b>
+      </>
+    )
+
+    if(shopOnlyI) {
+      return '-'
+    } else {
+      if(isLimitedI) {
+        if(outOfStockI) {
+          return Rand(price).format()
+        } else if(onSaleI) {
+          return <SalePrice />
+        } else {
+          return Rand(price).format()
+        }
+      } else {
+        if(onSaleI) {
+          return <SalePrice />
+        } else {
+          return Rand(price).format()
+        }
+      }
+    }
+  }, [])
 
   const url = useCallback(() => {
     const preferedSize = 'small'
@@ -127,7 +171,7 @@ const ShopItem = props => {
     const shopOnlyI = shopOnly
     const isLimitedI = isLimited
     const outOfStockI = (Number(quantity) < 1)
-    const onSaleI = false
+    const onSaleI = !!product_discount?.discounted_price
 
     if(shopOnlyI) {
       return <ShopOnlyBadge />
@@ -136,13 +180,23 @@ const ShopItem = props => {
         if(outOfStockI) {
           return <OutOfStockBadge />
         } else if(onSaleI) {
-          return <OnSaleBadge />
+          return (
+            <OnSaleBadge
+              price={price}
+              discountedPrice={product_discount.discounted_price}
+            />
+          )
         } else {
           return null
         }
       } else {
         if(onSaleI) {
-          return <OnSaleBadge />
+          return (
+            <OnSaleBadge
+              price={price}
+              discountedPrice={product_discount.discounted_price}
+            />
+          )
         } else {
           return null
         }
@@ -210,7 +264,7 @@ const ShopItem = props => {
       <Typography
         className={styles['price']}
       >
-        {shopOnly ? '-' : Rand(price).format()}
+        {priceToDisplay()}
       </Typography>
     </div>
   )
