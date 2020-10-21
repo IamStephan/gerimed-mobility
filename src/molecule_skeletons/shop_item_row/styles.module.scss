@@ -1,13 +1,19 @@
 @import '../../utils/sizes';
+@import '../../utils/border';
 
 .shopItemRow {
   padding: #{$padding}px;
 
-  .title {
-    padding: #{$padding}px;
-    font-weight: bold;
-    margin-bottom: #{$margin / 2}px;
+  .titleContainer {
+    border-radius: #{$border-radius}px;
+    
+    .title {
+      padding: #{$padding}px;
+      font-weight: bold;
+      margin-bottom: #{$margin / 2}px;
+    }
   }
+
 
   .rowViewport {
     overflow: hidden;

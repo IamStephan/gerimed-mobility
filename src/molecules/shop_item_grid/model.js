@@ -16,6 +16,11 @@ const ProductsQuery = `
       isLimited
       shopOnly
       quantity
+
+      product_discount {
+        discounted_price
+      }
+
       showcase(
         limit: 1,
         start: 0

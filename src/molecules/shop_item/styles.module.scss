@@ -13,6 +13,12 @@ $item-width: 225;
   display: flex;
   flex-direction: column;
 
+  .price {
+    .strike {
+      color: rgba($dark, 0.25)
+    }
+  }
+
   .imgContainer {
     width: #{$item-width}px;
     height: #{$item-width}px;
