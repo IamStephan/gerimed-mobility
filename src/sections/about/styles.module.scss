@@ -21,6 +21,10 @@ $breakpoint-1: 625;
   .content {
     max-width: 750px;
     text-align: center;
+
+    .description {
+      white-space: pre-line;
+    }
   }
 }
 
