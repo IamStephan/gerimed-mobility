@@ -1,7 +1,7 @@
 import * as currency from 'currency.js'
 
 export const Rand = value => currency(value, {
-  symbol: 'R ',
+  symbol: 'R',
   separator: ' ',
   decimal: '.',
   precision: 2,
