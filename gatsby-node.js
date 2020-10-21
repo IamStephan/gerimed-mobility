@@ -190,6 +190,15 @@ exports.sourceNodes = ({actions: {createNode}, createNodeId, createContentDigest
   const categoriesTree = categoriesBuilder(categories)
   const flattenedCategories = flatCategories(categoriesTree, 0)
 
+  createNode({
+    categoriesTreeString: JSON.stringify(categoriesTree),
+    id: createNodeId(`___CategoriesExtendedTree___`),
+    internal: {
+      type: `CategoriesExtendedTree`,
+      contentDigest: createContentDigest(categoriesTree)
+    }
+  })
+
   return createNode({
     categoriesMod: flattenedCategories,
     id: createNodeId(`___CategoriesExtended___`),
