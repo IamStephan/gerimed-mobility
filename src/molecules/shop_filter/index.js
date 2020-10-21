@@ -260,7 +260,7 @@ const ShopFilter = () => {
                       <FormControlLabel
                         key={category.id}
                         style={{
-                          marginLeft: category.level * 24
+                          marginLeft: category.level * 16
                         }}
                         control={(
                           <Checkbox
@@ -268,6 +268,7 @@ const ShopFilter = () => {
                             onChange={e => onChange(e.target.checked)}
                             checked={value}
                             name={name}
+                            size='small'
                           />
                         )}
                         label={category.name}
@@ -298,6 +299,7 @@ const ShopFilter = () => {
                       onChange={e => onChange(e.target.checked)}
                       checked={value}
                       name={name}
+                      size='small'
                     />
                   )}
                   label='Available'
@@ -317,6 +319,7 @@ const ShopFilter = () => {
                       onChange={e => onChange(e.target.checked)}
                       checked={value}
                       name={name}
+                      size='small'
                     />
                   )}
                   label='In Stock'
