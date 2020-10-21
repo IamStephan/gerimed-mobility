@@ -207,6 +207,16 @@ module.exports = {
                 }
               }
             `
+          },
+          {
+            type: 'BusinessDescription',
+            query: `
+              query {
+                ourBusiness {
+                  description
+                }
+              }
+            `
           }
         ]
       }
