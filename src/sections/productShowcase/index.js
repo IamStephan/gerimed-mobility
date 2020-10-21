@@ -543,7 +543,7 @@ const ProductShowcase = () => {
                 className={styles['price']}
                 variant='h5'
               >
-                <b>{ Rand(product.price).format() }</b>
+                <b>{ product.shopOnly ? '' :  Rand(product.price).format() }</b>
               </Typography>
 
               <div>

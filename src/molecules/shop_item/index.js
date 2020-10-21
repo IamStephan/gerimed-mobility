@@ -51,10 +51,9 @@ const Title = props => {
 
 const ShopOnlyBadge = () => (
   <Chip
-    className={`${styles['badge']} ${styles['dangerOutline']}`}
+    className={`${styles['badge']} ${styles['danger']}`}
     label='Shop Only'
     size='small'
-    variant='outlined'
   />
 )
 
@@ -211,7 +210,7 @@ const ShopItem = props => {
       <Typography
         className={styles['price']}
       >
-        {Rand(price).format()}
+        {shopOnly ? '-' : Rand(price).format()}
       </Typography>
     </div>
   )
