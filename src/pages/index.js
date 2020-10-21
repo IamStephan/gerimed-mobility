@@ -36,8 +36,8 @@ const IndexPage = () => {
       <Catalog />
       <Featured />
       <Benefit />
-      {/* <Testimonials /> */}
       <Latest />
+      {/* <Testimonials /> */}
       <CTA />
     </Layout>
   )
