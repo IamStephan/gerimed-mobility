@@ -18,6 +18,9 @@ const LatestProducts = `
       shopOnly
       isLimited
       quantity
+      product_discount {
+        discounted_price
+      }
       categories {
         id
         name
