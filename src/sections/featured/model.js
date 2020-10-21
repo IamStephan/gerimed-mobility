@@ -3,6 +3,33 @@
  * by update date
  */
 
+ const PRODUCT_FRAGMENT = `
+  id
+  name
+  price
+  isLimited
+  shopOnly
+  quantity
+
+  product_discount {
+    discounted_price
+  }
+
+  showcase(
+    limit: 1,
+    start: 0
+  ) {
+    id
+    url
+    formats
+  }
+  
+  categories {
+    id
+    name
+  }
+ `
+
 const FeaturedProducts = `
   query(
     $limit: Int!
@@ -12,22 +39,19 @@ const FeaturedProducts = `
       limit: $limit,
       start: 0
     ) {
-      id
-      name
-      price
-      shopOnly
-      isLimited
-      quantity
-      categories {
-        id
-        name
-      }
-      showcase(
-        limit: 1,
-        start: 0
-      ) {
-        url
-        formats
+      ${PRODUCT_FRAGMENT}
+    }
+
+    promotions(
+      limit: 1,
+      start: 0,
+      sort: "createdAt:desc"
+    ) {
+      promotion_name
+      product_discounts {
+        product {
+          ${PRODUCT_FRAGMENT}
+        }
       }
     }
   }

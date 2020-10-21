@@ -43,8 +43,28 @@ const Featured = () => {
     send('RESET')
   }, [])
 
-  const ShopRowTitle = 'Our Featured Products'
-  const products = current.context.data?.products
+  const productList = useCallback(() => {
+    const productListData = {
+      products: current.context.data?.products || [],
+      title: 'Our Featured Products'
+    }
+
+    if(current.context.data?.promotions?.[0]?.product_discounts?.length > 0) {
+      return {
+        products: current.context.data?.promotions[0].product_discounts.map(item => item.product),
+        title: current.context.data?.promotions[0].promotion_name
+      }
+    } else {
+      return productListData
+    }
+  }, [current.context.data])
+
+  
+  
+  const ShopRowTitle = productList().title
+  const products = productList().products
+
+  console.log(productList().products)
 
   const StateToShow = useCallback(() => {
     const loading = current.matches('loading') || current.matches('retry') || current.matches('idle')
@@ -54,9 +74,7 @@ const Featured = () => {
     switch(true) {
       case loading: {
         return (
-          <ShopItemRowSkeleton
-            title={ShopRowTitle}
-          />
+          <ShopItemRowSkeleton />
         )
       }
 
@@ -92,7 +110,7 @@ const Featured = () => {
         )
       }
     }
-  }, [current.value, current.matches])
+  }, [current.value, current.matches, ShopRowTitle])
 
   
 
