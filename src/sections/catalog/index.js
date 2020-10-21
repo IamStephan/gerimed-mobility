@@ -17,83 +17,84 @@ import { Typography } from '@material-ui/core'
 import styles from './styles.module.scss'
 
 const STATIC_QUERY = graphql`
-query {
-  strapiFeaturedcategories {
-    featuredCategory {
-      category_one {
-        description
-        category {
-          name
-        }
-        showcase {
-          remoteImage {
-            childImageSharp {
-              fluid {
-                ...GatsbyImageSharpFluid
+  query {
+    strapiFeaturedcategories {
+      featuredCategory {
+        category_one {
+          description
+          category {
+            name
+          }
+          showcase {
+            remoteImage {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid
+                }
               }
             }
           }
         }
-      }
 
-      category_two {
-        description
-        category {
-          name
-        }
-        showcase {
-          remoteImage {
-            childImageSharp {
-              fluid {
-                ...GatsbyImageSharpFluid
+        category_two {
+          description
+          category {
+            name
+          }
+          showcase {
+            remoteImage {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid
+                }
               }
             }
           }
         }
-      }
 
-      category_three {
-        description
-        category {
-          name
-        }
-        showcase {
-          remoteImage {
-            childImageSharp {
-              fluid {
-                ...GatsbyImageSharpFluid
+        category_three {
+          description
+          category {
+            name
+          }
+          showcase {
+            remoteImage {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid
+                }
               }
             }
           }
         }
-      }
 
-      category_four {
-        description
-        category {
-          name
-        }
-        showcase {
-          remoteImage {
-            childImageSharp {
-              fluid {
-                ...GatsbyImageSharpFluid
+        category_four {
+          description
+          category {
+            name
+          }
+          showcase {
+            remoteImage {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid
+                }
               }
             }
           }
         }
-      }
 
-      category_five {
-        description
-        category {
-          name
-        }
-        showcase {
-          remoteImage {
-            childImageSharp {
-              fluid {
-                ...GatsbyImageSharpFluid
+        category_five {
+          description
+          category {
+            name
+          }
+          showcase {
+            remoteImage {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid
+                }
               }
             }
           }
@@ -101,7 +102,6 @@ query {
       }
     }
   }
-}
 `
 
 const GridItem = props => {
