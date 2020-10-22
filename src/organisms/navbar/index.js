@@ -155,89 +155,88 @@ const Navbar = props => {
             </Link>
           </div>
 
-          {
-            // Desktop Links
-            !breakpointTwo ? (
-              <>
-                <ol
-                  className={styles['links']}
-                >
-                  <li>
-                    <NormalButton
-                      active={page === PAGES.shop}
-                      isTrans={isTrans}
-                      to='/shop'
-                    >
-                      Shop
-                    </NormalButton>
-                  </li>
-                  <li>
-                    <NormalButton
-                      active={page === PAGES.about}
-                      isTrans={isTrans}
-                      to='/about'
-                    >
-                      About Us
-                    </NormalButton>
-                  </li>
-                  <li>
-                    <NormalButton
-                      active={page === PAGES.contact}
-                      isTrans={isTrans}
-                      to='/contact'
-                    >
-                      Contact
-                    </NormalButton>
-                  </li>
-                </ol>
-
-                <ol
-                  className={styles['actions']}
-                >
-                  <li>
-                    <IconButton
-                      className={styles['iconButton']}
-                      disableElevation
-                      color='primary'
-                      component={Link}
-                      to='/profile'
-                    >
-                      <AccountCircleOutlined />
-                    </IconButton>
-                  </li>
-                  <li>
-                    <IconButton
-                      className={styles['iconButton']}
-                      disableElevation
-                      color='primary'
-                      component={Link}
-                      to='/cart'
-                    >
-                      <Badge badgeContent={products ? products.length : null} color="secondary">
-                        <ShoppingCartOutlined />
-                      </Badge>
-                      
-                    </IconButton>
-                  </li>
-                </ol>
-              </>
-            ) : (
-              <ol
-                className={styles['actions']}
+          {/**
+           * DESKTOP
+           */}
+          <ol
+            className={`${styles['links']} ${styles['desktop']}`}
+          >
+            <li>
+              <NormalButton
+                active={page === PAGES.shop}
+                isTrans={isTrans}
+                to='/shop'
               >
-                <li>
-                  <IconButton
-                    className={styles['iconButton']}
-                    disableElevation
-                    color='primary'
-                    onClick={_toggleDrawer}
-                  >
-                    <Menu />
-                  </IconButton>
-                </li>
-              </ol>
-            )
-          }
+                Shop
+              </NormalButton>
+            </li>
+            <li>
+              <NormalButton
+                active={page === PAGES.about}
+                isTrans={isTrans}
+                to='/about'
+              >
+                About Us
+              </NormalButton>
+            </li>
+            <li>
+              <NormalButton
+                active={page === PAGES.contact}
+                isTrans={isTrans}
+                to='/contact'
+              >
+                Contact
+              </NormalButton>
+            </li>
+          </ol>
+
+          <ol
+            className={`${styles['actions']} ${styles['desktop']}`}
+          >
+            <li>
+              <IconButton
+                className={styles['iconButton']}
+                disableElevation
+                color='primary'
+                component={Link}
+                to='/profile'
+              >
+                <AccountCircleOutlined />
+              </IconButton>
+            </li>
+            <li>
+              <IconButton
+                className={styles['iconButton']}
+                disableElevation
+                color='primary'
+                component={Link}
+                to='/cart'
+              >
+                <Badge badgeContent={products ? products.length : null} color="secondary">
+                  <ShoppingCartOutlined />
+                </Badge>
+                
+              </IconButton>
+            </li>
+          </ol>
+
+          {/**
+           * MOBILE
+           */}
+          <ol
+            className={`${styles['actions']} ${styles['mobile']}`}
+          >
+            <li>
+              <IconButton
+                className={styles['iconButton']}
+                disableElevation
+                color='primary'
+                onClick={_toggleDrawer}
+              >
+                <Menu />
+              </IconButton>
+            </li>
+          </ol>
         </div>
       </nav>
 

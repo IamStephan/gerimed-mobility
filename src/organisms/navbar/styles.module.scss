@@ -92,11 +92,27 @@ $breakpoint-2: 750;
     .links {
       display: flex;
       margin-right: #{$linksMarginRight}px;
+
+      &.desktop {
+        display: block;
+      }
+
+      &.mobile {
+        display: none;
+      }
     }
 
     .actions {
       margin-right: #{$margin * 2}px;
       display: flex;
+
+      &.desktop {
+        display: block;
+      }
+
+      &.mobile {
+        display: none;
+      }
     }
   }
 }
@@ -113,6 +129,32 @@ $breakpoint-2: 750;
 
         *:nth-child(3) {
           margin-left: #{$margin * 2}px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$breakpoint-2}px) {
+  .navbar{
+    .container {  
+      .links {
+        &.desktop {
+          display: none;
+        }
+
+        &.mobile {
+          display: block;
+        }
+      }
+  
+      .actions {
+        &.desktop {
+          display: none;
+        }
+
+        &.mobile {
+          display: block;
         }
       }
     }
