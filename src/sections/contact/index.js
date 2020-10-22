@@ -94,7 +94,7 @@ const ContactSection = () => {
                 info@gerimedmobility.co.za
               </Typography>
               <Typography>
-                carel@gerimedmobility.co.za
+                carel@gerimed.co.za
               </Typography>
             </>
           )}
