@@ -1,12 +1,7 @@
 import React from 'react'
 
 // Material
-import { Button } from '@material-ui/core'
-import { InfoOutlined } from '@material-ui/icons'
 import { Alert, AlertTitle } from '@material-ui/lab'
-
-// Gatbsy
-import { Link } from 'gatsby'
 
 // Styles
 import styles from '../../styles.module.scss'
@@ -17,14 +12,12 @@ const CommingSoonView = () => {
       className={styles['emptyCartView']}
     >
       <Alert
-        iconMapping={{
-          success: <InfoOutlined fontSize="inherit" />
-        }}
+        severity='warning'
       >
         <AlertTitle>
           <b>Coming soon</b>
         </AlertTitle>
-        Shopping cart functionality is comming soon
+        Cart functionality is temporarily disabled.
       </Alert>
     </div>
   )
