@@ -55,7 +55,7 @@ const Benefit = () => {
               variant='subtitle1'
               className={styles['subheader']}
             >
-              Besides offer the best in its class products, we offer a wide range of benefits. Making sure our clients are always happy.
+              Besides offering the best in its class products, we offer a wide range of benefits. Making sure our clients are always satisfied.
             </Typography>
           </div>
         </div>
@@ -65,7 +65,7 @@ const Benefit = () => {
         >
           <BenefitItem
             title='Exceptional Products'
-            description='At the forefront of our proirities is exceptional products. Providing you the best South Africa has to offer.'
+            description='At the forefront of our priorities is exceptional products. Providing you with the best South Africa has to offer.'
           >
             <Avatar
               className={styles['avatar']}
@@ -76,7 +76,7 @@ const Benefit = () => {
 
           <BenefitItem
             title='Professional Support'
-            description='Trained staff and eager to help with a beaming smile. We are just a phone call away from solving your problems.'
+            description='Trained staff and eager to help with a beaming smile. We are just a phone call away from solving your problem.'
           >
             <Avatar
               className={styles['avatar']}
@@ -98,7 +98,7 @@ const Benefit = () => {
 
           <BenefitItem
             title='Secure Payments'
-            description='Gerimed Mobility uses secure payment gateways that are PCI complaint. Meaning your payments are completly secure and safe.'
+            description='Gerimed Mobility uses secure payment gateways that are PCI complaint. Meaning your payments are completly safe and secure.'
           >
             <Avatar
               className={styles['avatar']}
