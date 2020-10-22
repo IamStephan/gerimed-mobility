@@ -5,7 +5,7 @@ import { Section } from '../../templates/content_layout'
 
 // Material
 import { Typography, Divider, Button, Tab, Chip, TextField, LinearProgress } from '@material-ui/core'
-import { Rating, TabContext, TabList, TabPanel, Alert, Skeleton } from '@material-ui/lab'
+import { Rating, TabContext, TabList, TabPanel, Alert, Skeleton, AlertTitle } from '@material-ui/lab'
 
 // Gatsby
 import { navigate } from 'gatsby'
@@ -429,15 +429,11 @@ const ProductShowcase = () => {
       }
 
       case error: {
-        return (
-          <div>
-            Error
-          </div>
-        )
+        return null
       }
       // Dummy
       default: {
-        return <div />
+        return null
       }
     }
   }, [currentData.value, currentData.matches, index])
@@ -752,7 +748,15 @@ const ProductShowcase = () => {
       case error: {
         return (
           <div>
+            <Alert
+              severity='error'
+            >
+              <AlertTitle>
+                <b>Product Not Found</b>
+              </AlertTitle>
 
+              The product you are looking for does not seem to exist. Please make sure the product appears in the shop page.
+            </Alert>
           </div>
         )
       }
