@@ -94,7 +94,7 @@ $breakpoint-2: 750;
       margin-right: #{$linksMarginRight}px;
 
       &.desktop {
-        display: block;
+        display: flex;
       }
 
       &.mobile {
@@ -107,7 +107,7 @@ $breakpoint-2: 750;
       display: flex;
 
       &.desktop {
-        display: block;
+        display: flex;
       }
 
       &.mobile {
@@ -144,7 +144,7 @@ $breakpoint-2: 750;
         }
 
         &.mobile {
-          display: block;
+          display: flex;
         }
       }
   
@@ -154,7 +154,7 @@ $breakpoint-2: 750;
         }
 
         &.mobile {
-          display: block;
+          display: flex;
         }
       }
     }
