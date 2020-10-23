@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Gatsby
 import { useStaticQuery, graphql, Link } from 'gatsby'
@@ -20,12 +20,7 @@ import {
 import {
   SearchOutlined,
   ExpandMoreOutlined,
-  ExpandLessOutlined,
 } from '@material-ui/icons'
-import {
-  TreeView,
-  TreeItem
-} from '@material-ui/lab'
 
 // Hooks
 import { useMachine } from '@xstate/react'
@@ -34,9 +29,6 @@ import { useLocation } from '@reach/router'
 
 // Controller
 import { LocalController } from './controller'
-
-// utils
-import { set, get, flatMapDeep } from 'lodash'
 
 // Styles
 import styles from './styles.module.scss'
@@ -167,7 +159,7 @@ const ShopFilter = () => {
 
   const location = useLocation()
 
-  const { handleSubmit, register, setValue, getValues, reset, control } = useForm()
+  const { handleSubmit, register, setValue, getValues, control } = useForm()
 
   const [, send] = useMachine(LocalController, {
     context: {
