@@ -63,7 +63,7 @@ const OutOfStockBadge = () => (
   />
 )
 
-const OnSaleBadge = ({ discountAmount=30 }) => (
+const OnSaleBadge = ({ discountAmount = 0 }) => (
   <div
     className={styles['salesBadge']}
   >
@@ -197,7 +197,7 @@ const ProductShowcase = () => {
 
       return (
         <div
-        className={styles['salesBadge']}
+          className={styles['salesBadge']}
         >
           <Typography
             className={styles['text']}
@@ -333,15 +333,7 @@ const ProductShowcase = () => {
           </Alert>
         )
       }
-
-      case 'available': {
-        return (
-          <Alert severity='info'>
-            This item is not held on-premise, therefore, shipping might take longer than expected.
-          </Alert>
-        )
-      }
-
+      
       case 'outStock': {
         return (
           <Alert severity='error'>
