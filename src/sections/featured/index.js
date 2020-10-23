@@ -58,13 +58,9 @@ const Featured = () => {
       return productListData
     }
   }, [current.context.data])
-
-  
   
   const ShopRowTitle = productList().title
   const products = productList().products
-
-  console.log(productList().products)
 
   const StateToShow = useCallback(() => {
     const loading = current.matches('loading') || current.matches('retry') || current.matches('idle')

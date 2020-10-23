@@ -161,6 +161,7 @@ const BrandShowcase = () => {
     if(!embla) return
 
     let id = 0
+    
     const tick = () => {
       embla.scrollNext()
       requestAnimationFrame(() => (id = setTimeout(tick, 1500)));
