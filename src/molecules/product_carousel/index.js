@@ -68,25 +68,24 @@ const ProductCarousel = (props) => {
         className={styles['rowViewport']}
         ref={emblaRef}
       >
-
-          <div
-            className={styles['rowContainer']}
-          >
-            {
-             images.map((image, i) => (
-                <AspectView
-                  ratio={1}
-                  key={image.url}
-                  className={styles['rowItem']}
-                >
-                  <img
-                    className={styles['img']}
-                    src={url(images[i].url, images[i].formats)}
-                  />
-                </AspectView>
-              ))
-            }
-          </div>
+        <div
+          className={styles['rowContainer']}
+        >
+          {
+            images.map((image, i) => (
+              <AspectView
+                ratio={1}
+                key={image.url}
+                className={styles['rowItem']}
+              >
+                <img
+                  className={styles['img']}
+                  src={url(images[i].url, images[i].formats)}
+                />
+              </AspectView>
+            ))
+          }
+        </div>
       </div>
     </div>
   )
