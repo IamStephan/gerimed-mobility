@@ -13,17 +13,14 @@ import { Skeleton } from '@material-ui/lab'
 // Styles
 import styles from './styles.module.scss'
 
-const ShopRowItemSkeleton = props => {
-  const {
-    productCount = 5
-  } = props
+// Constants
+const dummyProducts = Array(5).fill(1)
 
+const ShopRowItemSkeleton = () => {
   const [emblaRef] = useEmblaCarousel({
     containScroll: 'keepSnaps',
     align: 'start',
   })
-
-  const dummyProducts = Array(productCount).fill(1)
 
   return (
     <div

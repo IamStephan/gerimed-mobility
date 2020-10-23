@@ -9,6 +9,7 @@ import styles from './styles.module.scss'
 
 // Constants
 const CHIP_ARRAY_LENGTH = 2
+const dummyChips = Array(CHIP_ARRAY_LENGTH).fill(1)
 
 const Title = () => {
   return (
@@ -20,9 +21,6 @@ const Title = () => {
 }
 
 const ShopItem = () => {
-
-  const dummyChips = Array(CHIP_ARRAY_LENGTH).fill(1)
-
   return (
     <div
       className={styles['item']}
