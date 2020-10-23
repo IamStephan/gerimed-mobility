@@ -117,6 +117,10 @@ $breakpoint-2: 750;
   }
 }
 
+.drawer {
+  display: none;
+}
+
 @media screen and (max-width: #{$breakpoint-1}px) {
   .navbar{
     .container {  
@@ -158,6 +162,10 @@ $breakpoint-2: 750;
         }
       }
     }
+  }
+
+  .drawer {
+    display: block;
   }
 }
 

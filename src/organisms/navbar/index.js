@@ -1,7 +1,6 @@
 import React from 'react'
 
 // Hooks
-import { useMedia } from 'react-use'
 import { useMachine, useService } from '@xstate/react'
 
 // Global Controller
@@ -26,9 +25,6 @@ import { PAGES } from '../../constants/pages'
 
 // Styles
 import styles from './styles.module.scss'
-
-// Internal Constants
-const BREAKPOINT_TWO = 750 // <== Cannot import the scss variable in a consistent manner
 
 // Static queries
 const STATIC_QUERY = graphql`
@@ -77,7 +73,7 @@ const Navbar = props => {
     enableTransMode = false
   } = props
 
-  const [currentGlobal, sendGlobal] = useService(CartService)
+  const [currentGlobal] = useService(CartService)
 
   const products = currentGlobal.context.cartData?.cart?.products || []
 
@@ -128,8 +124,6 @@ const Navbar = props => {
   function _toggleDrawer() {
     send('TOGGLE_DRAWER')
   }
-
-  const breakpointTwo = useMedia(`(max-width: ${BREAKPOINT_TWO}px)`)
 
   return (
     <>
@@ -240,16 +234,15 @@ const Navbar = props => {
         </div>
       </nav>
 
-      
-      {
-        breakpointTwo ? (
-          <Drawer
-            open={current.context.isDrawerOpen}
-            toggleDrawer={_toggleDrawer}
-            page={page}
-          />
-        ) : null
-      }
+      <div
+        className={styles['drawer']}
+      >
+        <Drawer
+          open={current.context.isDrawerOpen}
+          toggleDrawer={_toggleDrawer}
+          page={page}
+        />
+      </div>
     </>
 
   )
