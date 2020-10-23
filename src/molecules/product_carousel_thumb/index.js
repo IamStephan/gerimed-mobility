@@ -29,7 +29,7 @@ const ProductCarouselThumb = (props) => {
     const baseUrl = process.env.GATSBY_API_URL
 
     return strapiImageUrl(preferedSize, baseUrl, url, formats)
-  })
+  }, [])
 
   const imageSelect = useCallback((i) => {
     setIndex(i)
@@ -56,26 +56,25 @@ const ProductCarouselThumb = (props) => {
         className={styles['rowViewport']}
         ref={emblaRef}
       >
-
-          <div
-            className={styles['rowContainer']}
-          >
-            {
-             images.map((image, i) => (
-                <AspectView
-                  ratio={1}
-                  key={image.url}
-                  className={`${styles['rowItem']} ${i === index ? styles['active'] : styles['inactive']}`}
-                >
-                  <img
-                    className={styles['img']}
-                    src={url(images[i].url, images[i].formats)}
-                    onClick={imageSelect.bind(this, i)}
-                  />
-                </AspectView>
-              ))
-            }
-          </div>
+        <div
+          className={styles['rowContainer']}
+        >
+          {
+            images.map((image, i) => (
+              <AspectView
+                ratio={1}
+                key={image.url}
+                className={`${styles['rowItem']} ${i === index ? styles['active'] : styles['inactive']}`}
+              >
+                <img
+                  className={styles['img']}
+                  src={url(images[i].url, images[i].formats)}
+                  onClick={imageSelect.bind(this, i)}
+                />
+              </AspectView>
+            ))
+          }
+        </div>
       </div>
     </div>
   )
