@@ -225,6 +225,13 @@ module.exports = {
       resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/profile/*`] },
     },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: 'G-E88QDD240B',
+        head: true,
+      },
+    },
     `gatsby-plugin-netlify`
   ],
 }

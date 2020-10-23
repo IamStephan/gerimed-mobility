@@ -21,6 +21,7 @@
     "gatsby-image": "^2.4.9",
     "gatsby-image-graphql-schema": "^1.1.1",
     "gatsby-plugin-create-client-paths": "^2.3.11",
+    "gatsby-plugin-google-analytics": "^2.3.19",
     "gatsby-plugin-graphql-image": "^1.0.1",
     "gatsby-plugin-load-script": "^1.1.0",
     "gatsby-plugin-manifest": "^2.4.14",
