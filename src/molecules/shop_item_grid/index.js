@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 
 // Material
 import {
@@ -31,7 +31,6 @@ import ShopItemSkeleton from '../../molecule_skeletons/shop_item'
 
 // Styles
 import styles from './styles.module.scss'
-import { actions } from 'xstate'
 
 /**
  * NOTE:
@@ -44,10 +43,9 @@ import { actions } from 'xstate'
 const PlaceholderItems = () => Array(4).fill(1).map((key, i) => <div key={key + i} className={styles['placeholderItem']} />)
 
 const PAGE_ITEM_LIMIT = 12
+const LoadingItems = Array(PAGE_ITEM_LIMIT).fill(1)
 
 const ShopItemGrid = () => {
-  const LoadingItems = Array(PAGE_ITEM_LIMIT).fill(1)
-
   const location = useLocation()
 
   const [current, send] = useMachine(LocalController, {
@@ -70,7 +68,7 @@ const ShopItemGrid = () => {
     })
   }
 
-  function ProductMeta() {
+  const ProductMeta = useCallback(() => {
     const startProductOffset = (PAGE_ITEM_LIMIT * Number(current.context?.page)) - (PAGE_ITEM_LIMIT - current.context?.products?.length)
     const startProduct = startProductOffset - current.context?.products?.length + 1
     const totalProducts = current.context?.productCount
@@ -101,9 +99,9 @@ const ShopItemGrid = () => {
     }
 
     return null
-  }
+  }, [current.context])
 
-  function ProductGrid() {
+  const ProductGrid = useCallback(() => {
     if(loading) {
       return (
         <div
@@ -179,9 +177,9 @@ const ShopItemGrid = () => {
     }
 
     return null
-  }
+  }, [loading, show, error, current.context])
 
-  function PagePagination() {
+  const PagePagination = useCallback(() => {
     if(loading) {
       return (
         <div
@@ -218,7 +216,7 @@ const ShopItemGrid = () => {
     }
 
     return null
-  }
+  }, [loading, show, error, current.context])
 
   useEffect(() => {
     send('FILTER_CHECK')
