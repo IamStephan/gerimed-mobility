@@ -1,6 +1,10 @@
 import { Machine, assign } from 'xstate'
 
+// Utils
+import { throttle } from 'lodash'
+
 const SHOW_HIDE_TRIGGER_DISTANCE = 150
+const THROTTLE_WAIT = 250
 
 const LocalState = new Machine({
   id: 'NavbarController',
@@ -65,7 +69,7 @@ const LocalState = new Machine({
         send('TRANS')
       }
 
-      function onScrollNormal() {
+      const onScroll = throttle(() => {
         currentScrollPos = window.pageYOffset
 
         if(context.isTransEnabled && currentScrollPos < SHOW_HIDE_TRIGGER_DISTANCE) {
@@ -79,27 +83,31 @@ const LocalState = new Machine({
         }
 
         prevScrollPos = currentScrollPos
-      }
+      }, THROTTLE_WAIT, {
+        trailing: true
+      })
 
-      window.addEventListener('scroll', onScrollNormal)
+      window.addEventListener('scroll', onScroll)
 
       // Clear scroll listener
-      return () => window.removeEventListener('scroll', onScrollNormal)
+      return () => window.removeEventListener('scroll', onScroll)
     },
 
     transNavbarScroll: () => (send) => {
-      function onScrollTrans() {
+      const onScroll = throttle(() => {
         let currentScrollPos = window.pageYOffset
 
         if(currentScrollPos > SHOW_HIDE_TRIGGER_DISTANCE) {
           send('NORMAL')
         }
-      }
+      }, THROTTLE_WAIT, {
+        trailing: true
+      })
 
-      window.addEventListener('scroll', onScrollTrans)
+      window.addEventListener('scroll', onScroll)
 
       // Clear scroll listener
-      return () => window.removeEventListener('scroll', onScrollTrans)
+      return () => window.removeEventListener('scroll', onScroll)
     }
   }
 })
