@@ -19,13 +19,14 @@ import styles from '../../styles.module.scss'
 
 const ReadyView = props => {
   const {
-    products = [],
+    products,
     setIsEditing = () => {}
   } = props
 
   return (
     <div
       className={styles['cartView']}
+      onClick={() => {}}
     >
       <div
         className={styles['left']}
@@ -35,15 +36,13 @@ const ReadyView = props => {
         >
           {
             products.map((product, i) => (
-              <CartItem
-                key={i}
-                name={product.product.name}
-                categories={product.product.categories}
-                quantity={product.quantity}
-                showcase={product.product.showcase}
-                price={product.product.price}
-                isEditing={false}
-              />
+              <>
+                <CartItem
+                  key={i + 'ready'}
+                  product={product}
+                  isEditing={false}
+                />
+              </>
             ))
           }
         </div>
