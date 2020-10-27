@@ -2,7 +2,6 @@
 @import '../../utils/colors';
 
 $breakpoint1: 800;
-$breakpoint2: 375;
 
 .productSection {
   display: flex;
@@ -74,14 +73,16 @@ $breakpoint2: 375;
         display: flex;
         justify-content: space-between;
 
-        .strike {
-          color: rgba($dark, 0.25);
-          display: inline-block;
-        }
+        .price {
+          .strike {
+            color: rgba($dark, 0.25);
+            display: inline-block;
+            white-space: nowrap;
+          }
 
-        .specialBreak {
-          display: none;
-          
+          .normal {
+            white-space: nowrap;
+          }
         }
       }
       
@@ -158,20 +159,6 @@ $breakpoint2: 375;
     .detailsContainer {
       max-width: 100%;
       min-width: 100%;
-    }
-  }
-}
-
-@media screen and (max-width: #{$breakpoint2}px) {
-  .productSection {
-    .detailsContainer {
-      .details {
-        .priceContainer {
-          .specialBreak {
-            display: block;
-          }
-        }
-      }
     }
   }
 }
