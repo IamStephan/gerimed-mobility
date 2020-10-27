@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Hooks
 import { useService } from '@xstate/react'
@@ -30,20 +30,33 @@ const CartView = () => {
 
   const [isEditing, setIsEditing] = useState(false)
 
+  function _handleProductSet(productList) {
+    send('SET_PRODUCTS', {
+      products: productList
+    })
+  }
+
   const products = current.context.cartData?.cart?.products || []
+  const loading = current.matches('loading') || current.matches('ready')
+
+  useEffect(() => {
+    if(loading) {
+      setIsEditing(false)
+    }
+
+  }, [loading])
 
   function CartStateView() {
-    const loading = current.matches('loading') || current.matches('ready')
+    const loading = current.matches('loading') && !products.length || current.matches('ready')
+    const loadingPartial = current.matches('loading') && !!products.length
     const ready = current.matches('idle') && !!products.length && !isEditing
     const editMode = current.matches('idle') && !!products.length && isEditing
     const empty = current.matches('idle') && !products.length
 
-    console.log(current)
-
     switch(true) {
-      case true: {
-        return <CommingSoom />
-      }
+      // case true: {
+      //   return <CommingSoom />
+      // }
       case loading: {
         return <Loading />
       }
@@ -52,16 +65,20 @@ const CartView = () => {
         return (
           <ReadyView
             products={products}
+            
             setIsEditing={setIsEditing}
           />
         )
       }
 
+      case loadingPartial:
       case editMode: {
         return (
           <EditView
             products={products}
+            loading={loadingPartial}
             setIsEditing={setIsEditing}
+            setProducts={_handleProductSet}
           />
         )
       }
@@ -88,6 +105,7 @@ const CartView = () => {
       <Divider />
 
       { CartStateView() }
+      
     </Section>
   )
 }
