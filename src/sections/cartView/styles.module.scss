@@ -1,4 +1,5 @@
 @import '../../utils/sizes';
+@import '../../utils/colors';
 
 .cartContainer {
   .cartView {
@@ -39,6 +40,10 @@
   
             .price {
               margin-bottom: #{$margin}px;
+
+              .strike {
+                color: rgba($dark, 0.25)
+              }
             }
   
             .categoryContainer {
