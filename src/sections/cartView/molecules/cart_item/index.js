@@ -25,13 +25,11 @@ import styles from '../../styles.module.scss'
 
 const CartItem = props => {
   const {
-    name,
-    categories,
-    showcase,
-    quantity,
-    price,
+    product,
     isEditing,
-    id
+    handleProductQuantity = null,
+    handleProductRemove = null,
+    index
   } = props
 
   function _categoryFilter(category) {
@@ -40,7 +38,6 @@ const CartItem = props => {
     }
 
     let queryString = stringify(filter)
-    console.log(queryString)
 
     navigate(`/shop?${queryString}`)
   }
@@ -50,6 +47,53 @@ const CartItem = props => {
     const baseUrl = process.env.GATSBY_API_URL
 
     return strapiImageUrl(preferedSize, baseUrl, url, formats)
+  }, [])
+
+  function _handleChange(e) {
+    if(!handleProductQuantity) return
+
+    const { target: { value } } = e
+
+    handleProductQuantity(index, value)
+  }
+
+  const priceToDisplay = useCallback(() => {
+    const shopOnlyI = product.product.shopOnly
+    const isLimitedI = product.product.isLimited
+    const outOfStockI = (Number(product.quantity) < 1)
+    const onSaleI = !!product.product.product_discount?.discounted_price
+
+    const SalePrice = () => (
+      <>
+        <strike
+          className={styles['strike']}
+        >
+          {Rand(product.product.price).format()}  
+        </strike>
+        {' '}
+        { Rand(product.product.product_discount?.discounted_price).format() }
+      </>
+    )
+
+    if(shopOnlyI) {
+      return '-'
+    } else {
+      if(isLimitedI) {
+        if(outOfStockI) {
+          return Rand(product.product.price).format()
+        } else if(onSaleI) {
+          return <SalePrice />
+        } else {
+          return Rand(product.product.price).format()
+        }
+      } else {
+        if(onSaleI) {
+          return <SalePrice />
+        } else {
+          return Rand(product.product.price).format()
+        }
+      }
+    }
   }, [])
 
   return (
@@ -62,7 +106,7 @@ const CartItem = props => {
         <Avatar
           variant='square'
           className={styles['imgShowcase']}
-          src={urlPicker(showcase[0].url, showcase[0].formats)}
+          src={urlPicker(product.product.showcase[0].url, product.product.showcase[0].formats)}
         />
       </div>
 
@@ -72,20 +116,20 @@ const CartItem = props => {
         <Typography
           className={styles['title']}
         >
-          <b>{name}</b>
+          <b>{product.product.name}</b>
         </Typography>
 
         <Typography
           className={styles['price']}
         >
-          {Rand(price).format()}
+          { priceToDisplay() }
         </Typography>
 
         <div
           className={styles['categoryContainer']}
         >
           {
-            categories.length ? categories.map((category, i) => (
+            product.product.categories.length ? product.product.categories.map((category, i) => (
               <Chip
                 key={category.id}
                 className={styles['category']}
@@ -119,7 +163,8 @@ const CartItem = props => {
           color='secondary'
           type='number'
           label='Quantity'
-          value={quantity}
+          value={product.quantity}
+          onChange={_handleChange}
         />
       </div>
 
@@ -130,6 +175,7 @@ const CartItem = props => {
           >
             <IconButton
               size='small'
+              onClick={() => handleProductRemove(index)}
             >
               <CloseOutlined
                 fontSize='inherit'
