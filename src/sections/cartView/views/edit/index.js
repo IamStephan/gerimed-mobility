@@ -19,8 +19,7 @@ import {
 
 // Local Molecules
 import CartItem from '../../molecules/cart_item'
-
-// Hooks
+import CartInfo from '../../molecules/cart_info'
 
 // Styles
 import styles from '../../styles.module.scss'
@@ -170,7 +169,10 @@ const EditView = props => {
       <div
         className={styles['right']}
       >
-        
+        <CartInfo
+          products={productList}
+          isEditing={true}
+        />
       </div>
     </div>
   )

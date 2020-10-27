@@ -11,8 +11,12 @@ import {
   ChevronRightOutlined,
 } from '@material-ui/icons'
 
+// Gatsby
+import { Link } from 'gatsby'
+
 // Local Molecules
 import CartItem from '../../molecules/cart_item'
+import CartInfo from '../../molecules/cart_info'
 
 // Styles
 import styles from '../../styles.module.scss'
@@ -63,12 +67,6 @@ const ReadyView = props => {
             >
               Edit
             </Button>
-            <Button
-              variant='contained'
-              endIcon={<ChevronRightOutlined />}
-            >
-              Checkout
-            </Button>
           </ButtonGroup>
         </div>
       </div>
@@ -81,7 +79,9 @@ const ReadyView = props => {
       <div
         className={styles['right']}
       >
-        
+        <CartInfo
+          products={products}
+        />
       </div>
     </div>
   )

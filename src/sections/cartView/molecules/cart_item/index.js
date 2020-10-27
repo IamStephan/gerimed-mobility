@@ -6,14 +6,18 @@ import {
   Avatar,
   IconButton,
   Chip,
-  TextField
+  TextField,
+  Link as Btn
 } from '@material-ui/core'
 import {
   CloseOutlined,
 } from '@material-ui/icons'
 
 // Gatsby
-import { navigate } from 'gatsby'
+import { navigate, Link } from 'gatsby'
+
+// Truncate
+import TruncateText from 'react-text-truncate'
 
 // Utils
 import { stringify } from 'qs'
@@ -22,6 +26,35 @@ import { strapiImageUrl } from '../../../../utils/js'
 
 // Styles
 import styles from '../../styles.module.scss'
+
+const Title = props => {
+  const {
+    productID,
+    title
+  } = props
+
+  return (
+    <Typography
+      className={styles['titleContainer']}
+      component='div'
+    >
+      <Btn
+        color='inherit'
+        className={styles['title']}
+        component={Link}
+        to={`/product?id=${productID}`}
+      >
+        <b>
+          <TruncateText
+            text={title}
+            truncateText='...'
+            line={2}
+          />
+        </b>
+      </Btn>
+    </Typography>
+  )
+}
 
 const CartItem = props => {
   const {
@@ -71,7 +104,12 @@ const CartItem = props => {
           {Rand(product.product.price).format()}  
         </strike>
         {' '}
-        { Rand(product.product.product_discount?.discounted_price).format() }
+        <span
+          className={styles['normal']}
+        >
+          { Rand(product.product.product_discount?.discounted_price).format() }
+        </span>
+        
       </>
     )
 
@@ -113,11 +151,10 @@ const CartItem = props => {
       <div
         className={styles['data']}
       >
-        <Typography
-          className={styles['title']}
-        >
-          <b>{product.product.name}</b>
-        </Typography>
+        <Title
+          title={product.product.name}
+          productID={product.product.id}
+        />
 
         <Typography
           className={styles['price']}

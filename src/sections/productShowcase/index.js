@@ -252,8 +252,10 @@ const ProductShowcase = () => {
         >
           {Rand(product.price).format()}  
         </strike>
-        {' '}<br className={styles['specialBreak']} />
-        <b>
+        {' '}
+        <b
+          className={styles['normal']}
+        >
           {Rand(product.product_discount?.discounted_price).format()}
         </b>
       </>
@@ -633,7 +635,7 @@ const ProductShowcase = () => {
                 className={styles['price']}
                 variant='h5'
               >
-                {priceToDisplay()}
+                { priceToDisplay() }
               </Typography>
 
               <div>
@@ -643,25 +645,13 @@ const ProductShowcase = () => {
               </div>
             </div>
 
-            {
-              showMessage(availabilityRes)
-            }
-
-            {/* <div>
-              <Alert
-                severity='warning'
-              >
-                <b>Cart Functionality is temporarily disabled.</b>
-              </Alert>
-            </div> */}
+            { showMessage(availabilityRes) }
 
             <div>
               <Divider
                 className={styles['divider']}
               />
             </div>
-
-            
 
             {
               showCartActions(availabilityRes) && (
