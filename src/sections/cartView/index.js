@@ -20,7 +20,6 @@ import Loading from './views/loading'
 import Empty from './views/empty'
 import ReadyView from './views/ready'
 import EditView from './views/edit'
-import CommingSoom from './views/comming_soon'
 
 // Styles
 import styles from './styles.module.scss'
