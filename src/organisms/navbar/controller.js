@@ -4,7 +4,7 @@ import { Machine, assign } from 'xstate'
 import { throttle } from 'lodash'
 
 const SHOW_HIDE_TRIGGER_DISTANCE = 150
-const THROTTLE_WAIT = 250
+const THROTTLE_WAIT = 75
 
 const LocalState = new Machine({
   id: 'NavbarController',
