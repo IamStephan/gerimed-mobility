@@ -18,11 +18,17 @@ const CART_FRAGMENT = `
   cart {
     products {
       product {
+        id
         name
         price
         weight
         isLimited
         quantity
+
+        product_discount {
+          discounted_price
+        }
+
         showcase(
           limit: 1,
           start: 0
@@ -30,6 +36,7 @@ const CART_FRAGMENT = `
           url
           formats
         }
+        
         categories {
           name
           id
@@ -98,10 +105,22 @@ const ADD_PRODUCT = `
 `
 
 const SET_CART_PRODUCTS = `
-  
+  mutation(
+    $cartToken: String!
+    $products: [SetProductQuantityProductsInput]
+  ) {
+    setCartProducts(
+      input: {
+        cartToken: $cartToken,
+        products: $products
+      }
+    ) {
+      ${CART_FRAGMENT}
+    }
+  }
 `
 
-const CLEAR_PRODUCT = `
+const CLEAR_CART = `
   mutation(
     $cartToken: String!
   ) {
@@ -115,31 +134,20 @@ const CLEAR_PRODUCT = `
   }
 `
 
-const SET_PRODUCT_QUANTITY = `
-  mutation(
-    $cartToken: String!,
-    $products: [{
-      $productID: ID!,
-      $quantity: Int!
-    }]
-  ) {
-    setProductQuantity(
-      input: {
-        cartToken: cartToken,
-        products: $products
-      }
-    ) {
-      ${CART_FRAGMENT}
-    }
-  }
-`
+
 
 const SET_CART_DETAILS = `
   mutation(
-
+    $cartToken: String!
+    $address: editComponentUserAddressInput!
+    $contact: editComponentUserContactDetailInput!
   ) {
     setCartDetails(
-
+      input: {
+        cartToken: $cartToken,
+        address: $address
+        contact: $contact
+      }
     ) {
       ${CART_FRAGMENT}
     }
@@ -192,6 +200,8 @@ export {
   ADD_AND_CREATE,
   ADD_PRODUCT,
   SET_CART_PRODUCTS,
+  SET_CART_DETAILS,
+  CLEAR_CART,
   CART_RECONCILE,
-  SET_CART_AS_USER_CART
+  SET_CART_AS_USER_CART,
 }
