@@ -647,13 +647,13 @@ const ProductShowcase = () => {
               showMessage(availabilityRes)
             }
 
-            <div>
+            {/* <div>
               <Alert
                 severity='warning'
               >
                 <b>Cart Functionality is temporarily disabled.</b>
               </Alert>
-            </div>
+            </div> */}
 
             <div>
               <Divider
@@ -693,7 +693,6 @@ const ProductShowcase = () => {
                       value={quantity}
                       onChange={_handleQuantityChange}
                       className={styles['input']}
-                      disabled={true}
                     />
 
                     <Button
@@ -702,7 +701,6 @@ const ProductShowcase = () => {
                       disableElevation
                       className={styles['button']}
                       onClick={_handleAddToCart}
-                      disabled={true}
                     >
                       Add To Cart
                     </Button>
