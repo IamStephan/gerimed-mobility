@@ -51,7 +51,7 @@ const ReadyView = props => {
           }
         </div>
         
-        <Divider />
+        {/* <Divider /> */}
 
         <div
           className={styles['actions']}
@@ -71,10 +71,10 @@ const ReadyView = props => {
         </div>
       </div>
 
-      <Divider
+      {/* <Divider
         orientation='vertical'
         flexItem
-      />
+      /> */}
 
       <div
         className={styles['right']}

@@ -133,8 +133,6 @@ const EditView = props => {
 
           { cartToView() }
         </div>
-        
-        <Divider />
 
         <div
           className={styles['actions']}
@@ -160,11 +158,6 @@ const EditView = props => {
           </ButtonGroup>
         </div>
       </div>
-
-      <Divider
-        orientation='vertical'
-        flexItem
-      />
 
       <div
         className={styles['right']}

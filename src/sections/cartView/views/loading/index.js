@@ -125,8 +125,6 @@ const LoadingView = () => {
           <CartItemSkeleton />
           <CartItemSkeleton />
         </div>
-        
-        <Divider />
 
         <div
           className={styles['actions']}
@@ -152,11 +150,6 @@ const LoadingView = () => {
           </Skeleton>
         </div>
       </div>
-
-      <Divider
-        orientation='vertical'
-        flexItem
-      />
 
       <div
         className={styles['right']}

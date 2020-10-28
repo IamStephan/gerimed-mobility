@@ -101,7 +101,7 @@ const CartView = () => {
         <b>Your Cart</b>
       </Typography>
 
-      <Divider />
+      {/* <Divider /> */}
 
       { CartStateView() }
       
