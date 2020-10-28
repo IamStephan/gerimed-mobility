@@ -70,7 +70,7 @@ const Shipping = () => {
     if(isEditing) {
       reset(defaultValues)
     }
-  }, [current.context.user, isEditing, reset, defaultValues])
+  }, [isEditing])
 
   function _handleSubmit(data) {
     const {
@@ -388,7 +388,7 @@ const Shipping = () => {
                 </Button>
                 <Button
                   variant='outlined'
-                  onClick={_toggleEditMode}
+                  onClick={() => _toggleEditMode(false)}
                 >
                   Cancel
                 </Button>
@@ -397,7 +397,7 @@ const Shipping = () => {
               <Button
                 variant='outlined'
                 color='secondary'
-                onClick={_toggleEditMode}
+                onClick={() => _toggleEditMode(true)}
               >
                 Edit
               </Button>
