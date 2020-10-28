@@ -1,14 +1,6 @@
 function storageFactory(getStorage) {
   let inMemoryStorage = {};
-  if(typeof window === 'undefined') return
-
-  /**
-   * Storage Change Detection
-   */
   
-  
-  
-
   function isSupported() {
     try {
       const testKey = "___STORAGE_SUPPORT_TEST___";
