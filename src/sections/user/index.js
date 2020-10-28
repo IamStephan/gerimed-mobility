@@ -105,7 +105,7 @@ const User = () => {
             value={USER_TABS.purchase}
             className={styles['tabPanel']}
           >
-            {/* <Purchases /> */}
+            <Purchases />
           </TabPanel>
           <TabPanel
             value={USER_TABS.settings}

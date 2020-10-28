@@ -108,10 +108,14 @@ const PurchasesTab = props => {
     <TabTemplate
       title='Purchase History'
     >
-      {/* <View /> */}
-      <div>
-        sd
-      </div>
+      <Alert
+        severity='warning'
+      >
+        <AlertTitle>
+          <b>Temporarily disabled</b>
+        </AlertTitle>
+          We are in the process of making sure you can easily track all your past orders.
+      </Alert>
     </TabTemplate>
   )
 }
