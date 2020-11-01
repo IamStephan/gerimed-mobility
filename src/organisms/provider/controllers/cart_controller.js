@@ -17,7 +17,8 @@ import {
   AddProduct,
   CartReconcile,
   SetAsUserCart,
-  SetCartProducts
+  SetCartProducts,
+  SetCartDetails
 } from './cart_api'
 
 const { pure } = actions
@@ -64,16 +65,7 @@ const CartController = new Machine({
         getUserCart: GetUserCart.state,
         addProduct: AddProduct.state,
         setCartProducts: SetCartProducts.state,
-
-        setDetails: {
-          invoke: {
-            src: 'loading.setDetails',
-            onDone: {
-              actions: 'success.setDetails.setCart',
-              target: '#CartController.idle'
-            },
-          }
-        },
+        setDetails: SetCartDetails.state,
 
         bankTransfer: {
           invoke: {
@@ -125,7 +117,8 @@ const CartController = new Machine({
     ...AddProduct.service,
     ...SetCartProducts.service,
     ...CartReconcile.service,
-    ...SetAsUserCart.service
+    ...SetAsUserCart.service,
+    ...SetCartDetails.service
   },
   actions: {
     /**
@@ -167,7 +160,7 @@ const CartController = new Machine({
     ...CartReconcile.action,
     ...SetAsUserCart.action,
     ...SetCartProducts.action,
-
+    ...SetCartDetails.action,
 
     /**
      * DEV Errors
