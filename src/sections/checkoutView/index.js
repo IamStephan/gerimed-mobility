@@ -1,55 +1,92 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // Material
 import {
   Typography,
-  Divider,
-  TextField,
-  Select,
+  Stepper,
+  Step,
+  StepLabel,
+  StepContent
 } from '@material-ui/core'
-import { Alert, AlertTitle } from '@material-ui/lab'
 
 // Hooks
 import { useService } from '@xstate/react'
-import { useForm } from 'react-hook-form'
-
-// Form
-import { yupResolver } from '@hookform/resolvers'
-
-// Model
-import {
-  FormSchema,
-  provinces,
-  provincesSemantic,
-  countries,
-  countriesSemantic
-} from './model'
 
 // Global Controller
-import { CartService } from '../../organisms/provider'
+import { CartService, AuthService } from '../../organisms/provider'
 
 // Template
 import { Section } from '../../templates/content_layout'
+
+// Local Molecules
+import StepperIcon from './molecules/stepper_icon'
+
+// Views
+import Details from './views/details_form'
+import Summary from './views/summary'
 
 // Styles
 import styles from './styles.module.scss'
 
 const CheckoutView = () => {
-  const [current, send] = useService(CartService)
+  const [currentCart, sendCart] = useService(CartService)
+  const [currentAuth, sendAuth] = useService(AuthService)
 
-  function _handleSubmit(data) {
+  const [activeStep, setActiveStep] = useState(0)
 
+  /**
+   * Local Utils
+   */
+  function _handleNext() {
+    setActiveStep(prev => prev + 1)
   }
 
-  const { register, handleSubmit, errors } = useForm({
-    resolver: yupResolver(FormSchema)
-  })
+  function _handlePrev() {
+    if(activeStep >= 0) {
+      setActiveStep(prev => prev - 1)
+    }
+  }
+
+  /**
+   * Get the user if they are authenticated but not logged in
+   */
+  useEffect(() => {
+    if(currentAuth.matches({ idle: 'user' }) && !currentAuth.context.user) {
+      sendAuth('GET_ME')
+    }
+  }, [])
+
+  const steps = [
+    {
+      title: 'Details',
+      content: (
+        <Details
+          handleNext={_handleNext}
+          cart={[currentCart, sendCart]}
+          auth={[currentAuth]}
+        />
+      )
+    },
+    {
+      title: 'Cart Summary',
+      content: (
+        <Summary
+          handleNext={_handleNext}
+          handlePrev={_handlePrev}
+          cart={[currentCart]}
+        />
+      )
+    },
+    {
+      title: 'Payment',
+      content: <div>asdasdasdasd</div>
+    }
+  ]
 
   return (
     <Section
       className={styles['checkoutSection']}
     >
-
       <Typography
         gutterBottom
         variant='h3'
@@ -58,207 +95,30 @@ const CheckoutView = () => {
         <b>Checkout</b>
       </Typography>
 
-      <br />
-      <Alert
-        severity='warning'
-      >
-        <AlertTitle>
-          <b>Checkout Temporarily Disabled</b>
-        </AlertTitle>
-        We are currently in the process of refining your checkout experience and the checkout should be up and running in no time.
-      </Alert>
-    </Section>
-  )
-
-  return (
-    <Section
-      className={styles['checkoutSection']}
-    >
-      <Typography
-        gutterBottom
-        variant='h3'
+      <Stepper
+        className={styles['stepper']}
+        activeStep={activeStep}
+        orientation='vertical'
         color='secondary'
       >
-        <b>Checkout</b>
-      </Typography>
-
-      <div
-        className={styles['checkoutView']}
-      >
-        <div
-          className={styles['left']}
-        >
-          <form
-            noValidate
-            className={styles['container']}
-            onSubmit={handleSubmit(_handleSubmit)}
-          >
-            <div
-              className={styles['row']}
+        {
+          steps.map((step, i) => (
+            <Step
+              key={i}
             >
-              <div
-                className={styles['sectionExplain']}
+              <StepLabel
+                StepIconComponent={StepperIcon}
               >
-                <Typography
-                  color='secondary'
-                  variant='h5'
-                >
-                  <b>Shipping Address</b>
-                </Typography>
+                <b>{step.title}</b>
+              </StepLabel>
 
-                <Typography
-                  variant='body2'
-                >
-                  This is where we will deliver your order.
-                </Typography>
-              </div>
-
-              {/* <Divider
-                orientation='vertical'
-                flexItem
-              /> */}
-
-              <div
-                className={styles['sectionForm']}
-              >
-                <div
-                  className={styles['field']}
-                >
-                  <TextField
-                    className={styles['input']}
-                    variant='outlined'
-                    color='secondary'
-                    label='Address Line Two'
-                  />
-                </div>
-
-                <div
-                  className={styles['field']}
-                >
-                  <TextField
-                    className={styles['input']}
-                    variant='outlined'
-                    color='secondary'
-                    label='Suburb'
-                  />
-                </div>
-
-                <div
-                  className={styles['field']}
-                >
-                  <TextField
-                    className={styles['input']}
-                    variant='outlined'
-                    color='secondary'
-                    label='Postal Code'
-                  />
-                </div>
-
-                <div
-                  className={styles['field']}
-                >
-                  <Select
-                    native
-                    color='secondary'
-                    variant='outlined'
-                    name='province'
-                    label='Province'
-                  >
-                    {
-                      provinces.map((prov, i) => (
-                        <option
-                          key={prov}
-                          value={prov}
-                        >
-                          {provincesSemantic[i]}
-                        </option>
-                      ))
-                    }
-                  </Select>
-                </div>
-
-                <div
-                  className={styles['field']}
-                >
-                  <Select
-                    native
-                    color='secondary'
-                    variant='outlined'
-                    name='country'
-                    label='Country'
-                  >
-                    {
-                      countries.map((coun, i) => (
-                        <option
-                          key={coun}
-                          value={coun}
-                        >
-                          { countriesSemantic[i] }
-                        </option>
-                      ))
-                    }
-                  </Select>
-                </div>
-                
-              </div>
-            </div>
-
-            <div
-              className={styles['row']}
-            >
-              <div
-                className={styles['sectionExplain']}
-              >
-                <Typography
-                  color='secondary'
-                  variant='h5'
-                >
-                  <b>Contact Details</b>
-                </Typography>
-
-                <Typography
-                  variant='body2'
-                >
-                  Prefered method of us reaching out to you
-                </Typography>
-              </div>
-
-              <div
-                className={styles['sectionForm']}
-              >
-                <div
-                  className={styles['field']}
-                >
-                  <TextField
-                    className={styles['input']}
-                    variant='outlined'
-                    color='secondary'
-                    label='Email'
-                  />
-                </div>
-
-                <div
-                  className={styles['field']}
-                >
-                  <TextField
-                    className={styles['input']}
-                    variant='outlined'
-                    color='secondary'
-                    label='Contact Number'
-                  />
-                </div>
-              </div>
-            </div>
-          </form>
-          
-        </div>
-
-        <div
-          className={styles['right']}
-        >
-
-        </div>
-      </div>
+              <StepContent>
+                {step.content}
+              </StepContent>
+            </Step>
+          ))
+        }
+      </Stepper>
     </Section>
   )
 }

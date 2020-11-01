@@ -1,34 +1,8 @@
 @import '../../utils/sizes';
+@import '../../utils/colors';
 
 .checkoutSection {
-  .checkoutView {
-    display: flex;
-
-    .left {
-      flex: 1;
-
-      .row {
-        display: flex;
-        align-items: stretch;
-        margin-bottom: #{$margin * 4}px;
-
-        .sectionExplain {
-          padding: #{$padding}px;
-          flex-basis: 300px;
-          flex-grow: 0;
-          flex-shrink: 0;
-        }
-
-        .sectionForm {
-          padding: #{$padding}px;
-          display: flex;
-          flex-direction: column;
-
-          .field {
-            margin-bottom: #{$margin * 2}px;
-          }
-        }
-      }
-    }
+  .stepper {
+    background-color: $light;
   }
 }

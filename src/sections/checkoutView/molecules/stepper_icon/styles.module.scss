@@ -1,0 +1,36 @@
+@import '../../../../utils/colors';
+
+
+$containerSize: 24;
+
+.container {
+  width: #{$containerSize}px;
+  height: #{$containerSize}px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+
+  &.success {
+    background-color: $secondary;
+  }
+
+  &.error {
+    background-color: $danger;
+  }
+
+  &.nonactive {
+    background-color: darken($grey, 50%);
+  }
+
+  .icon {
+    font-size: 16px;
+    color: $light;
+  }
+
+  .text {
+    font-size: 12px;
+    color: $light;
+  }
+}

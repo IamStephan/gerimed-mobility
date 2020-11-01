@@ -17,7 +17,7 @@ const FormSchema = yup.object().shape({
   country: yup.string().oneOf([...countries]).required('Country is required.'),
 
   // Contact
-  email: yup.string().email().required('Email Is Required.'),
+  email: yup.string().email().required('Email is required.'),
   phone: yup.string()
 })
 
