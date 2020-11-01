@@ -98,7 +98,7 @@ const DetailsForm = props => {
       setValue('addressLineOne', user.address.addressLineOne)
       setValue('addressLineTwo', user.address.addressLineTwo)
       setValue('suburb', user.address.suburb)
-      setValue('postCode', user.address.['post_code'])
+      setValue('postCode', user.address['post_code'])
       setValue('province', user.address.province)
       setValue('country', user.address.country)
     }
