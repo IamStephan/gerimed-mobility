@@ -190,7 +190,19 @@ const SET_CART_AS_USER_CART = `
   }
 `
 
-const SUBMIT_BANK_TRANSFER = ``
+const SUBMIT_BANK_TRANSFER = `
+  mutation(
+    $cartToken: String!
+  ) {
+    bankTransfer(
+      input: {
+        cartToken: $cartToken
+      }
+    ) {
+      ok
+    }
+  }
+`
 
 const SUBMIT_PAYMENT_GATEWAY = ``
  
@@ -204,4 +216,5 @@ export {
   CLEAR_CART,
   CART_RECONCILE,
   SET_CART_AS_USER_CART,
+  SUBMIT_BANK_TRANSFER
 }

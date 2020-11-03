@@ -1,0 +1,47 @@
+@import '../../../../utils/sizes';
+@import '../../../../utils/border';
+@import '../../../../utils/colors';
+
+.payment {
+  display: flex;
+  justify-content: space-around;
+  justify-content: space-evenly;
+
+  .paymentSelection {
+    width: 300px;
+    padding: #{$padding * 2}px;
+    border-radius: #{$border-radius}px;
+    border: 1px solid rgba($dark, 0.15);
+    background-color: rgba($dark, 0.015);
+
+    .iconContainer {
+      display: flex;
+      justify-content: center;
+      margin-bottom: #{$margin}px;
+
+      .icon {
+        width: 225px;
+        height: 225px;
+      }
+    }
+
+    .loading {
+      margin-bottom: #{$margin}px;
+    }
+
+    .titleContainer {
+      display: flex;
+      justify-content: center;
+      margin-bottom: #{$margin}px;
+
+      .icon {
+        margin-right: #{$margin}px;;
+      }
+    }
+
+    .actionContainer {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

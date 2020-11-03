@@ -1,0 +1,7 @@
+@import '../../../../utils/sizes';
+
+.summary {
+  .table {
+    margin-bottom: #{$margin * 2}px;
+  }
+}

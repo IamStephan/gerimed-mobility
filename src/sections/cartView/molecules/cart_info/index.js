@@ -28,7 +28,7 @@ const CartInfo = props => {
     }, 0)
 
     const shippingWeight = products.reduce((acc, curr) => {
-      let weight = 0
+      let weight = 1
 
       if(curr.product.weight) {
         weight = curr.product.weight

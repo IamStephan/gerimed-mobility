@@ -24,6 +24,7 @@ import StepperIcon from './molecules/stepper_icon'
 // Views
 import Details from './views/details_form'
 import Summary from './views/summary'
+import Payment from './views/payment'
 
 // Styles
 import styles from './styles.module.scss'
@@ -79,7 +80,12 @@ const CheckoutView = () => {
     },
     {
       title: 'Payment',
-      content: <div>asdasdasdasd</div>
+      content: (
+        <Payment
+          handlePrev={_handlePrev}
+          cart={[currentCart, sendCart]}
+        />
+      )
     }
   ]
 

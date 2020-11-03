@@ -56,7 +56,8 @@ const CartController = new Machine({
         SET_CART_PRODUCTS: '#CartController.loading.setCartProducts',
         SET_DETAILS: '#CartController.loading.setDetails',
         SUBMIT_BANK_TRANSFER: '#CartController.loading.bankTransfer',
-        SET_PRODUCTS: '#CartController.loading.setCartProducts'
+        SET_PRODUCTS: '#CartController.loading.setCartProducts',
+        BANK_TRANSFER: ''
       }
     },
     loading: {
