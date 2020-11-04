@@ -116,7 +116,7 @@ const DetailsForm = props => {
 
     // Phone
     if(currentCart.context?.cartData?.contact?.phone) {
-      setValue('phone', currentCart.context.cartData.contact.email)
+      setValue('phone', currentCart.context.cartData.contact.phone)
     } else if(user.phone && !getValues('phone')) {
       setValue('phone', user.phone)
     }
