@@ -6,8 +6,20 @@ import {
   Stepper,
   Step,
   StepLabel,
-  StepContent
+  StepContent,
+  StepButton,
+  Button
 } from '@material-ui/core'
+import {
+  Alert,
+  AlertTitle
+} from '@material-ui/lab'
+import {
+  InfoOutlined
+} from '@material-ui/icons'
+
+// Gatsby
+import { Link } from 'gatsby'
 
 // Hooks
 import { useService } from '@xstate/react'
@@ -33,6 +45,10 @@ const CheckoutView = () => {
   const [currentCart, sendCart] = useService(CartService)
   const [currentAuth, sendAuth] = useService(AuthService)
 
+  const loading = currentAuth.matches('loading') || currentCart.matches('loading') || currentCart.matches('ready')
+
+  const cart = currentCart.context?.cartData
+
   const [activeStep, setActiveStep] = useState(0)
 
   /**
@@ -48,6 +64,32 @@ const CheckoutView = () => {
     }
   }
 
+  function _checkCompleted(i) {
+    switch(true) {
+      case i === 0: {
+        // Details Form
+        if(cart?.address && cart?.contact) {
+          return true
+        }
+        return false
+      }
+      case i === 1: {
+        // Cart Summary
+        if(activeStep > 1) {
+          return true
+        }
+        return false
+      }
+      case i === 2: {
+        // Payment
+        return false
+      }
+      default: {
+        return false
+      }
+    }
+  }
+
   /**
    * Get the user if they are authenticated but not logged in
    */
@@ -59,7 +101,7 @@ const CheckoutView = () => {
 
   const steps = [
     {
-      title: 'Details',
+      title: 'Shipping Information',
       content: (
         <Details
           handleNext={_handleNext}
@@ -79,7 +121,7 @@ const CheckoutView = () => {
       )
     },
     {
-      title: 'Payment',
+      title: 'Order Processing',
       content: (
         <Payment
           handlePrev={_handlePrev}
@@ -88,6 +130,11 @@ const CheckoutView = () => {
       )
     }
   ]
+
+  /**
+   * Make Sure There is an Actual cart to use
+   */
+  const isEmpty = !loading && (!cart || !cart?.cart?.products?.length > 0)
 
   return (
     <Section
@@ -101,30 +148,61 @@ const CheckoutView = () => {
         <b>Checkout</b>
       </Typography>
 
-      <Stepper
-        className={styles['stepper']}
-        activeStep={activeStep}
-        orientation='vertical'
-        color='secondary'
-      >
-        {
-          steps.map((step, i) => (
-            <Step
-              key={i}
-            >
-              <StepLabel
-                StepIconComponent={StepperIcon}
+      {
+        isEmpty ? (
+          <Alert
+            iconMapping={{
+              success: <InfoOutlined fontSize="inherit" />
+            }}
+            action={
+              <Button
+                component={Link}
+                to='/shop'
               >
-                <b>{step.title}</b>
-              </StepLabel>
+                Shop
+              </Button>
+            }
+          >
+            <AlertTitle>
+              <b>Empty Shopping Cart</b>
+            </AlertTitle>
+            Your shopping cart seems to be empty. You can browse our shop and add them to your cart.
+          </Alert>
+        ) : (
+          <Stepper
+            className={styles['stepper']}
+            activeStep={activeStep}
+            orientation='vertical'
+            color='secondary'
+            nonLinear
+          >
+            {
+              steps.map((step, i) => (
+                <Step
+                  key={i}
+                >
+                  <StepButton
+                    onClick={() => setActiveStep(i)}
+                    completed={_checkCompleted(i)}
+                  >
+                    <StepLabel
+                      StepIconComponent={StepperIcon}
+                    >
+                      <b>{step.title}</b>
+                    </StepLabel>
+                  </StepButton>
+    
+                  <StepContent>
+                    {step.content}
+                  </StepContent>
+                </Step>
+              ))
+            }
+          </Stepper>
+        )
+      }
 
-              <StepContent>
-                {step.content}
-              </StepContent>
-            </Step>
-          ))
-        }
-      </Stepper>
+
     </Section>
   )
 }
