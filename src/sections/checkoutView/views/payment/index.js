@@ -128,7 +128,7 @@ const Payment = props => {
 
                 <ListItemText
                   primary={<b>We Make You An Offer</b>}
-                  secondary='We Contact you and send an invoice on an agreeded upon offer.'
+                  secondary='We contact you to make an offer or send you an invoice.'
                 />
               </ListItem>
 
@@ -139,7 +139,7 @@ const Payment = props => {
 
                 <ListItemText
                   primary={<b>The Offer Gets Accepted</b>}
-                  secondary='When the offer gets accepted a payment is made with the order reference.'
+                  secondary='As soon as the order is paid we start with packaging.'
                 />
               </ListItem>
 
@@ -150,7 +150,7 @@ const Payment = props => {
 
                 <ListItemText
                   primary={<b>Products are Shipped</b>}
-                  secondary='Your products are now on their way to you and you can sit back and relax.'
+                  secondary='Your products are now on their way to you and you can sit back and relax.' 
                 />
               </ListItem>
             </List>
@@ -191,7 +191,7 @@ const Payment = props => {
               <AlertTitle>
                 <b>Unavailable</b>
               </AlertTitle>
-              Online Payments are currently unavailable, please place an order for a manual payment.
+              Online payments are currently unavailable, please use the manual payment option.
             </Alert>
           </TabPanel>
           <Divider />
