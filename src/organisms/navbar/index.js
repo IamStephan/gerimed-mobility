@@ -182,6 +182,15 @@ const Navbar = props => {
                 Contact
               </NormalButton>
             </li>
+            <li>
+              <NormalButton
+                active={page === PAGES.about}
+                isTrans={isTrans}
+                to='/trackorder'
+              >
+                Track my order
+              </NormalButton>
+            </li>
           </ol>
 
           <ol
