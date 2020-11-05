@@ -81,7 +81,7 @@ const DetailsForm = props => {
     setIsInitial(false)
   }
 
-  const _autoFill = once(() => {
+  const _autoFill = () => {
     const user = currentAuth.context?.user
 
     /**
@@ -94,7 +94,7 @@ const DetailsForm = props => {
       setValue('postCode', currentCart.context.cartData.address['post_code'])
       setValue('province', currentCart.context.cartData.address.province)
       setValue('country', currentCart.context.cartData.address.country)
-    } else if(user.address) {
+    } else if(user?.address) {
       setValue('addressLineOne', user.address.addressLineOne)
       setValue('addressLineTwo', user.address.addressLineTwo)
       setValue('suburb', user.address.suburb)
@@ -110,24 +110,24 @@ const DetailsForm = props => {
     // Email
     if(currentCart.context?.cartData?.contact?.email) {
       setValue('email', currentCart.context.cartData.contact.email)
-    } else if(user.email && !getValues('email')) {
+    } else if(user?.email && !getValues('email')) {
       setValue('email', user.email)
     }
 
     // Phone
     if(currentCart.context?.cartData?.contact?.phone) {
       setValue('phone', currentCart.context.cartData.contact.phone)
-    } else if(user.phone && !getValues('phone')) {
+    } else if(user?.phone && !getValues('phone')) {
       setValue('phone', user.phone)
     }
-  })
+  }
 
   // Auto Fill for logged in users (This should only happen once) and carts with addresses
   useEffect(() => {
-    if(!currentAuth.context?.user) return
-
+    if(!currentCart.context?.cartData && !currentAuth.context?.user) return
+  
     _autoFill()
-  }, [currentAuth.context])
+  }, [currentAuth.context, currentCart.context])
 
   /**
    * Listen for a successful details set
