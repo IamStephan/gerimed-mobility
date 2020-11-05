@@ -4,11 +4,11 @@ const PAGES = {
   about: 'ABOUT', // <== Done
   contact: 'CONTACT', // <== Done
   checkout: 'CHECKOUT',
-  cart: 'CART',
+  cart: 'CART', // <== Done
   product: 'PRODUCT', // <== Done
   results: 'RESULTS',
-  loader: 'LOADER',
-  notfound: 'NOTFOUND',
+  tracker: 'TRACKER',
+  notfound: 'NOTFOUND', // < <== Done
 
   // Legal
   terms: 'TERMS', // <== Done
