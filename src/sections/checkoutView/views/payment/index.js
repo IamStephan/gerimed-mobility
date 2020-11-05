@@ -1,25 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 // Material
 import {
+  Tab,
   Button,
-  LinearProgress,
-  Typography
+  Divider,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  ListItemAvatar,
+  CircularProgress
 } from '@material-ui/core'
 import {
-  InfoOutlined,
+  DescriptionOutlined,
+  SettingsOutlined,
+  LocalShippingOutlined,
+  ContactSupportOutlined,
+  AssignmentTurnedInOutlined,
+
+  AccountBalanceRounded,
   CreditCardRounded
 } from '@material-ui/icons'
 import {
-  Alert
+  TabContext,
+  TabList,
+  TabPanel,
+  Alert,
+  AlertTitle
 } from '@material-ui/lab'
-
-// Svg
-import BankIcon from '../../../../svg/bank.svg'
-import OnlinePaymentIcon from '../../../../svg/payment-method.svg'
 
 // Styles
 import styles from './styles.module.scss'
+
+const TABS = {
+  manual: 'MANUAL',
+  online: 'ONLINE'
+}
 
 const Payment = props => {
   const {
@@ -27,10 +45,16 @@ const Payment = props => {
     cart
   } = props
 
+  const [activeTab, setActiveTab] = useState(TABS.manual)
   const [current, send] = cart
+  const loading = current.matches('loading')
 
   function _bankTransfer() {
-    send('BANK_TRAMSFER')
+    send('BANK_TRANSFER')
+  }
+
+  function _handleTabChange(e, tab) {
+    setActiveTab(tab)
   }
 
   return (
@@ -38,88 +62,151 @@ const Payment = props => {
       className={styles['payment']}
     >
       <div
-        className={styles['paymentSelection']}
+        className={styles['tabContainer']}
       >
-        <div
-          className={styles['iconContainer']}
+        <TabContext
+          value={activeTab}
         >
-          <BankIcon
-            className={styles['icon']}
-          />
-        </div>
-        <div
-          className={styles['titleContainer']}
-        >
-          <Typography
-            variant='h5'
+          <TabList
+            onChange={_handleTabChange}
           >
-            <b>Manual Payment</b>
-          </Typography>
-        </div>
-        
-        {/* <div
-          className={styles['loading']}
-        >
-          <LinearProgress
-            color='secondary'
-          />
-        </div> */}
+            <Tab
+              icon={<AccountBalanceRounded color='secondary' />}
+              value={TABS.manual}
+              label={<b>Manual</b>}
+            />
+            <Tab
+              icon={<CreditCardRounded color='secondary' />}
+              value={TABS.online}
+              label={<b>Online</b>}
+            />
+          </TabList>
+          <Divider/>
 
-        {/* <div
-          className={styles['actionContainer']}
-        >
-          <Button
-            variant='outlined'
-            disableElevation
-            color='secondary'
-            disabled
-            fullWidth
+          <TabPanel
+            value={TABS.manual}
+            className={styles['panel']}
           >
-            Select
-          </Button>
-        </div> */}
-        <div
-          className={styles['alertContainer']}
-        >
-          <Alert
-            iconMapping={{success: <InfoOutlined />}}
-            variant='outlined'
+            <div
+              className={styles['title']}
+            >
+              <Typography
+                variant='h5'
+              >
+                <b>How It works</b>
+              </Typography>
+            </div>
+
+            <List>
+              <ListItem>
+                <ListItemAvatar>
+                  <DescriptionOutlined color='secondary' />
+                </ListItemAvatar>
+
+                <ListItemText
+                  primary={<b>Get A Quote</b>}
+                  secondary='Once you have placed your order, we send you an email with the reference number and a quote.'
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <SettingsOutlined color='secondary' />
+                </ListItemIcon>
+
+                <ListItemText
+                  primary={<b>Your Order Gets Processed</b>}
+                  secondary='We receive the order and process it internally, making sure everything is available.'
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <ContactSupportOutlined color='secondary' />
+                </ListItemIcon>
+
+                <ListItemText
+                  primary={<b>We Make You An Offer</b>}
+                  secondary='We Contact you and send an invoice on an agreeded upon offer.'
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <AssignmentTurnedInOutlined color='secondary' />
+                </ListItemIcon>
+
+                <ListItemText
+                  primary={<b>The Offer Gets Accepted</b>}
+                  secondary='When the offer gets accepted a payment is made with the order reference.'
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <LocalShippingOutlined color='secondary' />
+                </ListItemIcon>
+
+                <ListItemText
+                  primary={<b>Products are Shipped</b>}
+                  secondary='Your products are now on their way to you and you can sit back and relax.'
+                />
+              </ListItem>
+            </List>
+
+            <div
+              className={styles['placeOrder']}
+            >
+              <Button
+                variant='contained'
+                color='secondary'
+                disableElevation
+                disabled={loading}
+                className={styles['placeOrderBtn']}
+                onClick={_bankTransfer}
+              >
+                Place Order
+              </Button>
+
+              {
+                loading && (
+                  <CircularProgress
+                    size={20}
+                    color='secondary'
+                  />
+                )
+              }
+            </div>
+            
+          </TabPanel>
+
+          <TabPanel
+            value={TABS.online}
           >
-            Coming Soon.
-          </Alert>
-        </div>
+            <Alert
+              severity='warning'
+              variant='outlined'
+            >
+              <AlertTitle>
+                <b>Unavailable</b>
+              </AlertTitle>
+              Online Payments are currently unavailable, please place an order for a manual payment.
+            </Alert>
+          </TabPanel>
+          <Divider />
+        </TabContext>
       </div>
 
       <div
-        className={styles['paymentSelection']}
+        className={styles['actions']}
       >
-        <div
-          className={styles['iconContainer']}
+        <Button
+          variant='outlined'
+          color='secondary'
+          onClick={handlePrev}
         >
-          <OnlinePaymentIcon
-            className={styles['icon']}
-          />
-        </div>
-        <div
-          className={styles['titleContainer']}
-        >
-          <Typography
-            variant='h5'
-          >
-            <b>Online Payment</b>
-          </Typography>
-        </div>
-
-        <div
-          className={styles['alertContainer']}
-        >
-          <Alert
-            iconMapping={{success: <InfoOutlined />}}
-            variant='outlined'
-          >
-            Coming Soon.
-          </Alert>
-        </div>
+          Back
+        </Button>
       </div>
     </div>
   )
