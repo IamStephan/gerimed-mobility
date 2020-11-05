@@ -3,10 +3,10 @@ const PAGES = {
   shop: 'SHOP', // <== Done
   about: 'ABOUT', // <== Done
   contact: 'CONTACT', // <== Done
-  checkout: 'CHECKOUT',
+  checkout: 'CHECKOUT', // <== Done
   cart: 'CART', // <== Done
   product: 'PRODUCT', // <== Done
-  results: 'RESULTS',
+  results: 'RESULTS', // <== Done
   tracker: 'TRACKER',
   notfound: 'NOTFOUND', // < <== Done
 
