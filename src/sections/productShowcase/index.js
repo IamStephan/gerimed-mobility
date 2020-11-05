@@ -63,18 +63,6 @@ const OutOfStockBadge = () => (
   />
 )
 
-const OnSaleBadge = ({ discountAmount = 0 }) => (
-  <div
-    className={styles['salesBadge']}
-  >
-    <Typography
-      className={styles['text']}
-    >
-      -<b>{discountAmount}%</b>
-    </Typography>
-  </div>
-)
-
 /**
  * TODO:
  * =====
@@ -147,6 +135,15 @@ const ProductShowcase = () => {
 
   // Form Data
   const [quantity, setQuantity] = useState(1)
+
+  /**
+   * Quantity Reset
+   */
+  useEffect(() => {
+    if(addingProduct) {
+      setQuantity(1)
+    }
+  }, [addingProduct])
 
   // Data
   const product = currentData?.context?.data?.product
@@ -682,6 +679,7 @@ const ProductShowcase = () => {
                       type='number'
                       value={quantity}
                       onChange={_handleQuantityChange}
+                      disabled={addingProduct}
                       className={styles['input']}
                     />
 
@@ -689,6 +687,7 @@ const ProductShowcase = () => {
                       variant='contained'
                       color='secondary'
                       disableElevation
+                      disabled={addingProduct}
                       className={styles['button']}
                       onClick={_handleAddToCart}
                     >
