@@ -21,7 +21,7 @@ const state = {
       target: '#CartController.idle'
     },
     onError: {
-      actions: 'restartCart',
+      actions: ['errors.general.notify', 'restartCart'],
       target: '#CartController.idle'
     }
   }

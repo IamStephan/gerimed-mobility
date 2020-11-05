@@ -6,6 +6,7 @@ const CART_FRAGMENT = `
     email
     phone
   }
+  reference
   address {
     addressLineOne
     addressLineTwo
