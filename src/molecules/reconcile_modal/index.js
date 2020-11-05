@@ -33,8 +33,26 @@ const ReconcileModal = () => {
     })
   }
 
-  function _handleCancel() {
-    send('CANCEL_RECONCILE')
+  function _handleClose() {
+    /**
+     * Note:
+     * =====
+     * When the user closes the tab merge the two carts
+     * The user can accidentally close the cart and if that
+     * happens there will be no lost data. It might make sense that the
+     * user would in this case wanted to delete the anonymous cart
+     * but in both scenarios the merging of both carts would seem
+     * the least destructive and frustrating.
+     * 
+     * Also this would allow for better sale conversions, since it forces
+     * the user to explicitly remove the unwanted items in the cart page.
+     * This then in turn causes the user revaluate their initial decision.
+     * (Basically a second wind for the site)
+     * 
+     */
+    send('RECONCILE', {
+      mode: 'merge'
+    })
   }
 
   return (
@@ -42,6 +60,7 @@ const ReconcileModal = () => {
       open={current.context.reconcileCart || false}
       fullWidth
       maxWidth='xs'
+      onClose={_handleClose}
     >
       {
         loading && (
