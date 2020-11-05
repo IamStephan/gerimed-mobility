@@ -81,7 +81,7 @@ const Summary = props => {
 
     return {
       products: newProducts,
-      totalAll: Rand(totalAll).format(),
+      totalAll: Rand(totalAll - totalSavings).format(),
       shipping: Rand(shippingCost).format(),
       total: Rand(totalAll + shippingCost - totalSavings).format()
     }
