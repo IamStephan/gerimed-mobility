@@ -2,7 +2,6 @@ import React, { useState, useLayoutEffect } from 'react'
 
 // Material
 import {
-  Divider,
   ButtonGroup,
   Button,
   LinearProgress

@@ -2,17 +2,12 @@ import React from 'react'
 
 // Material
 import {
-  Divider,
   ButtonGroup,
   Button
 } from '@material-ui/core'
 import {
-  EditOutlined,
-  ChevronRightOutlined,
+  EditOutlined
 } from '@material-ui/icons'
-
-// Gatsby
-import { Link } from 'gatsby'
 
 // Local Molecules
 import CartItem from '../../molecules/cart_item'
@@ -30,8 +25,8 @@ const ReadyView = props => {
   return (
     <div
       className={styles['cartView']}
-      onClick={() => {}}
     >
+      
       <div
         className={styles['left']}
       >
@@ -40,13 +35,11 @@ const ReadyView = props => {
         >
           {
             products.map((product, i) => (
-              <>
-                <CartItem
-                  key={i + 'ready'}
-                  product={product}
-                  isEditing={false}
-                />
-              </>
+              <CartItem
+                key={i + 'ready'}
+                product={product}
+                isEditing={false}
+              />
             ))
           }
         </div>

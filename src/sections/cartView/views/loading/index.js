@@ -2,7 +2,6 @@ import React from 'react'
 
 // Material
 import {
-  Divider,
   Typography,
   IconButton,
   Chip,
