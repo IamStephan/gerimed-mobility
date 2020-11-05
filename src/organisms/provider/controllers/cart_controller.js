@@ -18,7 +18,8 @@ import {
   CartReconcile,
   SetAsUserCart,
   SetCartProducts,
-  SetCartDetails
+  SetCartDetails,
+  BankTransfer
 } from './cart_api'
 
 const { pure } = actions
@@ -55,29 +56,22 @@ const CartController = new Machine({
         ADD_PRODUCT: '#CartController.loading.addProduct',
         SET_CART_PRODUCTS: '#CartController.loading.setCartProducts',
         SET_DETAILS: '#CartController.loading.setDetails',
-        SUBMIT_BANK_TRANSFER: '#CartController.loading.bankTransfer',
         SET_PRODUCTS: '#CartController.loading.setCartProducts',
-        BANK_TRANSFER: ''
+        BANK_TRANSFER: '#CartController.loading.bankTransfer'
       }
     },
     loading: {
       states: {
+        /**
+         * API STATES
+         * ========================================================
+         */
         getCart: GetCart.state,
         getUserCart: GetUserCart.state,
         addProduct: AddProduct.state,
         setCartProducts: SetCartProducts.state,
         setDetails: SetCartDetails.state,
-
-        bankTransfer: {
-          invoke: {
-            src: 'loading.bankTransfer',
-            onDone: {
-              actions: 'success.bankTransfer.setCart',
-              target: '#CartController.idle'
-            },
-          }
-        },
-
+        bankTransfer: BankTransfer.state,
         cartReconcile: CartReconcile.state,
         setAsUserCart: SetAsUserCart.state
       },
@@ -110,7 +104,7 @@ const CartController = new Machine({
     },
 
     /**
-     * LOADING SERVICES
+     * API SERVICES
      * ========================================================
      */
     ...GetCart.service,
@@ -119,7 +113,8 @@ const CartController = new Machine({
     ...SetCartProducts.service,
     ...CartReconcile.service,
     ...SetAsUserCart.service,
-    ...SetCartDetails.service
+    ...SetCartDetails.service,
+    ...BankTransfer.service
   },
   actions: {
     /**
@@ -162,21 +157,28 @@ const CartController = new Machine({
     ...SetAsUserCart.action,
     ...SetCartProducts.action,
     ...SetCartDetails.action,
+    ...BankTransfer.action,
 
-    /**
-     * DEV Errors
-     */
-    'cart.invoke.error': (context, event) => {
+    'errors.general.notify': (context, event) => {
+      // TODO: send event to analytics platform
+
+      // Get the errors
       const { data } = event
 
-      const errors = extractStrapiErrors(data) || []
+      if(data.strapiErrors) {
+        const errors = extractStrapiErrors(data) || []
 
-      errors.forEach((err) => {
-        context.enqueueSnackbar(err.message, {
+        errors.forEach((err) => {
+          context.enqueueSnackbar(err.message, {
+            variant: 'error'
+          })
+        })
+      } else {
+        context.enqueueSnackbar('An Unknown Error Occured', {
           variant: 'error'
         })
-      })
-    }
+      }
+    },
   },
   guards: {
     hasCartToken: (context) => !!context.cartToken,
