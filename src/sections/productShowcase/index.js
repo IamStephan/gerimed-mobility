@@ -718,6 +718,18 @@ const ProductShowcase = () => {
                 <section dangerouslySetInnerHTML={{
                   __html: product.details
                 }} />
+                <section>
+                  {
+                    availabilityRes === 'available' && (
+                      <Typography
+                        color='secondary'
+                      >
+                        <b><i>*Item is not kept on-premise.</i></b><br/><br/>
+                        <b><i>Contact us or use the manual payment option<br/> for the best deal</i></b>
+                      </Typography>
+                    )
+                  }
+                </section>
               </TabPanel>
             </TabContext>
 
