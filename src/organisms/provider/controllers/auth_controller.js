@@ -1,21 +1,18 @@
 import { Machine, assign } from 'xstate'
 
-// URL
-import { parse } from 'qs'
-
 // Utils
-import { axiosMutationFactory, axiosQueryFactory, extractStrapiErrors } from '../../../utils/js'
+import { extractStrapiErrors } from '../../../utils/js'
 import { getAuthToken, setAuthToken, removeAuthToken } from '../../../utils/js/authToken'
 
-// Models
+// APIs
 import {
-  LOGIN,
-  REGISTER,
-  FORGOT,
-  RESET_PASSWORD,
-  GET_USER,
-  UPDATE_ME
-} from '../models/auth_model'
+  Login,
+  User,
+  Update,
+  Register,
+  Forgot,
+  ResetPassword
+} from './auth_api'
 
 const AuthController = new Machine({
   id: 'AuthController',
@@ -70,86 +67,15 @@ const AuthController = new Machine({
         }
       }
     },
+
     loading: {
       states: {
-        user: {
-          invoke: {
-            src: 'loading.user',
-            onDone: {
-              target: '#AuthController.idle.user',
-              actions: ['user.setUser', 'loading.successUser']
-            },
-            onError: {
-              target: '#AuthController.idle.user',
-              actions: ['notify.errors', 'loading.failUser']
-            }
-          }
-        },
-        update: {
-          invoke: {
-            src: 'loading.update',
-            onDone: {
-              target: '#AuthController.idle.user',
-              actions: ['update.setUser', 'loading.successUpdate']
-            },
-            onError: {
-              target: '#AuthController.idle.user',
-              actions: ['notify.errors', 'loading.failUpdate']
-            }
-          }
-        },
-        login: {
-          invoke: {
-            src: 'loading.login',
-            onDone: {
-              target: '#AuthController.idle.user',
-              actions: ['setToken', 'login.setUser', 'loading.successLogin']
-            },
-            onError: {
-              target: '#AuthController.ready',
-              actions: ['notify.errors', 'loading.failLogin']
-            }
-          }
-        },
-        register: {
-          invoke: {
-            src: 'loading.register',
-            onDone: {
-              target: '#AuthController.idle.guest',
-              actions: ['loading.successRegister']
-            },
-            onError: {
-              target: '#AuthController.ready',
-              actions: ['notify.errors', 'loading.failRegister']
-            }
-          }
-        },
-        forgot: {
-          invoke: {
-            src: 'loading.forgot',
-            onDone: {
-              target: '#AuthController.idle.guest',
-              actions: ['loading.successForgot']
-            },
-            onError: {
-              target: '#AuthController.ready',
-              actions: ['notify.errors', 'deleteToken', 'loading.failForgot']
-            }
-          }
-        },
-        reset_password: {
-          invoke: {
-            src: 'loading.reset_password',
-            onDone: {
-              target: '#AuthController.idle.guest',
-              actions: ['loading.successReset']
-            },
-            onError: {
-              target: '#AuthController.ready',
-              actions: ['notify.errors', 'loading.failReset']
-            }
-          }
-        }
+        user: User.state,
+        update: Update.state,
+        login: Login.state,
+        register: Register.state,
+        forgot: Forgot.state,
+        reset_password: ResetPassword.state
       }
     }
   },
@@ -160,106 +86,12 @@ const AuthController = new Machine({
   }
 }, {
   services: {
-    'loading.user': (_context) => {
-      const token = getAuthToken()
-
-      return axiosQueryFactory(`${process.env.GATSBY_API_URL}/graphql`, {
-        query: GET_USER
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      })
-    },
-    'loading.update': (_context, event) => {
-      const { data } = event
-      const token = getAuthToken()
-
-      return axiosMutationFactory(`${process.env.GATSBY_API_URL}/graphql`, {
-        query: UPDATE_ME,
-        variables: {
-          data
-        }
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      })
-    },
-    'loading.login': (_context, event) => {
-      const {
-        email,
-        password,
-        shouldRemember
-      } = event
-
-      return axiosMutationFactory(`${process.env.GATSBY_API_URL}/graphql`, {
-        query: LOGIN,
-        variables: {
-          email,
-          password
-        }
-      }, {}, {
-        shouldRemember
-      })
-    },
-    'loading.register': (_context, event) => {
-      const {
-        firstName,
-        lastName,
-        email,
-        username,
-        password
-      } = event
-
-      return axiosMutationFactory(`${process.env.GATSBY_API_URL}/graphql`, {
-        query: REGISTER,
-        variables: {
-          firstName,
-          lastName,
-          email,
-          username,
-          password
-        }
-      })
-    },
-    'loading.forgot': (_context, event) => {
-      const {
-        email,
-      } = event
-
-      return axiosMutationFactory(`${process.env.GATSBY_API_URL}/graphql`, {
-        query: FORGOT,
-        variables: {
-          email
-        }
-      })
-    },
-    'loading.reset_password': (_context, event) => {
-      const {
-        password,
-        confirmPassword
-      } = event
-  
-      const search = window.location.search.substring(1)
-      let code
-  
-      try {
-        const obj = parse(search)
-        code = obj.code || '___NOCODE___'
-      } catch(e) {
-        code = '___NOCODE___'
-      }
-
-      return axiosMutationFactory(`${process.env.GATSBY_API_URL}/graphql`, {
-        query: RESET_PASSWORD,
-        variables: {
-          password,
-          confirmPassword,
-          code
-        }
-      })
-    }
+    ...User.service,
+    ...Update.service,
+    ...Login.service,
+    ...Register.service,
+    ...Forgot.service,
+    ...ResetPassword.service
   },
   guards: {
     hasToken: () => !!getAuthToken()
@@ -285,119 +117,37 @@ const AuthController = new Machine({
     removeUserData: assign({
       user: null
     }),
-    'login.setUser': assign({
-      user: (_context, event) => {
-        const {
-          data: {
-            data: { data: { signin: { user } } }
-          }
-        } = event
-
-        return user
-      }
-    }),
-    'user.setUser': assign({
-      user: (_context, event) => {
-        const {
-          data: {
-            data: { data: { getMe } }
-          }
-        } = event
-
-        return getMe
-      }
-    }),
-    'update.setUser': assign({
-      user: (_context, event) => {
-        const {
-          data: {
-            data: { data: { updateMe } }
-          }
-        } = event
-
-        return updateMe
-      }
-    }),
 
     /**
-     * SUCCESS
-     * =================
+     * API Actions
      */
+    ...Login.action,
+    ...User.action,
+    ...Update.action,
+    ...Register.action,
+    ...Forgot.action,
 
-    'loading.successLogin': (context) => {
-      context.enqueueSnackbar('Successfully logged in.', {
-        variant: 'success'
-      })
-    },
+    'errors.general.notify': (context, event) => {
+      if(!context.enqueueSnackbar) return
 
-    'loading.successRegister': (context) => {
-      context.enqueueSnackbar('Successfully registered. Please, check your email to confirm your account.', {
-        variant: 'success'
-      })
-    },
-
-    'loading.successReset': (context) => {
-      context.enqueueSnackbar('Successfully reset your password, you can now login.', {
-        variant: 'success'
-      })
-    },
-
-    'loading.successForgot': (context) => {
-      context.enqueueSnackbar('Successfully sent request. Please, check your emails.', {
-        variant: 'success'
-      })
-    },
-
-    'loading.successUpdate': (context) => {
-      context.enqueueSnackbar('Successfully updated your account details.', {
-        variant: 'success'
-      })
-    },
-
-    'loading.successUser': (context) => {
-      
-    },
-
-    /**
-     * FAIL
-     * ===============
-     */
-
-    'loading.failLogin': (context) => {
-      
-    },
-
-    'loading.failRegister': (context) => {
-      
-    },
-
-    'loading.failReset': (context) => {
-      
-    },
-
-    'loading.failForgot': (context) => {
-      
-    },
-
-    'loading.failUpdate': (context) => {
-      
-    },
-
-    'loading.failUser': (context) => {
-      
-    },
-
-    'notify.errors': (context, event) => {
+      // Get the errors
       const { data } = event
 
-      const errors = extractStrapiErrors(data) || []
+      if(data.strapiErrors) {
+        const errors = extractStrapiErrors(data) || []
 
-      errors.forEach((err) => {
-        context.enqueueSnackbar(err.message, {
+        errors.forEach((err) => {
+          context.enqueueSnackbar(err.message, {
+            variant: 'error'
+          })
+        })
+      } else {
+        context.enqueueSnackbar('An nnknown error occured', {
           variant: 'error'
         })
-      })
-    }
+        console.log(event)
+      }
+    },
   }
 })
 
