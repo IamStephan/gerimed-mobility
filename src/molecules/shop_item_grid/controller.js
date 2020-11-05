@@ -7,7 +7,7 @@ import { navigate } from 'gatsby'
 import { ProductsQuery } from './model'
 
 // Utils
-import { filter, isEqual, set } from 'lodash'
+import { isEqual, set } from 'lodash'
 import { axiosQueryFactory } from '../../utils/js'
 import { parse, stringify } from 'qs'
 
