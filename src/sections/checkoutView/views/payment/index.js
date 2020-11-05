@@ -48,6 +48,7 @@ const Payment = props => {
   const [activeTab, setActiveTab] = useState(TABS.manual)
   const [current, send] = cart
   const loading = current.matches('loading')
+  const hasDetails = !!current.context?.cartData?.contact && !!current.context?.cartData?.address
 
   function _bankTransfer() {
     send('BANK_TRANSFER')
@@ -161,7 +162,7 @@ const Payment = props => {
                 variant='contained'
                 color='secondary'
                 disableElevation
-                disabled={loading}
+                disabled={loading || !hasDetails}
                 className={styles['placeOrderBtn']}
                 onClick={_bankTransfer}
               >
