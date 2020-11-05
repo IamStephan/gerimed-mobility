@@ -54,6 +54,7 @@ const EditView = props => {
     const itemToMod = listClone.splice(index, 1)[0]
 
     // Clamp
+    //* This clamp is kind of annoying
     if(Number(value) < 1) {
       itemToMod.quantity = 1
     } else {
