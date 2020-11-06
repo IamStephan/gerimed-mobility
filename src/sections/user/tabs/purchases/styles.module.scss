@@ -1,18 +1,18 @@
 @import '../../../../utils/colors';
 
-.alertTitle {
-  font-weight: bolder;
-}
-
-.alertError {
-  // WTF, in testing this isnt even needed!
-  background-color: $light !important;
-}
-
-.loading {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding-top: 50px;
-  padding-bottom: 50px;
+.chip {
+  color: $light;
+  
+  &.orange {
+    background-color: $warning;
+  }
+  &.green {
+    background-color: $secondary;
+  }
+  &.red {
+    background-color: $danger;
+  }
+  &.grey {
+    background-color: darken($grey, 50%);
+  }
 }
