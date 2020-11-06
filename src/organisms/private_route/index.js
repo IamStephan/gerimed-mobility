@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react"
+import React, { useEffect } from "react"
 
 // Gatsby
 import { navigate } from 'gatsby'
