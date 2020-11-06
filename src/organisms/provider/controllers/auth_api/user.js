@@ -36,11 +36,11 @@ const service = {
 }
 
 const action = {
-  'login.setUser': assign({
+  'user.setUser': assign({
     user: (_context, event) => {
       const {
         data: {
-          data: { data: { signin: { user } } }
+          data: { data: { getMe: user } }
         }
       } = event
 
