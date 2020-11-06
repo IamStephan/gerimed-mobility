@@ -26,7 +26,6 @@ const STATIC_QUERY = graphql`
   }
 `
 
-
 const AboutSec = () => {
   const {strapiBusinessdescription: {ourBusiness: {description}}} = useStaticQuery(STATIC_QUERY)
 
