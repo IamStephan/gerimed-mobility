@@ -6,6 +6,7 @@ $primary: #FFFF01;
 $secondary: #008835;
 
 $danger: #e74c3c;
+$warning: #f08000;
 
 :export {
   dark: $dark;
@@ -14,4 +15,5 @@ $danger: #e74c3c;
   primary: $primary;
   secondary: $secondary;
   danger: $danger;
+  warning: $warning;
 }
