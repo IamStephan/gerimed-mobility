@@ -67,6 +67,12 @@ const NormalButton = props => {
   )
 }
 
+/**
+ * TODO:
+ * ===========
+ * - use react hooks for the controller (performance gains)
+ */
+
 const Navbar = props => {
   const {
     page,
@@ -184,7 +190,7 @@ const Navbar = props => {
             </li>
             <li>
               <NormalButton
-                active={page === PAGES.about}
+                active={page === PAGES.tracker}
                 isTrans={isTrans}
                 to='/trackorder'
               >
