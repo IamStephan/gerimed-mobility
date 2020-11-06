@@ -21,7 +21,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   }, [current.value])
 
   useEffect(() => {
-    if(current.matches({ idle: 'user' }) && !current.context.user) {
+    if(current.matches({ idle: 'user' }) && !current.context?.user) {
       send('GET_ME')
     }
   }, [current.value])
