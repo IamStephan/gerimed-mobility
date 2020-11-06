@@ -41,7 +41,8 @@ import {
   ContactPhoneOutlined,
   ExitToAppOutlined,
   AddCircleOutline,
-  MeetingRoomOutlined
+  MeetingRoomOutlined,
+  ExploreOutlined
 } from '@material-ui/icons'
 
 // Styles
@@ -210,6 +211,13 @@ const Drawer = props => {
             Icon={PhoneOutlined}
             selected={page === PAGES.contact}
             to='/contact'
+          />
+
+          <MenuItem
+            label='Track My Order'
+            Icon={ExploreOutlined}
+            selected={page === PAGES.tracker}
+            to='/trackorder'
           />
         </List>
 

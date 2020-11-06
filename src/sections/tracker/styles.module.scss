@@ -1,0 +1,36 @@
+@import '../../utils/sizes';
+@import '../../utils/colors';
+
+.chip {
+  color: $light;
+  
+  &.orange {
+    background-color: $warning;
+  }
+  &.green {
+    background-color: $secondary;
+  }
+  &.red {
+    background-color: $danger;
+  }
+  &.grey {
+    background-color: darken($grey, 50%);
+  }
+}
+
+.trackerSection {
+  .titleContainer {
+    //text-align: center;
+    margin-bottom: #{$margin * 5}px;
+  }
+
+  .searchBoxContainer {
+    display: flex;
+    //justify-content: center;
+    margin-bottom: #{$margin}px;
+
+    .inputBox {
+      border-radius: 99999px;
+    }
+  }
+}
