@@ -17,7 +17,7 @@ const FetchGraphqlData = Machine({
     // Lazy Loading
     containerRef: null,
     lazyLoadThreshold: 0.25,
-
+    options: {},
     runOnce: true
   },
   states: {
@@ -142,7 +142,7 @@ const FetchGraphqlData = Machine({
       return axiosQueryFactory(`${process.env.GATSBY_API_URL}/graphql`, {
         query: context.graphqlQuery,
         variables: context.graphqlVariables || {}
-      })
+      }, context.options)
     }
   }
 })
