@@ -20,7 +20,7 @@ const PAGES = {
   forgotpassword: 'FORGOT_PASSWORD', // <== Done
   passwordReset: 'PASSWORD_RESET', // <== Done
   register: 'REGISTER', // <== Done
-  profile: 'PROFILE',
+  profile: 'PROFILE', // <== Done
 }
 
 export {
