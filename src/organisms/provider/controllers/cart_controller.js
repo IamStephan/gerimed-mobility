@@ -160,8 +160,6 @@ const CartController = new Machine({
     ...BankTransfer.action,
 
     'errors.general.notify': (context, event) => {
-      // TODO: send event to analytics platform
-
       // Get the errors
       const { data } = event
 
@@ -169,14 +167,10 @@ const CartController = new Machine({
         const errors = extractStrapiErrors(data) || []
 
         errors.forEach((err) => {
-          context.enqueueSnackbar(err.message, {
-            variant: 'error'
-          })
+          console.log(err.message)
         })
       } else {
-        context.enqueueSnackbar('An Unknown Error Occured', {
-          variant: 'error'
-        })
+        console.log('Unknown error')
       }
     },
   },
