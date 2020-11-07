@@ -24,11 +24,6 @@ function queryBuilder(filters = {}) {
   if(filters.max_price) query.price_lte = filters.max_price
 
   if(filters.availability) query.isLimited= false
-  /**
-   * TODO
-   * =====
-   *  - Add check for quantity and variants
-   */
 
   return query
 }
