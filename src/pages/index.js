@@ -20,6 +20,11 @@ import Benefit from '../sections/benefit'
 import Testimonials from '../sections/testimonials'
 import Latest from '../sections/lastestProducts'
 
+/**
+ * TODO:
+ * ======
+ * - Add a section that showcases that the shop also does rentals
+ */
 const IndexPage = () => {
   return (
     <Layout
