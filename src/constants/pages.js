@@ -7,7 +7,7 @@ const PAGES = {
   cart: 'CART', // <== Done
   product: 'PRODUCT', // <== Done
   results: 'RESULTS', // <== Done
-  tracker: 'TRACKER',
+  tracker: 'TRACKER', // <== Done
   notfound: 'NOTFOUND', // < <== Done
 
   // Legal
@@ -20,7 +20,7 @@ const PAGES = {
   forgotpassword: 'FORGOT_PASSWORD', // <== Done
   passwordReset: 'PASSWORD_RESET', // <== Done
   register: 'REGISTER', // <== Done
-  profile: 'PROFILE', // <== Done
+  profile: 'PROFILE',
 }
 
 export {
