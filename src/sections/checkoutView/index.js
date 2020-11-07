@@ -64,23 +64,11 @@ const CheckoutView = () => {
    * still a cart open (indicates a faliure)
    */
   useEffect(() => {
-    let prevLoadState
     if(loadingTransfer) {
       setShouldLoad(true)
     } else {
-      
-      if(prevLoadState?.isLoading && cart?.reference) {
+      if(cart?.reference) {
         setShouldLoad(false)
-      }
-    }
-
-    prevLoadState = {
-      isLoading: loadingTransfer
-    }
-
-    return () => {
-      prevLoadState = {
-        isLoading: loadingTransfer
       }
     }
   }, [loadingTransfer, cart])
