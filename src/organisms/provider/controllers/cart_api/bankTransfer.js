@@ -31,9 +31,7 @@ const state = {
       actions: 'success.bankTranfer.message'
     },
     onError: {
-      actions: (ctx, e) => {
-        console.log(e)
-      },
+      actions: 'errors.general.notify',
       target: '#CartController.idle'
     }
   }

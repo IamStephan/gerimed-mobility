@@ -94,13 +94,6 @@ const DetailsForm = props => {
       setValue('postCode', currentCart.context.cartData.address['post_code'])
       setValue('province', currentCart.context.cartData.address.province)
       setValue('country', currentCart.context.cartData.address.country)
-    } else if(user?.address) {
-      setValue('addressLineOne', user.address.addressLineOne)
-      setValue('addressLineTwo', user.address.addressLineTwo)
-      setValue('suburb', user.address.suburb)
-      setValue('postCode', user.address['post_code'])
-      setValue('province', user.address.province)
-      setValue('country', user.address.country)
     }
 
     /**
@@ -110,15 +103,11 @@ const DetailsForm = props => {
     // Email
     if(currentCart.context?.cartData?.contact?.email) {
       setValue('email', currentCart.context.cartData.contact.email)
-    } else if(user?.email && !getValues('email')) {
-      setValue('email', user.email)
     }
 
     // Phone
     if(currentCart.context?.cartData?.contact?.phone) {
       setValue('phone', currentCart.context.cartData.contact.phone)
-    } else if(user?.phone && !getValues('phone')) {
-      setValue('phone', user.phone)
     }
   }
 

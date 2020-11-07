@@ -31,6 +31,9 @@ import {
   AlertTitle
 } from '@material-ui/lab'
 
+// Global Services
+import { CartService } from '../../../../organisms/provider'
+
 // Styles
 import styles from './styles.module.scss'
 
@@ -53,7 +56,7 @@ const Payment = props => {
   function _bankTransfer() {
     send('BANK_TRANSFER')
   }
-
+  
   function _handleTabChange(e, tab) {
     setActiveTab(tab)
   }
@@ -169,14 +172,9 @@ const Payment = props => {
                 Place Order
               </Button>
 
-              {
-                loading && (
-                  <CircularProgress
-                    size={20}
-                    color='secondary'
-                  />
-                )
-              }
+              {/**
+               * Loading indicator is on the main Component
+               */}
             </div>
             
           </TabPanel>

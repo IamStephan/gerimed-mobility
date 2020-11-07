@@ -8,7 +8,9 @@ import {
   StepLabel,
   StepContent,
   StepButton,
-  Button
+  Button,
+  Backdrop,
+  CircularProgress
 } from '@material-ui/core'
 import {
   Alert,
@@ -89,15 +91,6 @@ const CheckoutView = () => {
       }
     }
   }
-
-  /**
-   * Get the user if they are authenticated but not logged in
-   */
-  useEffect(() => {
-    if(currentAuth.matches({ idle: 'user' }) && !currentAuth.context.user) {
-      sendAuth('GET_ME')
-    }
-  }, [])
 
   const steps = [
     {
@@ -202,7 +195,16 @@ const CheckoutView = () => {
         )
       }
 
-
+      <Backdrop
+        open={currentCart.matches({ loading: 'bankTransfer' })}
+        style={{
+          zIndex: 99999
+        }}
+      >
+        <CircularProgress
+          color='primary'
+        />
+      </Backdrop>
     </Section>
   )
 }

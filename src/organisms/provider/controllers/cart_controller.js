@@ -163,14 +163,20 @@ const CartController = new Machine({
       // Get the errors
       const { data } = event
 
+      if(!context.enqueueSnackbar) return
+
       if(data.strapiErrors) {
         const errors = extractStrapiErrors(data) || []
 
         errors.forEach((err) => {
-          console.log(err.message)
+          context.enqueueSnackbar(err.message, {
+            variant: 'error'
+          })
         })
       } else {
-        console.log('Unknown error')
+        context.enqueueSnackbar('Unknown error occured', {
+          variant: 'error'
+        })
       }
     },
   },
