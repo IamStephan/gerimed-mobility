@@ -82,6 +82,7 @@ function OrderStateTag(state) {
     <Chip
       label={label}
       className={`${styles['chip']} ${styles[color]}`}
+      size='small'
     />
   )
 }
