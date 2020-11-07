@@ -1,5 +1,5 @@
-@import '../../../../utils/colors';
-@import '../../../../utils/sizes';
+@import '../../../../../../utils/colors';
+@import '../../../../../../utils/sizes';
 
 .chip {
   color: $light;
@@ -16,8 +16,4 @@
   &.grey {
     background-color: darken($grey, 50%);
   }
-}
-
-.paginationContainer {
-  margin-top: #{$margin * 3}px;
 }

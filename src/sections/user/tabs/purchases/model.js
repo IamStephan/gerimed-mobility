@@ -16,33 +16,31 @@ const ORDER_FRAGMENT = `
     country
   }
   products {
-    showcase {
-      formats
-      url
-    }
+    id
     product_name
     quantity
     price
   }
 `
-// Using this to decrease data load and as a temp measure
-const ORDER_FRAGMENT_SIMPLIFIED = `
-  id
-  createdAt
-  state
-  reference
-`
 
-const GET_MY_ORDERS = `
-  query{
-    getMe {
-      orders {
-        ${ORDER_FRAGMENT_SIMPLIFIED}
+const ORDER_QUERY = `
+  query(
+    $limit: Int!,
+    $offset: Int!
+  ) {
+    getMyOrders(
+      input: {
+        start: $offset,
+        limit: $limit
       }
+    ) {
+      ${ORDER_FRAGMENT}
     }
+
+    countMyOrders
   }
 `
 
 export {
-  GET_MY_ORDERS
+  ORDER_QUERY
 }

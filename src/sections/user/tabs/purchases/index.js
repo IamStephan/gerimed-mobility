@@ -8,24 +8,26 @@ import {
   TableRow,
   TableCell,
   Chip,
-  LinearProgress,
-  Button
+  Typography,
+  Button,
+  IconButton
 } from '@material-ui/core'
 import {
   Alert,
   AlertTitle,
-  Pagination
+  Pagination,
+  Skeleton
 } from '@material-ui/lab'
 import {
   InfoOutlined,
   VisibilityOutlined
 } from '@material-ui/icons'
 
-// Controller
-import { FetchGraphqlData } from '../../../../controllers/fetchGraphqlData'
+// Local Contoller
+import { LocalController } from './controller'
 
-// Model
-import { GET_MY_ORDERS } from './model'
+// Local Molecules
+import OrderModal from './molecules/order_modal'
 
 // Hooks
 import { useMachine } from '@xstate/react'
@@ -33,13 +35,8 @@ import { useMachine } from '@xstate/react'
 // Template
 import TabTemplate from '../../components/tabTemplate'
 
-// Utils
-import { getAuthToken } from '../../../../utils/js/authToken'
-
 // Styles
 import styles from './styles.module.scss'
-
-const OFFSET_AMOUNT = 5
 
 function OrderStateTag(state) {
   let label
@@ -116,47 +113,229 @@ function _formatDate(date) {
   return `${day} ${Months[month]} ${year}`
 }
 
-/**
- * NOTE:
- * =====
- * 
- * This Tab is very inefficient in that it
- * fetches all the orders in one call. To change this
- * behaviour i have to either write an api for GetMyOrders
- * or make a custom controller for handling this. (Probably going to write
- * a custom API)
- * 
- * It also does not show all the information of that order and the reason for this
- * is that I did not yet implement a manner for which one can view these information
- * 
- * TODO:
- * ======
- * - Custom API for GetMyOrders
- * - Showcase more detail about these orders
- */
+const PAGE_SIZE_LIMIT = 10
 
-const PurchasesTab = () => {
-  const authToken = getAuthToken()
-
-  const [current, send] = useMachine(FetchGraphqlData, {
+const PurchasesTab = () => {  
+  const [current, send] = useMachine(LocalController, {
     context: {
-      runOnce: false,
-      graphqlQuery: GET_MY_ORDERS,
-      options: {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        }
-      }
+      page_item_limit: PAGE_SIZE_LIMIT
     }
   })
 
-  function _retryFetch() {
+  const loading = current.matches('ready') || current.matches('loading') || current.matches('retry')
+  const show = current.matches('idle')
+  const error = current.matches('fail')
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalData, setModalData] = useState({})
+
+  function _toggleModal(data) {
+    if(isModalOpen) {
+      setIsModalOpen(false)
+    } else {
+      setIsModalOpen(true)
+      setModalData(data)
+    }
+    
+  }
+  
+  function _retry() {
     send('RESET')
   }
 
-  const orders = current.context.data?.getMe?.orders
-  const loading = current.matches('loading') || current.matches('idle') || current.matches('retry')
-  const fail = current.matches('fail')
+  function _setPage(_e, value) {
+    send('SET_PAGE', {
+      page: value
+    })
+  }
+
+  function OrdersTableRows() {
+    if(loading) {
+      return (
+        <>
+          {
+            [1,2,3].map((key, i) => (
+              <TableRow
+                key={key + i}
+              >
+                <TableCell>
+                  <Skeleton>
+                    <Typography>
+                      proud-couger-81
+                    </Typography>
+                  </Skeleton>
+                </TableCell>
+      
+                <TableCell>
+                  <Skeleton>
+                    <Typography>
+                      20 November 2020
+                    </Typography>
+                  </Skeleton>
+                </TableCell>
+      
+                <TableCell
+                  align='center'
+                >
+                  <Skeleton>
+                    <Chip
+                      label='paid'
+                      size='small'
+                    />
+                  </Skeleton>
+                </TableCell>
+      
+                <TableCell
+                  align='center'
+                >
+                  <Skeleton>
+                    <IconButton
+                      color='secondary'
+                      size='small'
+                    >
+                      <VisibilityOutlined />
+                    </IconButton>
+                  </Skeleton>
+                </TableCell>
+              </TableRow>
+            ))
+          }
+        </>
+      )
+    }
+
+    if(show) {
+      if(current.context.ordersCount) {
+        return (
+          <>
+            {
+              current.context.orders.map((order) => (
+                <TableRow
+                  key={order.id}
+                >
+                  <TableCell>
+                    {order.reference}
+                  </TableCell>
+        
+                  <TableCell>
+                    {_formatDate(order.createdAt)}
+                  </TableCell>
+        
+                  <TableCell
+                    align='center'
+                  >
+                    {OrderStateTag(order.state)}
+                  </TableCell>
+        
+                  <TableCell
+                    align='center'
+                  >
+                    <IconButton
+                      color='secondary'
+                      size='small'
+                      onClick={() => _toggleModal(order)}
+                    >
+                      <VisibilityOutlined />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            }
+          </>
+        )
+      } else {
+        return (
+          <TableRow>
+            <TableCell
+              colSpan={4}
+            >
+              <Alert
+                iconMapping={{
+                  success: <InfoOutlined fontSize="inherit" />
+                }}
+              >
+                <AlertTitle>
+                  <b>No Orders were found</b>
+                </AlertTitle>
+
+                You have not yet purchased anything.
+              </Alert>
+            </TableCell>
+          </TableRow>
+        )
+      }
+    }
+
+    if(error) {
+      return (
+        <TableRow>
+          <TableCell
+            colSpan={4}
+          >
+            <Alert
+              severity='error'
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={_retry}
+                >
+                  Retry
+                </Button>
+              }
+            >
+              <AlertTitle>
+                <b>Could not load Products</b>
+              </AlertTitle>
+
+              There seems to be a technical error. Please, retry or contact us.
+            </Alert>
+          </TableCell>
+        </TableRow>
+
+      )
+    }
+
+    return null
+  }
+
+  function PagePagination() {
+    if(loading) {
+      return (
+        <div
+          className={styles['paginationContainer']}
+        >
+          <Skeleton>
+            <Pagination
+              variant='outlined'
+              color='secondary'
+              siblingCount={0} boundaryCount={1}
+              count={30}
+            />
+          </Skeleton>
+        </div>
+      )
+    }
+
+    if(show && current.context.ordersCount > PAGE_SIZE_LIMIT) {
+      return (  
+        <div
+          className={styles['paginationContainer']}
+        >
+          <Pagination
+            variant='outlined'
+            color='secondary'
+            siblingCount={0} boundaryCount={1}
+            page={Number(current.context.page)}
+            onChange={_setPage}
+            count={Math.ceil(current.context.ordersCount / PAGE_SIZE_LIMIT)}
+          />
+        </div>
+      )
+    }
+
+    return null
+  }
 
   return (
     <TabTemplate
@@ -184,82 +363,24 @@ const PurchasesTab = () => {
               >
                 <b>Current State</b>
               </TableCell>
+
+              <TableCell />
             </TableRow>
           </TableBody>
 
           <TableBody>
-            {
-              loading && (
-                <TableCell
-                  colSpan={3}
-                >
-                  <LinearProgress
-                    color='secondary'
-                  />
-                </TableCell>
-              )
-            }
-            {
-              fail ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={3}
-                  >
-                    <Alert
-                      severity='error'
-                      action={(
-                        <Button
-                          onClick={_retryFetch}
-                        >
-                          Retry
-                        </Button>
-                      )}
-                    >
-                      <AlertTitle>
-                        <b>Could Not Load History</b>
-                      </AlertTitle>
-                    </Alert>
-                  </TableCell>
-                </TableRow>
-              ) : orders?.length > 0 ? orders.map((order) => (
-                <TableRow
-                  key={order.id}
-                >
-                  <TableCell>
-                    {order.reference}
-                  </TableCell>
-
-                  <TableCell>
-                    {_formatDate(order.createdAt)}
-                  </TableCell>
-
-                  <TableCell
-                    align='center'
-                  >
-                    {OrderStateTag(order.state)}
-                  </TableCell>
-                </TableRow>
-              )) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={3}
-                  >
-                    <Alert
-                      iconMapping={{
-                        success: <InfoOutlined />
-                      }}
-                    >
-                      <AlertTitle>
-                        <b>No purchase History</b>
-                      </AlertTitle>
-                    </Alert>
-                  </TableCell>
-                </TableRow>
-              )
-            }
+            { OrdersTableRows() }
           </TableBody>
         </Table>
       </TableContainer>
+      
+      { PagePagination() }
+
+      <OrderModal
+        isOpen={isModalOpen}
+        toggleModal={_toggleModal}
+        order={modalData}
+      />
     </TabTemplate>
   )
 }
