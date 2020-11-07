@@ -173,10 +173,16 @@ const CartController = new Machine({
             variant: 'error'
           })
         })
+
+        // Temp
+        console.log(event)
       } else {
         context.enqueueSnackbar('Unknown error occured', {
           variant: 'error'
         })
+        
+        // Temp
+        console.log(event)
       }
     },
   },
