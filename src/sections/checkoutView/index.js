@@ -45,13 +45,45 @@ import styles from './styles.module.scss'
 
 const CheckoutView = () => {
   const [currentCart, sendCart] = useService(CartService)
-  const [currentAuth, sendAuth] = useService(AuthService)
+  const [currentAuth] = useService(AuthService)
 
   const loading = currentAuth.matches('loading') || currentCart.matches('loading') || currentCart.matches('ready')
+  const loadingTransfer = currentCart.matches({ loading: 'bankTransfer' })
 
   const cart = currentCart.context?.cartData
 
   const [activeStep, setActiveStep] = useState(0)
+  const [shouldLoad, setShouldLoad] = useState(false)
+
+  /**
+   * Backdrop:
+   * ==========
+   * 
+   * This effect removes the backdrop
+   * when the loading has stopped and there is
+   * still a cart open (indicates a faliure)
+   */
+  useEffect(() => {
+    let prevLoadState
+    if(loadingTransfer) {
+      setShouldLoad(true)
+    } else {
+      
+      if(prevLoadState?.isLoading && cart?.reference) {
+        setShouldLoad(false)
+      }
+    }
+
+    prevLoadState = {
+      isLoading: loadingTransfer
+    }
+
+    return () => {
+      prevLoadState = {
+        isLoading: loadingTransfer
+      }
+    }
+  }, [loadingTransfer, cart])
 
   /**
    * Local Utils
@@ -196,7 +228,7 @@ const CheckoutView = () => {
       }
 
       <Backdrop
-        open={currentCart.matches({ loading: 'bankTransfer' })}
+        open={shouldLoad}
         style={{
           zIndex: 99999
         }}
