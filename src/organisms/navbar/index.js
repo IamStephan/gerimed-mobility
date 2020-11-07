@@ -1,13 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 // Hooks
-import { useMachine, useService } from '@xstate/react'
+import { useService } from '@xstate/react'
 
 // Global Controller
 import { CartService } from '../provider'
-
-// Controller
-import { LocalState } from './controller'
 
 // Gatsby
 import { Link, useStaticQuery, graphql } from 'gatsby'
@@ -15,6 +12,9 @@ import Img from 'gatsby-image/withIEPolyfill'
 
 // Components
 import Drawer from '../drawer'
+
+// Utils
+import { throttle } from 'lodash'
 
 // Material
 import { Button, IconButton, Badge } from '@material-ui/core'
@@ -67,11 +67,13 @@ const NormalButton = props => {
   )
 }
 
-/**
- * TODO:
- * ===========
- * - use react hooks for the controller (performance gains)
- */
+const NavStates = {
+  trans: 'TRANS',
+  show: 'SHOW',
+  hide: 'HIDE'
+}
+const SHOW_HIDE_TRIGGER_DISTANCE = 150
+const THROTTLE_WAIT = 75
 
 const Navbar = props => {
   const {
@@ -84,37 +86,86 @@ const Navbar = props => {
   const products = currentGlobal.context.cartData?.cart?.products || []
 
   const data = useStaticQuery(STATIC_QUERY)
-  const [current, send] = useMachine(LocalState, {
-    context: {
-      isTransEnabled: enableTransMode
+
+  function getNavInitialState() {
+    // Gatsby Building
+    if(typeof window === 'undefined') {
+      if(enableTransMode) {
+        return NavStates.trans
+      }
+      return NavStates.show
     }
-  })
+
+    if(enableTransMode && window.pageYOffset === 0) {
+      return NavStates.trans
+    }
+
+    return NavStates.show
+  }
+
+  /**
+   * NAVBAR
+   * ===========================
+   */
+
+  const [navState, setNavState] = useState(getNavInitialState)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+  useEffect(() => {
+    let prevScrollPos = window.pageYOffset
+    let currentScrollPos = window.pageYOffset
+    let oldNavState = navState
+
+    if(typeof window === 'undefined') {
+      setNavState(NavStates.trans)
+      return
+    }
+
+    const onScroll = throttle(() => {
+      currentScrollPos = window.pageYOffset
+
+      if(enableTransMode && currentScrollPos < SHOW_HIDE_TRIGGER_DISTANCE) {
+        if(oldNavState !== NavStates.trans) {
+          setNavState(NavStates.trans)
+        }
+      } else if(prevScrollPos > currentScrollPos || currentScrollPos < SHOW_HIDE_TRIGGER_DISTANCE) {
+        if(oldNavState !== NavStates.show) {
+          setNavState(NavStates.show)
+        }
+        
+      } else {
+        if(oldNavState !== NavStates.hide) {
+          setNavState(NavStates.hide)
+        }
+      }
+
+      prevScrollPos = currentScrollPos
+    }, THROTTLE_WAIT, {
+      trailing: true
+    })
+
+    window.addEventListener('scroll', onScroll)
+
+    // Clear scroll listener
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [navState])
 
   let addedStyles = ''
 
-  switch(true) {
-    case current.matches('normal'): {
+  switch(navState) {
+    case NavStates.show: {
       addedStyles += ' ' + styles['normal']
-
-      switch(true) {
-        case current.matches({normal: 'show'}): {
-          addedStyles += ' ' + styles['show']
-          break
-        }
-
-        case current.matches({normal: 'hide'}): {
-          addedStyles += ' ' + styles['hide']
-          break
-        }
-
-        default: {
-          addedStyles += ' ' + styles['show']
-        }
-      }
+      addedStyles += ' ' + styles['show']
       break
     }
 
-    case current.matches('trans'): {
+    case NavStates.hide: {
+      addedStyles += ' ' + styles['normal']
+      addedStyles += ' ' + styles['hide']
+      break
+    }
+
+    case NavStates.trans: {
       addedStyles += ' ' + styles['trans']
       break
     }
@@ -125,10 +176,10 @@ const Navbar = props => {
     }
   }
 
-  const isTrans = current.matches('trans')
+  const isTrans = navState === NavStates.trans
 
   function _toggleDrawer() {
-    send('TOGGLE_DRAWER')
+    setIsDrawerOpen(prev => !prev)
   }
 
   return (
@@ -253,7 +304,7 @@ const Navbar = props => {
         className={styles['drawer']}
       >
         <Drawer
-          open={current.context.isDrawerOpen}
+          open={isDrawerOpen}
           toggleDrawer={_toggleDrawer}
           page={page}
         />

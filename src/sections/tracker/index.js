@@ -217,8 +217,6 @@ const TrackerSection = () => {
     }
   }
 
-  console.log(current.context.data)
-
   function _handleChange(e) {
     // Sanitize search box
     const searchTerm = e.target.value.replace(/\s/g,'').toLowerCase()
