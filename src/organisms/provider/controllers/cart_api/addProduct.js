@@ -52,7 +52,7 @@ const state = {
       target: '#CartController.idle'
     },
     onError: {
-      actions: ['error.addProduct.handle', 'errors.general.notify']
+      actions: ['errors.general.notify']
     }
   }
 }

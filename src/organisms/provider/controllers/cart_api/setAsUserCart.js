@@ -21,7 +21,7 @@ const state = {
       target: '#CartController.idle'
     },
     onError: {
-      actions: ['errors.general.notify', 'error.setAsUserCart.handle'],
+      actions: ['error.setAsUserCart.handle'],
       target: '#CartController.ready'
     }
   }

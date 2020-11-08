@@ -16,7 +16,7 @@ const state = {
     },
     onError: {
       target: '#CartController.idle',
-      actions: ['errors.general.notify', 'error.setCartDetails.handle']
+      actions: ['error.setCartDetails.handle']
     }
   }
 }
