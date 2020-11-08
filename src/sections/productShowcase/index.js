@@ -550,7 +550,8 @@ const ProductShowcase = () => {
                   </Typography>
                 </Skeleton>
                 <Skeleton>
-                  <Typography>ctetuer adipiscing elit. Aenean commodo ligula eget do
+                  <Typography>
+                    ctetuer adipiscing elit. Aenean commodo ligula eget do
                   </Typography>
                 </Skeleton>
                 <Skeleton>
@@ -617,13 +618,6 @@ const ProductShowcase = () => {
                 )
               }
             </div>
-            
-            {/* <Rating
-              className={styles['rating']}
-              name="pristine"
-              precision={0.5}
-              value={null}
-            /> */}
 
             <div
               className={styles['priceContainer']}
