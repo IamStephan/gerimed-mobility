@@ -47,7 +47,8 @@ const STATIC_QUERY = graphql`
 const NormalButton = props => {
   const {
     isTrans = false,
-    active
+    active,
+    to
   } = props
 
   const shouldBePrimary = (isTrans || active)
@@ -60,7 +61,7 @@ const NormalButton = props => {
       component={Link}
       color={shouldBePrimary ? 'primary' : 'inherit'}
       className={`${styles['normalButton']} ${buttonStyle}`}
-      {...props}
+      to={to}
     >
       {props.children}
     </Button>
@@ -256,7 +257,6 @@ const Navbar = props => {
             <li>
               <IconButton
                 className={styles['iconButton']}
-                disableElevation
                 color='primary'
                 component={Link}
                 to='/profile'
@@ -267,7 +267,6 @@ const Navbar = props => {
             <li>
               <IconButton
                 className={styles['iconButton']}
-                disableElevation
                 color='primary'
                 component={Link}
                 to='/cart'
@@ -289,7 +288,6 @@ const Navbar = props => {
             <li>
               <IconButton
                 className={styles['iconButton']}
-                disableElevation
                 color='primary'
                 onClick={_toggleDrawer}
               >
