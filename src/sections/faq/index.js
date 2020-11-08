@@ -13,55 +13,6 @@ import { useStaticQuery, graphql } from 'gatsby'
 // Styles
 import styles from './styles.module.scss'
 
-const questions = {
-  sections: [
-    {
-      title: 'Support',
-      questions: [
-        {
-          title: 'My cart does not work?',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis. '
-        },{
-          title: 'I canno log into my account?',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis. '
-        },{
-          title: 'Do I need an account to buy items?',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis. '
-        },{
-          title: 'Can I return my items?',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis. '
-        },
-      ]
-    },
-    {
-      title: 'Shipping',
-      questions: [
-        {
-          title: 'How are shipping costs calculated?',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis.'
-        },
-        {
-          title: 'How long does shipping take?',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis.'
-        },
-        {
-          title: 'Can i track my order?',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis.'
-        }
-      ]
-    },
-    {
-      title: 'Returns',
-      questions: [
-        {
-          title: 'Can I return my items?',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus venenatis malesuada urna, ut luctus nulla lobortis sed. Duis pellentesque sed libero imperdiet venenatis.'
-        }
-      ]
-    }
-  ]
-}
-
 // Static Queries
 const STATIC_QUERY = graphql`
   query {

@@ -20,7 +20,8 @@
     .questionsContent {
       margin-top: #{$margin}px;
       display: grid;
-      grid-row-gap: #{$margin * 2}px;
+      grid-row-gap: #{$margin * 3}px;
+      grid-column-gap: #{$margin * 2}px;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
       .question {
@@ -39,10 +40,6 @@
 
           .questionHeader {
             margin-bottom: #{$margin}px;
-          }
-
-          .questionContent {
-
           }
         }
       }
