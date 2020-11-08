@@ -2,7 +2,7 @@ import React from 'react'
 
 // Material
 import { Typography, Avatar } from '@material-ui/core'
-import { Storefront, PhoneOutlined, EmailOutlined } from '@material-ui/icons'
+import { Storefront, PhoneOutlined, EmailOutlined, StoreOutlined } from '@material-ui/icons'
 
 // Templates
 import { Section } from '../../templates/content_layout'
@@ -65,6 +65,21 @@ const ContactSection = () => {
               </Typography>
               <Typography>
                 Oostewal Rd, Langebaan
+              </Typography>
+            </>
+          )}
+        />
+
+        <Info
+          icon={( <StoreOutlined /> )}
+
+          info={(
+            <>
+              <Typography>
+                Mon to Fri: 09:00 - 17:00
+              </Typography>
+              <Typography>
+                Sat: 09:00 - 13:00
               </Typography>
             </>
           )}
