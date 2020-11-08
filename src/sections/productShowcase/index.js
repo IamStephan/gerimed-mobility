@@ -5,6 +5,7 @@ import { Section } from '../../templates/content_layout'
 
 // Material
 import { Typography, Divider, Button, Tab, Chip, TextField, LinearProgress } from '@material-ui/core'
+import { InfoOutlined } from '@material-ui/icons'
 import { Rating, TabContext, TabList, TabPanel, Alert, Skeleton, AlertTitle } from '@material-ui/lab'
 
 // Gatsby
@@ -644,6 +645,19 @@ const ProductShowcase = () => {
 
             { showMessage(availabilityRes) }
 
+            <Alert
+              iconMapping={{
+                success: <InfoOutlined />
+              }}
+            >
+              <AlertTitle>
+                <b>Note: </b>
+              </AlertTitle>
+
+              Only the manual payment options is currently available.<br />
+              To <b>Learn More</b>, go to our contact page and see our FAQ.
+            </Alert>
+
             <div>
               <Divider
                 className={styles['divider']}
@@ -723,8 +737,8 @@ const ProductShowcase = () => {
                       <Typography
                         color='secondary'
                       >
-                        <b><i>*Item is not kept on-premise.</i></b><br/><br/>
-                        <b><i>Contact us or use the manual payment option<br/> for the best deal</i></b>
+                        <b><i>* Product might not be kept on-premise.</i></b><br/><br/>
+                        <b><i>Contact us or use the manual payment option for the best deal</i></b>
                       </Typography>
                     )
                   }

@@ -8,9 +8,15 @@ import { CartService } from '../../organisms/provider'
 
 // Material
 import {
-  Divider,
   Typography
 } from '@material-ui/core'
+import {
+  Alert,
+  AlertTitle
+} from '@material-ui/lab'
+import {
+  InfoOutlined
+} from '@material-ui/icons'
 
 // Templates
 import { Section } from '../../templates/content_layout'
@@ -100,6 +106,19 @@ const CartView = () => {
       >
         <b>Your Cart</b>
       </Typography>
+
+      <Alert
+        iconMapping={{
+          success: <InfoOutlined />
+        }}
+      >
+        <AlertTitle>
+          <b>Note: </b>
+        </AlertTitle>
+
+        Only the manual payment options is currently available.<br />
+        To <b>Learn More</b>, go to our contact page and see our FAQ.
+      </Alert>
 
       {/* <Divider /> */}
 
