@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Material
-import { Typography, Chip, Link as Btn } from '@material-ui/core'
+import { Typography, Chip } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 
 // Styles

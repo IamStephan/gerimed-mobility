@@ -99,7 +99,7 @@ const ShopItemGrid = () => {
     }
 
     return null
-  }, [current.context])
+  }, [current.context]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const ProductGrid = useCallback(() => {
     if(loading) {
@@ -177,7 +177,7 @@ const ShopItemGrid = () => {
     }
 
     return null
-  }, [loading, show, error, current.context])
+  }, [loading, show, error, current.context]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const PagePagination = useCallback(() => {
     if(loading) {
@@ -216,11 +216,11 @@ const ShopItemGrid = () => {
     }
 
     return null
-  }, [loading, show, error, current.context])
+  }, [loading, show, error, current.context]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     send('FILTER_CHECK')
-  }, [location.search])
+  }, [location.search]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div

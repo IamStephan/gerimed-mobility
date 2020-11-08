@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 // Hooks
 import { useMedia } from 'react-use'
@@ -12,9 +12,6 @@ import {
   SettingsOutlined,
   AccountBalanceWalletOutlined
  } from '@material-ui/icons'
-
-// Gatbsy
-import { navigate } from 'gatsby'
 
 // Tabs
 import Info from './tabs/info'

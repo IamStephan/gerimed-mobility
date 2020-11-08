@@ -6,7 +6,7 @@ import { Section } from '../../templates/content_layout'
 // Material
 import { Typography, Divider, Button, Tab, Chip, TextField, LinearProgress } from '@material-ui/core'
 import { InfoOutlined } from '@material-ui/icons'
-import { Rating, TabContext, TabList, TabPanel, Alert, Skeleton, AlertTitle } from '@material-ui/lab'
+import { TabContext, TabList, TabPanel, Alert, Skeleton, AlertTitle } from '@material-ui/lab'
 
 // Gatsby
 import { navigate } from 'gatsby'
@@ -124,7 +124,7 @@ const ProductShowcase = () => {
     sendDataEvent('RESET_FETCHING')
 
     sendCarouselEvent('RESET_INDEX')
-  }, [qsParams.id])
+  }, [qsParams.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   
 
@@ -177,7 +177,6 @@ const ProductShowcase = () => {
     } else {
       return 'available'
     }
-
   }
 
   const availabilityRes = availability()
@@ -428,7 +427,7 @@ const ProductShowcase = () => {
         return null
       }
     }
-  }, [currentData.value, currentData.matches, index])
+  }, [currentData.value, currentData.matches, index]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const Details = () => {
     switch(true) {

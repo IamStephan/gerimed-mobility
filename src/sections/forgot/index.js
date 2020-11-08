@@ -51,10 +51,9 @@ const ForgotSection = () => {
     if(current.matches({ idle: 'user' })) {
       navigate('/profile')
     }
-  }, [current.value])
+  }, [current.value]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function _handleSubmit(data) {
-    // console.log('SEND_EVENT')
     send('FORGOT', {
       email: data.email
     })

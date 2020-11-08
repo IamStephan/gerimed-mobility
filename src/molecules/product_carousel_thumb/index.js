@@ -46,7 +46,7 @@ const ProductCarouselThumb = (props) => {
     if(!embla || !images) return
 
     embla.scrollTo(index)
-  }, [index])
+  }, [index, embla, images])
 
   return (
     <div
@@ -66,9 +66,10 @@ const ProductCarouselThumb = (props) => {
                 key={image.url}
                 className={`${styles['rowItem']} ${i === index ? styles['active'] : styles['inactive']}`}
               >
-                <img
+                <img // eslint-disable-line
                   className={styles['img']}
                   src={url(images[i].url, images[i].formats)}
+                  alt='Product Showcase'
                   onClick={imageSelect.bind(this, i)}
                 />
               </AspectView>

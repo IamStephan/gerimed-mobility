@@ -12,9 +12,6 @@ import { AuthService } from '../../../../organisms/provider'
 // Template
 import TabTemplate from '../../components/tabTemplate'
 
-// Gatsby
-import { navigate } from 'gatsby'
-
 // Styles
 import styles from './styles.module.scss'
 

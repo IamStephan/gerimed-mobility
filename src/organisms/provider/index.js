@@ -65,7 +65,7 @@ const AuthNotifications = () => {
     sendCart('SET_NOTIFICATIONS_HANDLER', {
       enqueueSnackbar
     })
-  }, [])
+  }, [enqueueSnackbar]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return null
 }

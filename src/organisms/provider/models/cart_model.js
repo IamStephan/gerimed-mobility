@@ -205,7 +205,7 @@ const SUBMIT_BANK_TRANSFER = `
   }
 `
 
-const SUBMIT_PAYMENT_GATEWAY = ``
+// const SUBMIT_PAYMENT_GATEWAY = ``
  
 export {
   GET_CART,

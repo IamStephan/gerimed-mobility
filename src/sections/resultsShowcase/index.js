@@ -4,10 +4,10 @@ import React from 'react'
 import { Section } from '../../templates/content_layout'
 
 // Material
-import { Typography, Button } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 
 // Gatsby
-import { useStaticQuery, graphql, Link } from 'gatsby'
+import { useStaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image/withIEPolyfill' // <= Required for the position to work
 
 // Styles

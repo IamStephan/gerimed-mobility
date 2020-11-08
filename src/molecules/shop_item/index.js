@@ -151,7 +151,7 @@ const ShopItem = ({ product }) => {
         }
       }
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const url = useCallback(() => {
     const preferedSize = 'small'
@@ -160,7 +160,7 @@ const ShopItem = ({ product }) => {
     const formats = showcase[0].formats
 
     return strapiImageUrl(preferedSize, baseUrl, url, formats)
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * This is based on props and the data is not realtime
@@ -202,7 +202,7 @@ const ShopItem = ({ product }) => {
         }
       }
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div
@@ -224,6 +224,7 @@ const ShopItem = ({ product }) => {
           <img
             className={styles['img']}
             src={url()}
+            alt={`Product: ${name}`}
           />
         </Link>
       </div>

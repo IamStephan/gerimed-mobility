@@ -18,8 +18,7 @@ import {
   TableRow,
   TableCell,
 
-  Chip,
-  Divider
+  Chip
 } from '@material-ui/core'
 import {
   MailOutline,

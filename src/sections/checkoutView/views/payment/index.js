@@ -10,8 +10,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  ListItemAvatar,
-  CircularProgress
+  ListItemAvatar
 } from '@material-ui/core'
 import {
   DescriptionOutlined,
@@ -30,9 +29,6 @@ import {
   Alert,
   AlertTitle
 } from '@material-ui/lab'
-
-// Global Services
-import { CartService } from '../../../../organisms/provider'
 
 // Styles
 import styles from './styles.module.scss'

@@ -57,7 +57,7 @@ const SideTrackSection = props => {
     <div
       className={styles['sideTrackSection']}
     >
-      <div
+      <div // eslint-disable-line
         className={styles['sectionHeader']}
         onClick={setOpen}
       >
@@ -171,7 +171,7 @@ const ShopFilter = () => {
 
   useEffect(() => {
     send('CHECK_FILTERS')
-  }, [location.search])
+  }, [location.search]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [showPrice, setShowPrice] = useState(false)
   const [showCategories, setShowCategories] = useState(false)

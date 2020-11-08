@@ -25,8 +25,6 @@ import {
   Typography,
   LinearProgress,
   Link as Btn,
-  FormControlLabel,
-  Checkbox,
   IconButton
 } from '@material-ui/core'
 import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
@@ -51,7 +49,7 @@ const ResetPasswordSection = () => {
   const loading = current.matches('loading')
 
   // The form and its validation
-  const { register, handleSubmit, errors, reset } = useForm({
+  const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(resetPasswordSchema)
   })
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Material
-import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, ButtonGroup, Button } from '@material-ui/core'
+import { Table, TableContainer, TableBody, TableRow, TableCell, ButtonGroup, Button } from '@material-ui/core'
 
 // Utils
 import { Rand } from '../../../../utils/js/currency'
@@ -18,8 +18,6 @@ const Summary = props => {
   } = props
 
   const [currentCart] = cart
-
-  const products = currentCart.context?.cartData?.cart?.products || []
 
   function _calculateTotal(price, discount, quantity) {
     let discountTemp = price

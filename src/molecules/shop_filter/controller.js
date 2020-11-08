@@ -135,13 +135,10 @@ const LocalController = Machine({
       }
     }),
     matchFiltersWithForm: assign({
-      filters: (context, event) => {
-        const { setValue, getValues, categories, filters } = context
+      filters: (context) => {
+        const { setValue, categories, filters } = context
         // Gatsby SSR
         if(typeof window === 'undefined') return
-
-        // Current From Data
-        const formData = getValues()
 
         // Get url params
         const search = window.location.search.substring(1)

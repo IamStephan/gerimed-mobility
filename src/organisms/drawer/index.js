@@ -49,7 +49,7 @@ import {
 import styles from './styles.module.scss'
 
 const CartWithBadge = () => {
-  const [currentGlobal, sendGlobal] = useService(CartService)
+  const [currentGlobal] = useService(CartService)
 
   const products = currentGlobal.context.cartData?.cart?.products || []
 
@@ -151,7 +151,7 @@ const Drawer = props => {
     send('SET_DIMMER_REF', {
       dimmerRef
     })
-  }, [dimmerRef])
+  }, [dimmerRef]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function _toggleAccount() {
     accountOpen ? setAccountOpen(false) : setAccountOpen(true)
@@ -161,9 +161,14 @@ const Drawer = props => {
     <nav
       className={`${styles['drawer']} ${styles[open ? 'open' : 'closed']} ${styles[hideDrawer ? 'hide' : 'show']}`}
     >
-      <div
+      <div // eslint-disable-line
         className={styles['dimmer']}
         onClick={toggleDrawer}
+        onKeyPress={(e) => {
+          if(e.key === 27 && open) {
+            toggleDrawer()
+          }
+        }}
         ref={dimmerRef}
       />
 

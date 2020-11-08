@@ -25,7 +25,6 @@ import {
   Typography,
   LinearProgress,
   Link as Btn,
-  FormControl,
   FormControlLabel,
   Checkbox,
   IconButton,
@@ -35,16 +34,11 @@ import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
 // Molecules
 import AuthTitle from '../../molecules/auth_title'
 
-// Notifications
-import { useSnackbar } from 'notistack'
-
 // Styles
 import styles from './styles.module.scss'
 
 
 const RegisterSection = () => {
-  const { enqueueSnackbar } = useSnackbar()
-
   const [current, send] = useService(AuthService)
 
   const loading = current.matches('loading')
@@ -60,7 +54,7 @@ const RegisterSection = () => {
     if(current.matches({ idle: 'user' })) {
       navigate('/profile')
     }
-  }, [current.value])
+  }, [current.value]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function _handleSubmit(data) {
     send('REGISTER', {

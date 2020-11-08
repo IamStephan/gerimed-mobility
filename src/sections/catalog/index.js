@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Gatsby
-import { useStaticQuery, graphql, Link, navigate } from 'gatsby'
+import { useStaticQuery, graphql, Link } from 'gatsby'
 import Img from 'gatsby-image'
 
 // Templates

@@ -52,7 +52,7 @@ const CartView = () => {
   }, [loading])
 
   function CartStateView() {
-    const loading = current.matches('loading') && !products.length || current.matches('ready')
+    const loading = (current.matches('loading') && !products.length) || current.matches('ready')
     const loadingPartial = current.matches('loading') && !!products.length
     const ready = current.matches('idle') && !!products.length && !isEditing
     const editMode = current.matches('idle') && !!products.length && isEditing

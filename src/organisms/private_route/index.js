@@ -18,13 +18,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         replace: true
       })
     }
-  }, [current.value])
+  }, [current.value]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if(current.matches({ idle: 'user' }) && !current.context?.user) {
       send('GET_ME')
     }
-  }, [current.value])
+  }, [current.value]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const isGuest = current.matches({ idle: 'guest' })
 

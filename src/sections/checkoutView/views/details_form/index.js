@@ -4,9 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers'
 
-// Utils
-import { once } from 'lodash'
-
 // Global Controllers
 import { CartService } from '../../../../organisms/provider'
 
@@ -36,7 +33,7 @@ const DetailsForm = props => {
   const [currentCart, sendCart] = cart
   const [currentAuth] = auth
 
-  const { register, setValue, getValues, handleSubmit, errors } = useForm({
+  const { register, setValue, handleSubmit, errors } = useForm({
     resolver: yupResolver(FormSchema)
   })
 
@@ -82,8 +79,6 @@ const DetailsForm = props => {
   }
 
   const _autoFill = () => {
-    const user = currentAuth.context?.user
-
     /**
      * Shipping Details
      */
@@ -116,7 +111,7 @@ const DetailsForm = props => {
     if(!currentCart.context?.cartData && !currentAuth.context?.user) return
   
     _autoFill()
-  }, [currentAuth.context, currentCart.context])
+  }, [currentAuth.context, currentCart.context])  // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Listen for a successful details set
@@ -133,7 +128,7 @@ const DetailsForm = props => {
     return () => {
       CartService.off(checkSuccessfulSubmit)
     }
-  }, [isInitial])
+  }, [isInitial])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <form

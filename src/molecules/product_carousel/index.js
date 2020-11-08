@@ -49,7 +49,7 @@ const ProductCarousel = (props) => {
     embla.on('select', () => {
       setIndex(embla.selectedScrollSnap())
     })
-  }, [images, embla])
+  }, [images, embla]) // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Updates the index based on an external event
@@ -58,7 +58,7 @@ const ProductCarousel = (props) => {
     if(!embla || !images) return
 
     embla.scrollTo(index)
-  }, [index])
+  }, [index, embla]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div
@@ -81,6 +81,7 @@ const ProductCarousel = (props) => {
                 <img
                   className={styles['img']}
                   src={url(images[i].url, images[i].formats)}
+                  alt='Product showcase'
                 />
               </AspectView>
             ))

@@ -17,7 +17,7 @@ import Catalog from '../sections/catalog'
 import Featured from '../sections/featured'
 import CTA from '../sections/cta'
 import Benefit from '../sections/benefit'
-import Testimonials from '../sections/testimonials'
+// import Testimonials from '../sections/testimonials'
 import Latest from '../sections/lastestProducts'
 
 /**

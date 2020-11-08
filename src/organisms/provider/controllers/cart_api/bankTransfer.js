@@ -13,9 +13,6 @@ import { SUBMIT_BANK_TRANSFER } from '../../models/cart_model'
 // Gatsby
 import { navigate } from 'gatsby'
 
-// Constants
-import { KEYS } from '../../../../constants/storage'
-
 const { pure } = actions
 
 const state = {

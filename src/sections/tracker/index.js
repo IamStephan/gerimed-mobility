@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 // Material
 import {
@@ -34,7 +34,6 @@ import { TrackMyOrderController } from './controller'
 
 // Styles
 import styles from './styles.module.scss'
-import { orderBy } from 'lodash'
 
 function OrderStateTag(state) {
   let label
@@ -256,7 +255,6 @@ const TrackerSection = () => {
           onSubmit={_handleSubmit}
         >
           <TextField
-            autoFocus
             label='Order Reference'
             color='secondary'
             variant='outlined'

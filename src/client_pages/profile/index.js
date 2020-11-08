@@ -8,7 +8,6 @@ import { PAGES } from '../../constants/pages'
 
 // Sections
 import User from '../../sections/user'
-import Showcase from '../../sections/userShowcase'
 
 const ProfileTemplate = () => {
   return (

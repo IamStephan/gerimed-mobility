@@ -71,7 +71,7 @@ const Info = () => {
     if(isEditing) {
       reset(defaultValues)
     }
-  }, [current.context.user, isEditing])
+  }, [current.context.user, isEditing]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     function listenSuccessLoad(state) {

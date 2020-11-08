@@ -70,7 +70,7 @@ const Shipping = () => {
     if(isEditing) {
       reset(defaultValues)
     }
-  }, [isEditing])
+  }, [isEditing]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function _handleSubmit(data) {
     const {

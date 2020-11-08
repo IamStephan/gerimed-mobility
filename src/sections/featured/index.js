@@ -41,7 +41,7 @@ const Featured = () => {
 
   const retry = useCallback(() => {
     send('RESET')
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const productList = useCallback(() => {
     const productListData = {
@@ -105,8 +105,31 @@ const Featured = () => {
           />
         )
       }
+
+      default: {
+        return (
+          <Alert
+            severity='error'
+            variant='outlined'
+            action={(
+              <Button
+                color='inherit'
+                size='small'
+                onClick={retry}
+              >
+                Retry
+              </Button>
+            )}
+          >
+            <AlertTitle>
+              <b>Could not load Featured Products</b>
+            </AlertTitle>
+            There seems to be a technical error. Please, retry or contact us.
+          </Alert>
+        )
+      }
     }
-  }, [current.value, current.matches, ShopRowTitle])
+  }, [current.value, current.matches, ShopRowTitle]) // eslint-disable-line react-hooks/exhaustive-deps
 
   
 

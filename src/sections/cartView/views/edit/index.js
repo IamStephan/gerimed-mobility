@@ -46,7 +46,7 @@ const EditView = props => {
     const cloneValue = JSON.parse(stringValue)
 
     setProductList(cloneValue)
-  }, [])
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
 
   function _handleProductQuantity(index, value) {
     const listClone = productList.slice()

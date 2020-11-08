@@ -41,7 +41,7 @@ const Latest = () => {
 
   const retry = useCallback(() => {
     send('RESET')
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const ShopRowTitle = 'Our Latest Products'
   const products = current.context.data?.products
@@ -91,10 +91,31 @@ const Latest = () => {
           />
         )
       }
-    }
-  }, [current.value, current.matches])
 
-  
+      default: {
+        return (
+          <Alert
+            severity='error'
+            variant='outlined'
+            action={(
+              <Button
+                color='inherit'
+                size='small'
+                onClick={retry}
+              >
+                Retry
+              </Button>
+            )}
+          >
+            <AlertTitle>
+              <b>Could not load Latest Products</b>
+            </AlertTitle>
+            There seems to be a technical error. Please, retry or contact us.
+          </Alert>
+        )
+      }
+    }
+  }, [current.value, current.matches]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Section

@@ -148,7 +148,7 @@ const Navbar = props => {
 
     // Clear scroll listener
     return () => window.removeEventListener('scroll', onScroll)
-  }, [navState])
+  }, [navState]) // eslint-disable-line react-hooks/exhaustive-deps
 
   let addedStyles = ''
 
