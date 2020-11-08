@@ -5,7 +5,7 @@ import { Section } from '../../templates/content_layout'
 
 // Material
 import { Typography, Avatar } from '@material-ui/core'
-import { LocalOfferOutlined, HelpOutline, SecurityOutlined, StarsOutlined } from '@material-ui/icons'
+import { LocalOfferOutlined, HelpOutline, StoreOutlined, StarsOutlined } from '@material-ui/icons'
 
 // Styles
 import styles from './styles.module.scss'
@@ -97,13 +97,13 @@ const Benefit = () => {
           </BenefitItem>
 
           <BenefitItem
-            title='Secure Payments'
-            description='Gerimed Mobility uses secure payment gateways that are PCI complaint. Meaning your payments are completly safe and secure.'
+            title='Rentals'
+            description='Gerimed Mobility not only sells the best medical products, we also rent some of our products out to our customers.'
           >
             <Avatar
               className={styles['avatar']}
             >
-              <SecurityOutlined />
+              <StoreOutlined />
             </Avatar>
           </BenefitItem>
         </div>
