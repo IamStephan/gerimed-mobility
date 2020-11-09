@@ -76,10 +76,10 @@ const ContactSection = () => {
           info={(
             <>
               <Typography>
-                Mon to Fri: 09:00 - 17:00
+                Mon to Fri: 08:00 - 17:00
               </Typography>
               <Typography>
-                Sat: 09:00 - 13:00
+                Sat: 08:00 - 14:00
               </Typography>
             </>
           )}
