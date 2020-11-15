@@ -9,11 +9,8 @@ import Logo from '../../svg/logo_green.svg'
 // Constants
 import { PAGES } from '../../constants/pages'
 
-// Controller
-import { LocalContoller } from './controller'
-
 // Hooks
-import { useMachine, useService } from '@xstate/react'
+import { useService } from '@xstate/react'
 
 // Global Controllers
 import { CartService, AuthService } from '../provider'
@@ -139,19 +136,41 @@ const Drawer = props => {
   const isLoggedIn = currentGlobal.matches({ idle: 'user' })
 
   const dimmerRef = useRef(null)
-  const [current, send] = useMachine(LocalContoller)
 
   const [accountOpen, setAccountOpen] = useState(false)
-
-  const hideDrawer = current.context.shouldBeHidden
+  const [hideDrawer, setHideDrawer] = useState(true)
 
   useEffect(() => {
-    if(!dimmerRef) return
+    // Gatsby SSR
+    if(typeof window === 'undefined' || !dimmerRef) return
 
-    send('SET_DIMMER_REF', {
-      dimmerRef
-    })
-  }, [dimmerRef]) // eslint-disable-line react-hooks/exhaustive-deps
+    function _handleTransitionStart() {
+      const opacity = Number(window.getComputedStyle(dimmerRef.current).getPropertyValue("opacity"))
+
+      if(opacity < 0.5) {
+        setHideDrawer(false)
+      }
+    }
+
+    function _handleTransitionEnd() {
+      const opacity = Number(window.getComputedStyle(dimmerRef.current).getPropertyValue("opacity"))
+
+      if(opacity < 0.5) {
+        setHideDrawer(true)
+      }
+    }
+
+    const cleanUpTransitionStart = dimmerRef.current
+    const cleanUpTransitionEnd = dimmerRef.current
+
+    cleanUpTransitionStart.addEventListener('transitionstart', _handleTransitionStart)
+    cleanUpTransitionEnd.addEventListener('transitionend', _handleTransitionEnd)
+    
+    return () => {
+      cleanUpTransitionStart.removeEventListener('transitionstart', _handleTransitionStart)
+      cleanUpTransitionEnd.removeEventListener('transitionend', _handleTransitionEnd)
+    }
+  }, [dimmerRef.current]) // eslint-disable-line react-hooks/exhaustive-deps 
 
   function _toggleAccount() {
     accountOpen ? setAccountOpen(false) : setAccountOpen(true)
