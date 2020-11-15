@@ -3,9 +3,6 @@ import React from 'react'
 // Molecule Skeletons
 import ShopItemSkeleton from '../shop_item'
 
-// Carousel
-import { useEmblaCarousel } from 'embla-carousel/react'
-
 // Material
 import { Typography, Divider } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
@@ -17,11 +14,6 @@ import styles from './styles.module.scss'
 const dummyProducts = Array(5).fill(1)
 
 const ShopRowItemSkeleton = () => {
-  const [emblaRef] = useEmblaCarousel({
-    containScroll: 'keepSnaps',
-    align: 'start',
-  })
-
   return (
     <div
       className={styles['shopItemRow']}
@@ -44,22 +36,16 @@ const ShopRowItemSkeleton = () => {
         className={styles['rowViewport']}
       >
         <div
-          ref={emblaRef}
-          style={{
-            overflow: 'hidden'
-          }}
+          className={styles['rowContainer']}
         >
           <div
             className={styles['rowContainer']}
           >
             {
-               dummyProducts.map((key, i) => (
-                <div
-                  key={key + i}
-                  className={styles['rowItem']}
-                >
-                  <ShopItemSkeleton />
-                </div>
+               dummyProducts.map((_key, i) => (
+                <ShopItemSkeleton
+                  key={i}
+                />
               ))
             }
           </div>
