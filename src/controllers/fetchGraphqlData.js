@@ -121,7 +121,7 @@ const FetchGraphqlData = Machine({
   services: {
     lazyMode: (context) => (send) => {
       
-      if(typeof window === 'undefined' || !window.IntersectionObserver || !context.containerRef){
+      if(typeof window === 'undefined' || !"IntersectionObserver" in window || !context.containerRef){
         send('LOAD')
       } else {
         let observer = new IntersectionObserver((entries) => {
