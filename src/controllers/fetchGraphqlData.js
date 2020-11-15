@@ -121,9 +121,9 @@ const FetchGraphqlData = Machine({
   services: {
     lazyMode: (context) => (send) => {
       
-      if(typeof window === 'undefined' || !"IntersectionObserver" in window || !context.containerRef){
+      if(typeof window === 'undefined' || !context.containerRef){
         send('LOAD')
-      } else {
+      } else if ("IntersectionObserver" in window) {
         let observer = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if(entry.isIntersecting) {
@@ -136,6 +136,8 @@ const FetchGraphqlData = Machine({
         })
 
         observer.observe(context.containerRef.current)
+      } else {
+        send('LOAD')
       }
     },
     fetchData: (context) => {
