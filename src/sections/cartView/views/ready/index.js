@@ -21,7 +21,8 @@ const ReadyView = props => {
     products,
     setIsEditing = () => {},
     shippingOption,
-    setShippingOption
+    setShippingOption,
+    saveShippingOption
   } = props
 
   return (
@@ -78,6 +79,7 @@ const ReadyView = props => {
           products={products}
           shippingOption={shippingOption}
           setShippingOption={setShippingOption}
+          saveShippingOption={saveShippingOption}
         />
       </div>
     </div>

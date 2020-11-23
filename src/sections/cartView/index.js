@@ -10,13 +10,9 @@ import { CartService } from '../../organisms/provider'
 import {
   Typography
 } from '@material-ui/core'
-// import {
-//   Alert,
-//   AlertTitle
-// } from '@material-ui/lab'
-// import {
-//   InfoOutlined
-// } from '@material-ui/icons'
+
+// Gatsby
+import { navigate } from 'gatsby'
 
 // Templates
 import { Section } from '../../templates/content_layout'
@@ -34,11 +30,23 @@ const CartView = () => {
   const [current, send] = useService(CartService)
 
   const [isEditing, setIsEditing] = useState(false)
+  const [initial, setInitial] = useState(true)
 
   function _handleProductSet(productList) {
     send('SET_PRODUCTS', {
       products: productList
     })
+  }
+
+  function _setShippingOption(value) {
+    send('SET_SHIPPING_OPTION', {
+      option: value
+    })
+  }
+
+  function _saveShippingOption() {
+    send('SET_CART_SHIPPING_OPTION')
+    setInitial(false)
   }
 
   const products = current.context.cartData?.cart?.products || []
@@ -51,6 +59,29 @@ const CartView = () => {
 
   }, [loading])
 
+  /**
+   * Handle Save Shipping option
+   * 
+   * NOTE:
+   * =====
+   * 
+   * Since the proceed button and the action of saving the shipping option
+   * act as the same action, navigate to the checkout page
+   */
+  useEffect(() => {
+    function checkSuccessfulSubmit(state) {
+      if(!initial && state.changed && state.event.type === 'done.invoke.loading.setCartShippingOption') {
+        navigate('/checkout')
+      }
+    }
+
+    CartService.onTransition(checkSuccessfulSubmit)
+
+    return () => {
+      CartService.off(checkSuccessfulSubmit)
+    }
+  }, [initial])  // eslint-disable-line react-hooks/exhaustive-deps
+
   function CartStateView() {
     const loading = (current.matches('loading') && !products.length) || current.matches('ready')
     const loadingPartial = current.matches('loading') && !!products.length
@@ -60,11 +91,7 @@ const CartView = () => {
 
     const shippingOption = current.context.shippingOption
 
-    function _setShippingOption(value) {
-      send('SET_SHIPPING_OPTION', {
-        option: value
-      })
-    }
+    
 
     switch(true) {
       case loading: {
@@ -78,6 +105,7 @@ const CartView = () => {
             setIsEditing={setIsEditing}
             shippingOption={shippingOption}
             setShippingOption={_setShippingOption}
+            saveShippingOption={_saveShippingOption}
           />
         )
       }

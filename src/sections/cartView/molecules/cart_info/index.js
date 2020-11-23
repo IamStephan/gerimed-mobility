@@ -34,13 +34,18 @@ const CartInfo = props => {
     products = [],
     isEditing = false,
     shippingOption,
-    setShippingOption
+    setShippingOption,
+    saveShippingOption = () => {}
   } = props
 
   function _handleRadio(e) {
     const { target: { value } } = e
 
     setShippingOption(value)
+  }
+
+  function _handleProceed() {
+    saveShippingOption()
   }
 
   const totals = useCallback((products) => {
@@ -157,8 +162,7 @@ const CartInfo = props => {
           endIcon={<ChevronRightOutlined />}
           color='secondary'
           variant='contained'
-          component={Link}
-          to='/checkout'
+          onClick={_handleProceed}
           disabled={isEditing}
         >
           Proceed

@@ -59,6 +59,11 @@ const action = {
       LocalStorage.setItem(KEYS.cartToken, getUserCart.cartToken)
 
       return getUserCart.cartToken
+    },
+    shippingOption: (_context, event) => {
+      const { data: { data: { data: { getUserCart } } } } = event
+
+      return getUserCart.cart.shippingOption.option
     }
   })
 }

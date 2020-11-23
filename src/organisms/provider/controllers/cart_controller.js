@@ -54,7 +54,7 @@ const CartController = new Machine({
       ]
     },
     idle: {
-      entry: 'setShippingOptionEntry',
+      //entry: 'logCartData',
       on: {
         ADD_PRODUCT: '#CartController.loading.addProduct',
         SET_CART_PRODUCTS: '#CartController.loading.setCartProducts',
@@ -155,9 +155,9 @@ const CartController = new Machine({
       })
     }),
 
-    setShippingOptionEntry: assign({
-      shippingOption: (context) => context.cartData?.shippingOption?.option || null
-    }),
+    logCartData: (context, event) => {
+      console.log(context.cartData)
+    },
 
     setShippingOption: assign({
       shippingOption: (_context, event) => event.option

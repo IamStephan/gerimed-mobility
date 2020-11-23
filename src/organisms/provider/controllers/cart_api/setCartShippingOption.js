@@ -21,15 +21,11 @@ const state = {
 }
 
 const service = {
-  'loading.setCartShippingOption': (context, event) => {
-    const {
-      option
-    } = event
-
+  'loading.setCartShippingOption': (context) => {
     return axiosMutationFactory(`${process.env.GATSBY_API_URL}/graphql`, {
       query: SET_CART_SHIPPING_OPTION,
       variables: {
-        cartID: context.cartData.id,
+        cartToken: context.cartToken,
         option: context.shippingOption
       }
     })
@@ -39,7 +35,7 @@ const service = {
 const action = {
   'success.setCartShippingOption.setCart': assign({
     cartData: (_context, event) => {
-      const { data: { data: { data: { updateCart: { cart } } } } } = event
+      const { data: { data: { data: { setCartShippingOption: cart } } } } = event
 
       return cart
     }

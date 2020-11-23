@@ -98,7 +98,7 @@ const service = {
 }
 
 const action = {
-  'success.addProduct.setCart': pure((context, event) => {
+  'success.addProduct.setCart': pure((_context, event) => {
     const { data: { data: { data } } } = event
 
     if(data?.addAndCreate) {
@@ -106,13 +106,15 @@ const action = {
 
       return assign({
         cartToken: data.addAndCreate.cartToken,
+        shippingOption: data.addAndCreate.cart?.shippingOption.option,
         cartData: data.addAndCreate.cart
       })
     }
 
     if(data?.addProduct) {
       return assign({
-        cartData: data.addProduct
+        cartData: data.addProduct,
+        shippingOption: data.addProduct?.shippingOption.option,
       })
     }
   }),

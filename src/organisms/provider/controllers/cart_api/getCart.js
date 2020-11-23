@@ -95,6 +95,11 @@ const action = {
       const { data: { data: { data: { getCart: cartData } } } } = event
 
       return cartData
+    },
+    shippingOption: (_context, event) => {
+      const { data: { data: { data: { getCart: cartData } } } } = event
+
+      return cartData.shippingOption.option
     }
   }),
 

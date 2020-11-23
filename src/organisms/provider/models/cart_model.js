@@ -2,7 +2,6 @@
  * Fragments
  */
 const CART_FRAGMENT = `
-  id
   contact {
     email
     phone
@@ -161,24 +160,16 @@ const SET_CART_DETAILS = `
 
 const SET_CART_SHIPPING_OPTION = `
   mutation(
-    $cartID: ID!
+    $cartToken: String!
     $option: ENUM_COMPONENTSHIPPINGSHIPPING_OPTION!
   ) {
-    updateCart(
-      where: {
-        id: $cartID
-      }
+    setCartShippingOption(
       input: {
-        data: {
-          shippingOption: {
-            option: $option
-          }
-        }
+        cartToken: $cartToken,
+        shippingOption: $option
       }
     ) {
-      cart {
-        ${CART_FRAGMENT}
-      }
+      ${CART_FRAGMENT}
     }
   }
 `
