@@ -5,7 +5,7 @@ import { Table, TableContainer, TableBody, TableRow, TableCell, ButtonGroup, But
 
 // Utils
 import { Rand } from '../../../../utils/js/currency'
-import { shipping } from '../../../../utils/js/calculateShipping'
+import { CalculateCartTotals } from '../../../../utils/js/calculateCartTotals'
 
 // Styles
 import styles from './styles.module.scss'
@@ -23,8 +23,6 @@ const Summary = props => {
     let discountTemp = price
     let quantityTemp = 1
     let priceTemp = 0
-
-    console.log(typeof quantity)
 
     if(typeof price === 'number') {
       priceTemp = price
@@ -75,13 +73,13 @@ const Summary = props => {
       }
     })
 
-    const shippingCost = shipping.courierGuy(totalWeight)
+    const totals = CalculateCartTotals(productsTemp, currentCart.context?.shippingOption)
 
     return {
       products: newProducts,
-      totalAll: Rand(totalAll - totalSavings).format(),
-      shipping: Rand(shippingCost).format(),
-      total: Rand(totalAll + shippingCost - totalSavings).format()
+      totalAll: Rand(totals.total - totals.shippingTotal).format(),
+      shipping: Rand(totals.shippingTotal).format(),
+      total: Rand(totals.total).format()
     }
   }
 

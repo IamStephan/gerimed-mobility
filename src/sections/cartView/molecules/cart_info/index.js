@@ -1,7 +1,17 @@
 import React, { useCallback } from 'react'
 
 // Material
-import { Divider, Typography, Button } from '@material-ui/core'
+import {
+  Divider,
+  Typography,
+  Button,
+
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio
+} from '@material-ui/core'
 import {
   ChevronRightOutlined,
 } from '@material-ui/icons'
@@ -10,54 +20,32 @@ import {
 import { Link } from 'gatsby'
 
 // Utils
-import { shipping } from '../../../../utils/js/calculateShipping'
+import { CalculateCartTotals } from '../../../../utils/js/calculateCartTotals'
+import { ShippingOptions } from '../../../../utils/js/calculateShipping'
 import { Rand } from '../../../../utils/js'
 
 // Styles
 import styles from '../../styles.module.scss'
 
+// Constants
+
 const CartInfo = props => {
   const {
     products = [],
-    isEditing = false
+    isEditing = false,
+    shippingOption,
+    setShippingOption
   } = props
 
+  function _handleRadio(e) {
+    const { target: { value } } = e
+
+    setShippingOption(value)
+  }
+
   const totals = useCallback((products) => {
-    const productsTotal = products.reduce((acc, curr) => {
-      return acc + (curr.product.price * curr.quantity) 
-    }, 0)
-
-    const shippingWeight = products.reduce((acc, curr) => {
-      let weight = 1
-
-      if(curr.product.weight) {
-        weight = curr.product.weight
-      }
-
-      return acc + (weight * curr.quantity)
-    }, 0) 
-
-    const shippingTotal = shipping.courierGuy(shippingWeight)
-
-    const savingsTotal = products.reduce((acc, curr) => {
-      let discount = 0
-
-      if(curr.product.product_discount?.discounted_price) {
-        discount = curr.product.price - curr.product.product_discount?.discounted_price
-      }
-
-      return acc + (discount * curr.quantity)
-    }, 0)
-
-    const total = productsTotal + shippingTotal - savingsTotal
-
-    return {
-      productsTotal,
-      shippingTotal,
-      savingsTotal,
-      total
-    }
-  }, [])
+    return CalculateCartTotals(products, shippingOption)
+  }, [shippingOption])
 
   return (
     <div
@@ -103,7 +91,7 @@ const CartInfo = props => {
             <Typography
               variant='overline'
             >
-              Savings: 
+              Discount: 
             </Typography>
     
             <Typography
@@ -133,6 +121,34 @@ const CartInfo = props => {
         </Typography>
       </div>
 
+      <Divider /> <br />
+
+      <div>
+        <FormControl
+          color='secondary'
+        >
+          <FormLabel>
+            Shipping Options
+          </FormLabel>
+
+          <RadioGroup
+            value={shippingOption}
+            onChange={_handleRadio}
+          >
+            <FormControlLabel
+              control={<Radio />}
+              value={ShippingOptions.courierGuy}
+              label='The Courier Guy'
+            />
+            <FormControlLabel
+              control={<Radio />}
+              value={ShippingOptions.store}
+              label='Store collection'
+            />
+          </RadioGroup>
+        </FormControl>
+      </div>
+
       <div
         className={styles['rowEnd']}
       >
@@ -148,8 +164,6 @@ const CartInfo = props => {
           Proceed
         </Button>
       </div>
-
-      
     </div>
   )
 }

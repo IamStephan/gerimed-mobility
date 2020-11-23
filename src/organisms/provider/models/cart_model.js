@@ -2,6 +2,7 @@
  * Fragments
  */
 const CART_FRAGMENT = `
+  id
   contact {
     email
     phone
@@ -15,6 +16,9 @@ const CART_FRAGMENT = `
     post_code
     province
     country
+  }
+  shippingOption {
+    option
   }
   cart {
     products {
@@ -155,6 +159,30 @@ const SET_CART_DETAILS = `
   }
 `
 
+const SET_CART_SHIPPING_OPTION = `
+  mutation(
+    $cartID: ID!
+    $option: ENUM_COMPONENTSHIPPINGSHIPPING_OPTION!
+  ) {
+    updateCart(
+      where: {
+        id: $cartID
+      }
+      input: {
+        data: {
+          shippingOption: {
+            option: $option
+          }
+        }
+      }
+    ) {
+      cart {
+        ${CART_FRAGMENT}
+      }
+    }
+  }
+`
+
 const CART_RECONCILE = `
   mutation(
     $cartToken: String!,
@@ -214,6 +242,7 @@ export {
   ADD_PRODUCT,
   SET_CART_PRODUCTS,
   SET_CART_DETAILS,
+  SET_CART_SHIPPING_OPTION,
   CLEAR_CART,
   CART_RECONCILE,
   SET_CART_AS_USER_CART,

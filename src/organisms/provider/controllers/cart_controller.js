@@ -19,6 +19,7 @@ import {
   SetAsUserCart,
   SetCartProducts,
   SetCartDetails,
+  SetCartShippingOption,
   BankTransfer
 } from './cart_api'
 
@@ -31,6 +32,7 @@ const CartController = new Machine({
     cartData: null,
     reconcileCart: false,
     setAsUserCart: false,
+    shippingOption: null,
     enqueueSnackbar: null
   },
   initial: 'ready',
@@ -52,12 +54,17 @@ const CartController = new Machine({
       ]
     },
     idle: {
+      entry: 'setShippingOptionEntry',
       on: {
         ADD_PRODUCT: '#CartController.loading.addProduct',
         SET_CART_PRODUCTS: '#CartController.loading.setCartProducts',
         SET_DETAILS: '#CartController.loading.setDetails',
         SET_PRODUCTS: '#CartController.loading.setCartProducts',
-        BANK_TRANSFER: '#CartController.loading.bankTransfer'
+        BANK_TRANSFER: '#CartController.loading.bankTransfer',
+        SET_CART_SHIPPING_OPTION: '#CartController.loading.setCartShippingOption',
+        SET_SHIPPING_OPTION: {
+          actions: 'setShippingOption'
+        }
       }
     },
     loading: {
@@ -73,7 +80,8 @@ const CartController = new Machine({
         setDetails: SetCartDetails.state,
         bankTransfer: BankTransfer.state,
         cartReconcile: CartReconcile.state,
-        setAsUserCart: SetAsUserCart.state
+        setAsUserCart: SetAsUserCart.state,
+        setCartShippingOption: SetCartShippingOption.state
       },
     }
   },
@@ -114,6 +122,7 @@ const CartController = new Machine({
     ...CartReconcile.service,
     ...SetAsUserCart.service,
     ...SetCartDetails.service,
+    ...SetCartShippingOption.service,
     ...BankTransfer.service
   },
   actions: {
@@ -146,6 +155,14 @@ const CartController = new Machine({
       })
     }),
 
+    setShippingOptionEntry: assign({
+      shippingOption: (context) => context.cartData?.shippingOption?.option || null
+    }),
+
+    setShippingOption: assign({
+      shippingOption: (_context, event) => event.option
+    }),
+
     /**
      * API Actions
      * ========================================================
@@ -157,6 +174,7 @@ const CartController = new Machine({
     ...SetAsUserCart.action,
     ...SetCartProducts.action,
     ...SetCartDetails.action,
+    ...SetCartShippingOption.action,
     ...BankTransfer.action,
 
     'errors.general.notify': (context, event) => {

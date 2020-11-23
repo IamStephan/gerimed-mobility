@@ -19,7 +19,9 @@ import styles from '../../styles.module.scss'
 const ReadyView = props => {
   const {
     products,
-    setIsEditing = () => {}
+    setIsEditing = () => {},
+    shippingOption,
+    setShippingOption
   } = props
 
   return (
@@ -74,6 +76,8 @@ const ReadyView = props => {
       >
         <CartInfo
           products={products}
+          shippingOption={shippingOption}
+          setShippingOption={setShippingOption}
         />
       </div>
     </div>

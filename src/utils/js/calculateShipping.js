@@ -1,3 +1,8 @@
+const ShippingOptions = {
+  courierGuy: 'courier_guy',
+  store: 'in_store_collection'
+}
+
 function CourierGuy(weight) {
   const costPerKilo = 7
 
@@ -18,10 +23,16 @@ function CourierGuy(weight) {
   }
 }
 
-const shipping = {
-  courierGuy: CourierGuy
+function InStoreCollection() {
+  return 0
+}
+
+const Shipping = {
+  courierGuy: CourierGuy,
+  inStoreCollection: InStoreCollection
 }
 
 export {
-  shipping
+  Shipping,
+  ShippingOptions
 }

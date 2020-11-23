@@ -28,7 +28,9 @@ const EditView = props => {
     products = [],
     loading,
     setIsEditing = () => {},
-    setProducts = () => {}
+    setProducts = () => {},
+    shippingOption,
+    setShippingOption
   } = props
 
   const [productList, setProductList] = useState([])
@@ -165,6 +167,8 @@ const EditView = props => {
         <CartInfo
           products={productList}
           isEditing={true}
+          shippingOption={shippingOption}
+          setShippingOption={setShippingOption}
         />
       </div>
     </div>

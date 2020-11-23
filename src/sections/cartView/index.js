@@ -10,13 +10,13 @@ import { CartService } from '../../organisms/provider'
 import {
   Typography
 } from '@material-ui/core'
-import {
-  Alert,
-  AlertTitle
-} from '@material-ui/lab'
-import {
-  InfoOutlined
-} from '@material-ui/icons'
+// import {
+//   Alert,
+//   AlertTitle
+// } from '@material-ui/lab'
+// import {
+//   InfoOutlined
+// } from '@material-ui/icons'
 
 // Templates
 import { Section } from '../../templates/content_layout'
@@ -58,10 +58,15 @@ const CartView = () => {
     const editMode = current.matches('idle') && !!products.length && isEditing
     const empty = current.matches('idle') && !products.length
 
+    const shippingOption = current.context.shippingOption
+
+    function _setShippingOption(value) {
+      send('SET_SHIPPING_OPTION', {
+        option: value
+      })
+    }
+
     switch(true) {
-      // case true: {
-      //   return <CommingSoom />
-      // }
       case loading: {
         return <Loading />
       }
@@ -70,8 +75,9 @@ const CartView = () => {
         return (
           <ReadyView
             products={products}
-            
             setIsEditing={setIsEditing}
+            shippingOption={shippingOption}
+            setShippingOption={_setShippingOption}
           />
         )
       }
@@ -84,6 +90,8 @@ const CartView = () => {
             loading={loadingPartial}
             setIsEditing={setIsEditing}
             setProducts={_handleProductSet}
+            shippingOption={shippingOption}
+            setShippingOption={_setShippingOption}
           />
         )
       }
@@ -107,7 +115,7 @@ const CartView = () => {
         <b>Your Cart</b>
       </Typography>
 
-      <Alert
+      {/* <Alert
         iconMapping={{
           success: <InfoOutlined />
         }}
@@ -118,9 +126,7 @@ const CartView = () => {
 
         Only the manual payment options is currently available.<br />
         To <b>Learn More</b>, go to our contact page and see our FAQ.
-      </Alert>
-
-      {/* <Divider /> */}
+      </Alert> */}
 
       { CartStateView() }
       
