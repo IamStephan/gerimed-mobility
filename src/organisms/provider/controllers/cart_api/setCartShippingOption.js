@@ -2,6 +2,7 @@ import { assign } from 'xstate'
 
 // Utils
 import { axiosMutationFactory } from '../../../../utils/js'
+import { getAuthToken } from '../../../../utils/js/authToken'
 
 // Models
 import { SET_CART_SHIPPING_OPTION } from '../../models/cart_model'
@@ -22,13 +23,24 @@ const state = {
 
 const service = {
   'loading.setCartShippingOption': (context) => {
+    const userToken = getAuthToken()
+    let options = {}
+
+    if(userToken) {
+      options = {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        }
+      }
+    }
+
     return axiosMutationFactory(`${process.env.GATSBY_API_URL}/graphql`, {
       query: SET_CART_SHIPPING_OPTION,
       variables: {
         cartToken: context.cartToken,
         option: context.shippingOption
       }
-    })
+    }, options)
   }
 }
 
