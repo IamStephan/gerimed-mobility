@@ -68,6 +68,10 @@ const EditView = props => {
     setProductList(listClone)
   }
 
+  function _handleClearCart() {
+    setProductList([])
+  }
+
   function _handleProductRemove(index) {
     const listClone = [...productList]
 
@@ -145,10 +149,17 @@ const EditView = props => {
           >
             <Button
               variant='outlined'
-              startIcon={<CancelOutlined />}
               onClick={() => setIsEditing(false)}
             >
               Cancel
+            </Button>
+            <Button
+              variant='outlined'
+              startIcon={<CancelOutlined />}
+              disabled={!productList.length}
+              onClick={_handleClearCart}
+            >
+              Clear Cart
             </Button>
             <Button
               variant='contained'
