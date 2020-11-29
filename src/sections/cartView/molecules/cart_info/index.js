@@ -16,9 +16,6 @@ import {
   ChevronRightOutlined,
 } from '@material-ui/icons'
 
-// Gatsby
-import { Link } from 'gatsby'
-
 // Utils
 import { CalculateCartTotals } from '../../../../utils/js/calculateCartTotals'
 import { ShippingOptions } from '../../../../utils/js/calculateShipping'

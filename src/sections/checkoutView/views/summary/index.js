@@ -44,9 +44,16 @@ const Summary = props => {
   function _cartInfoBuilder() {
     const productsTemp = currentCart.context?.cartData?.cart?.products || []
     let newProducts = []
-    let totalAll = 0
-    let totalSavings = 0
-    let totalWeight = 0
+
+    /**
+     * NOTE:
+     * ======
+     * These variables are indeed being used
+     * but eslint is not picking them up
+     */
+    let totalAll = 0 // eslint-disable-line no-unused-vars
+    let totalSavings = 0 // eslint-disable-line no-unused-vars
+    let totalWeight = 0 // eslint-disable-line no-unused-vars
 
     productsTemp.forEach((item) => {
       newProducts.push({
