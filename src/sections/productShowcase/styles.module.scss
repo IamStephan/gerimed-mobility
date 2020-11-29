@@ -11,6 +11,7 @@ $breakpoint1: 800;
   .carouselContainer {
     flex-basis: 400px;
     flex-shrink: 0;
+    max-width: 400px;
     position: relative;
 
     .salesBadge {
@@ -53,6 +54,7 @@ $breakpoint1: 800;
   }
 
   .detailsContainer {
+    max-width: 100%;
     display: flex;
     flex: 1;
 
@@ -148,11 +150,11 @@ $breakpoint1: 800;
 
     .carouselContainer {
       flex-shrink: 1;
-      max-width: 100%;
+      max-width: 400px;
 
       .carousel {
         flex-grow: 1;
-        max-width: 100%;
+        max-width: 400px;
       }
     }
 
