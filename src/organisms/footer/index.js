@@ -220,7 +220,7 @@ const Footer = props => {
             className={styles['section']}
           >
             <Typography>
-              ©2020 - Gerimed Mobility | All right reserved
+              ©2021 - Gerimed Mobility | All right reserved
             </Typography>
           </section>
         </div>
