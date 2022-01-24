@@ -21,10 +21,17 @@ Gerimed Mobility is a local medical supply shop operating out of Langebaan. They
 
 [<img src="https://img.shields.io/badge/gatsby-%23663399.svg?&style=for-the-badge&logo=gatsby&logoColor=white" />](https://www.gatsbyjs.com/)
 [<img src="https://img.shields.io/badge/react-%2361DAFB.svg?&style=for-the-badge&logo=react&logoColor=black" />](https://reactjs.org/)
-[<img src="https://img.shields.io/badge/strapi-%232F2E8B.svg?&style=for-the-badge&logo=strapi&logoColor=white" />](https://strapi.io/)
 [<img src="https://img.shields.io/badge/graphql-%23311C87.svg?&style=for-the-badge&logo=apollo%20graphql&logoColor=white" />](https://graphql.org/)
 [<img src="https://img.shields.io/badge/scss-%23CC6699.svg?&style=for-the-badge&logo=sass&logoColor=white" />](https://sass-lang.com/)
 [<img src="https://img.shields.io/badge/xstate-%232C3E50.svg?&style=for-the-badge&logo=xstate&logoColor=white" />](https://xstate.js.org/)
+
+**Server:**
+
+[<img src="https://img.shields.io/badge/strapi-%232F2E8B.svg?&style=for-the-badge&logo=strapi&logoColor=white" />](https://strapi.io/)
+[<img src="https://img.shields.io/badge/nginx-%23269539.svg?&style=for-the-badge&logo=nginx&logoColor=white" />](https://www.nginx.com/)
+[<img src="https://img.shields.io/badge/digitalocean-%230080FF.svg?&style=for-the-badge&logo=digitalocean&logoColor=white" />](https://www.digitalocean.com/)
+
+> For the sake of security, the backend for this project has been kept private.
 
 
 ## Related
