@@ -161,18 +161,29 @@ const Payment = props => {
                 variant='contained'
                 color='secondary'
                 disableElevation
-                disabled={loading || !hasDetails}
+                disabled={true}
                 className={styles['placeOrderBtn']}
-                onClick={_bankTransfer}
+                // onClick={_bankTransfer}
               >
                 Place Order
               </Button>
+              
+              <br />
+
+              <Alert
+                severity='warning'
+                variant='outlined'
+              >
+                <AlertTitle>
+                  <b>Unavailable</b>
+                </AlertTitle>
+                Due to limited supply, please contact us to get the availability of your order
+              </Alert>
 
               {/**
                * Loading indicator is on the main Component
                */}
-            </div>
-            
+            </div>            
           </TabPanel>
 
           <TabPanel
