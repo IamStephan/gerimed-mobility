@@ -165,7 +165,7 @@ const Payment = props => {
                 className={styles['placeOrderBtn']}
                 // onClick={_bankTransfer}
               >
-                Place Order
+                Place Order (Currently unavailable)
               </Button>
               {/**
                * Loading indicator is on the main Component
@@ -201,18 +201,6 @@ const Payment = props => {
           Back
         </Button>
       </div>
-      
-      <br />
-
-      <Alert
-        severity='warning'
-        variant='outlined'
-      >
-        <AlertTitle>
-          <b>Unavailable</b>
-        </AlertTitle>
-        Due to limited supply, please contact us to get the availability of your order
-      </Alert>
     </div>
   )
 }
