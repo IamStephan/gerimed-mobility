@@ -167,19 +167,6 @@ const Payment = props => {
               >
                 Place Order
               </Button>
-              
-              <br />
-
-              <Alert
-                severity='warning'
-                variant='outlined'
-              >
-                <AlertTitle>
-                  <b>Unavailable</b>
-                </AlertTitle>
-                Due to limited supply, please contact us to get the availability of your order
-              </Alert>
-
               {/**
                * Loading indicator is on the main Component
                */}
@@ -214,6 +201,18 @@ const Payment = props => {
           Back
         </Button>
       </div>
+      
+      <br />
+
+      <Alert
+        severity='warning'
+        variant='outlined'
+      >
+        <AlertTitle>
+          <b>Unavailable</b>
+        </AlertTitle>
+        Due to limited supply, please contact us to get the availability of your order
+      </Alert>
     </div>
   )
 }
