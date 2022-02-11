@@ -40,7 +40,7 @@
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
     "lodash": "^4.17.19",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "notistack": "^0.9.17",
     "preact": "^10.5.13",
     "preact-render-to-string": "^5.1.19",
